@@ -1,0 +1,31 @@
+@import "tailwindcss";
+/* 北辰实验室：Tailwind 自定义主题 */
+
+/* 北辰实验室：Tailwind 自定义主题 */
+
+@theme {
+    /* 字体 */
+    --font-sans: "Noto Sans SC", Inter, sans-serif;
+    --font-handwriting: Caveat, cursive;
+
+    /* 品牌颜色 */
+    --color-lab-bg: #F7F8FA;
+    --color-lab-card: #FFFFFF;
+    --color-lab-text: #1A1D20;
+    --color-lab-muted: #64748B;
+    --color-lab-subtle: #94A3B8;
+    --color-lab-border: #E2E8F0;
+    --color-lab-navy: #1A2B4C;
+    --color-lab-navyHover: #0F172A;
+    --color-lab-accent: #2563EB;
+    --color-lab-pill: #EEF2F6;
+
+    /* 阴影 */
+    --shadow-subtle:
+        0 1px 3px 0 rgba(0, 0, 0, 0.02),
+        0 1px 2px 0 rgba(0, 0, 0, 0.04);
+
+    --shadow-hover-card:
+        0 10px 25px -5px rgba(15, 23, 42, 0.08),
+        0 8px 10px -6px rgba(15, 23, 42, 0.04);
+}

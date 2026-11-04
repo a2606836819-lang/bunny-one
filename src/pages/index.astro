@@ -10,7 +10,7 @@ import '../styles/global.css';
 
     <!-- Font Awesome 图标库 (使用 cdnjs 静态资源) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
+
     <!-- Google 字体 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -137,8 +137,9 @@ import '../styles/global.css';
     </div>
 
     <!-- LEFT SIDEBAR (Desktop Fixed) -->
-    <aside class="hidden md:flex flex-col justify-between w-64 lg:w-72 bg-white border-r border-lab-border h-screen sticky top-0 p-8 shrink-0 z-30 select-none">
-        <div class="space-y-10">
+    <aside class="sidebar-shell hidden md:flex flex-col justify-between w-64 lg:w-72 h-screen sticky top-0 px-5 py-8 shrink-0 z-30 select-none">
+        <div class="sidebar-ambient-glow" id="sidebar-ambient-glow"></div>
+        <div class="space-y-10 relative z-[1]">
             <a href="javascript:void(0)" onclick="switchTab('home')" class="flex items-center gap-3 group">
                 <div class="w-8 h-8 rounded-lg bg-lab-navy flex items-center justify-center text-white transition-transform group-hover:scale-105">
                     <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
@@ -152,7 +153,8 @@ import '../styles/global.css';
             </a>
 
             <!-- Navigation Links -->
-            <nav class="flex flex-col gap-1.5">
+            <nav class="sidebar-nav relative flex flex-col gap-1.5" id="sidebar-nav">
+                <div class="nav-indicator" id="nav-indicator" aria-hidden="true"><span class="indicator-bar"></span><span class="indicator-shine"></span></div>
                 <button onclick="switchTab('home')" data-tab="home" class="nav-item active flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-lab-muted hover:text-lab-text hover:bg-lab-bg transition-all text-left">
                     <i class="fa-solid fa-house w-4 text-center"></i>
                     <span>首页</span>
@@ -180,7 +182,7 @@ import '../styles/global.css';
             </nav>
         </div>
 
-        <div class="space-y-6 pt-6 border-t border-lab-border">
+        <div class="relative z-[1] space-y-6 pt-6 border-t border-lab-border">
             <div class="space-y-3">
                 <span class="block text-lab-subtle font-serif">—</span>
                 <p class="text-xs text-lab-muted leading-relaxed">
@@ -210,52 +212,85 @@ import '../styles/global.css';
 
     <!-- MAIN CONTENT CONTAINER -->
     <main class="flex-1 min-w-0 bg-lab-bg p-6 md:p-12 lg:p-16 max-w-7xl mx-auto w-full relative">
-        <div class="absolute top-6 right-6 md:top-10 md:right-12 text-[11px] font-mono text-lab-subtle tracking-widest uppercase">
-            NO. 001
-        </div>
+        <button id="version-history-trigger" type="button" onclick="openVersionHistory()" aria-haspopup="dialog" aria-controls="version-history-modal" class="version-trigger absolute top-6 right-6 md:top-10 md:right-12 inline-flex items-center gap-2 rounded-full border border-lab-border bg-white/80 px-3.5 py-2 text-[11px] font-mono tracking-wide text-lab-muted shadow-sm backdrop-blur-sm">
+            <span class="version-indicator" aria-hidden="true"></span>
+            <span>v0.5.0</span>
+            <span class="version-trigger-label">更新记录 <i class="fa-solid fa-arrow-up-right-from-square ml-1 text-[9px]"></i></span>
+        </button>
 
         <!-- SECTION 1: 首页 -->
         <section id="section-home" class="spa-section space-y-16 animate-fadeIn">
             <div class="space-y-6 max-w-3xl pt-2">
                 <div class="text-xs font-mono tracking-widest text-lab-subtle uppercase">HELLO, I'M</div>
-                
+
                 <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-lab-text tracking-tight leading-tight">
                     你好，我是孙国钦。<br>
                     欢迎来到我的个人空间。
                 </h1>
 
                 <p class="text-sm sm:text-base text-lab-muted leading-relaxed space-y-2">
-                    我有工业设计背景，也有过界面设计和编程实践。<br class="hidden sm:block">
-                    相比单纯地使用一个工具，我更希望理解技术背后的逻辑，<br class="hidden sm:block">
-                    并把脑海中的想法，变成真正可用的产品。
+                    我有工业设计背景，做过产品结构相关工作，也接触过界面设计和 VBA 编程。现在，我也参与父亲的建筑与水利工程相关业务。<br class="hidden sm:block">
+                    一路走来，我始终对设计、技术以及创造事物的过程抱有兴趣。<br class="hidden sm:block">
+                    比起重复既有的工作模式，我更喜欢安静地研究问题、寻找方法，再亲手把一个想法做成可以使用的东西。
                 </p>
 
                 <p class="text-xs sm:text-sm text-lab-subtle leading-relaxed">
-                    这里是我的个人实验室，记录我的项目、技术实验、学习笔记和思考。<br>
-                    我会持续探索 AI 与编程工具的结合，积累独立构建产品的能力，也期待在这个过程中，遇见更多有趣的可能。
+                    我不希望自己只是新技术的使用者。我想理解它们、驾驭它们，并借助 AI 和技术，把脑海中的想法逐渐变成真实的产品。<br>
+                    开始做这个网站后，我第一次明显感受到目标变得清晰，也找回了继续学习和动手创造的动力。
                 </p>
 
-                <div class="pt-2">
-                    <button onclick="switchTab('projects')" class="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-lab-navy hover:bg-lab-navyHover text-white text-xs sm:text-sm font-medium transition-all shadow-sm hover:shadow-md">
-                        <span>查看我的项目</span>
+                <div class="pt-2 flex flex-wrap gap-3">
+                    <button onclick="switchTab('projects')" class="home-cta inline-flex items-center gap-3 px-6 py-3 rounded-full bg-lab-navy hover:bg-lab-navyHover text-white text-xs sm:text-sm font-medium transition-all shadow-sm hover:shadow-md">
+                        <span>查看我的项目与练习</span>
                         <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </button>
+                    <button onclick="switchTab('about')" class="home-cta home-cta-secondary inline-flex items-center gap-3 px-6 py-3 rounded-full bg-white text-lab-navy border border-lab-border hover:bg-lab-bg text-xs sm:text-sm font-medium transition-all shadow-sm hover:shadow-md">
+                        <span>了解我</span>
+                        <i class="fa-regular fa-user text-xs"></i>
                     </button>
                 </div>
             </div>
 
             <!-- Visual Banner -->
             <div class="relative w-full h-64 sm:h-80 md:h-96 rounded-2xl overflow-hidden shadow-sm border border-lab-border group">
-                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1600&auto=format&fit=crop" 
-                     alt="Landscape Background" 
+                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1600&auto=format&fit=crop"
+                     alt="Landscape Background"
                      class="w-full h-full object-cover object-center filter brightness-[0.95] group-hover:scale-105 transition-transform duration-700">
-                
+
                 <div class="absolute top-6 right-8 text-white/80 handwritten-text text-2xl sm:text-4xl pointer-events-none drop-shadow">
                     Better Tools<br>&nbsp;&nbsp;&nbsp;&nbsp;Bigger Dreams
                 </div>
-                
+
                 <div class="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none"></div>
             </div>
 
+            <!-- PRACTICE PRINCIPLES -->
+            <div class="space-y-6 pt-2">
+                <div class="flex items-end justify-between gap-4 border-b border-lab-border/80 pb-4">
+                    <div>
+                        <div class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase mb-2">MY PRACTICE</div>
+                        <h2 class="text-xl font-bold text-lab-text">我想逐步练成的三种能力</h2>
+                    </div>
+                    <span class="hidden sm:block text-xs text-lab-subtle">从想法到可验证的产品</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <article class="bg-white rounded-2xl p-5 border border-lab-border shadow-subtle">
+                        <span class="text-xs font-mono text-lab-subtle">01 / FIND</span>
+                        <h3 class="mt-3 text-sm font-bold text-lab-text">把问题说清楚</h3>
+                        <p class="mt-2 text-xs text-lab-muted leading-relaxed">从真实场景出发，弄明白谁遇到了什么麻烦，再决定要不要做功能。先验证问题，避免一开始就被工具和技术带着走。</p>
+                    </article>
+                    <article class="bg-white rounded-2xl p-5 border border-lab-border shadow-subtle">
+                        <span class="text-xs font-mono text-lab-subtle">02 / MAKE</span>
+                        <h3 class="mt-3 text-sm font-bold text-lab-text">尽快做出小原型</h3>
+                        <p class="mt-2 text-xs text-lab-muted leading-relaxed">把设计、代码和 AI 工具组合起来，先完成最小的可体验版本。用具体界面和操作检验想法，而不是只停留在概念描述里。</p>
+                    </article>
+                    <article class="bg-white rounded-2xl p-5 border border-lab-border shadow-subtle">
+                        <span class="text-xs font-mono text-lab-subtle">03 / LEARN</span>
+                        <h3 class="mt-3 text-sm font-bold text-lab-text">记录取舍与下一步</h3>
+                        <p class="mt-2 text-xs text-lab-muted leading-relaxed">写下遇到的问题、采用的方案和仍然不确定的地方。每次实践都留下可以复用的经验，也让下一轮迭代更有方向。</p>
+                    </article>
+                </div>
+            </div>
             <!-- Featured Projects Section -->
             <div class="space-y-8 pt-4">
                 <div class="flex items-center justify-between border-b border-lab-border/80 pb-4">
@@ -269,12 +304,14 @@ import '../styles/global.css';
                     </button>
                 </div>
 
+                <p class="-mt-4 max-w-3xl text-xs text-lab-muted leading-relaxed">当前整理的四个项目方向分别关注个人任务管理、知识整理、个人表达与灵感捕捉。它们也是我练习把需求、界面和实现连成一条路径的记录。</p>
+
                 <!-- 2x2 Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div onclick="openProjectModal('project-1')" class="bg-white rounded-2xl p-6 border border-lab-border shadow-subtle hover:shadow-hover-card transition-all duration-300 cursor-pointer flex flex-col justify-between group">
                         <div class="space-y-4">
                             <div class="h-44 rounded-xl bg-slate-50 border border-slate-100 overflow-hidden relative flex items-center justify-center">
-                                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop" 
+                                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop"
                                      alt="任务管理系统" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                                 <div class="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-white/90 backdrop-blur-sm text-[10px] font-mono font-medium text-lab-muted border border-slate-200">
                                     Web 应用
@@ -300,7 +337,7 @@ import '../styles/global.css';
                     <div onclick="openProjectModal('project-2')" class="bg-white rounded-2xl p-6 border border-lab-border shadow-subtle hover:shadow-hover-card transition-all duration-300 cursor-pointer flex flex-col justify-between group">
                         <div class="space-y-4">
                             <div class="h-44 rounded-xl bg-slate-900 border border-slate-800 overflow-hidden relative flex items-center justify-center">
-                                <img src="https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?q=80&w=800&auto=format&fit=crop" 
+                                <img src="https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?q=80&w=800&auto=format&fit=crop"
                                      alt="AI 资料助手" class="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-500">
                                 <div class="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-white/90 backdrop-blur-sm text-[10px] font-mono font-medium text-lab-muted border border-slate-200">
                                     AI 应用
@@ -326,7 +363,7 @@ import '../styles/global.css';
                     <div onclick="openProjectModal('project-3')" class="bg-white rounded-2xl p-6 border border-lab-border shadow-subtle hover:shadow-hover-card transition-all duration-300 cursor-pointer flex flex-col justify-between group">
                         <div class="space-y-4">
                             <div class="h-44 rounded-xl bg-slate-50 border border-slate-100 overflow-hidden relative flex items-center justify-center">
-                                <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?q=80&w=800&auto=format&fit=crop" 
+                                <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?q=80&w=800&auto=format&fit=crop"
                                      alt="北辰实验室·个人站点" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                                 <div class="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-white/90 backdrop-blur-sm text-[10px] font-mono font-medium text-lab-muted border border-slate-200">
                                     个人网站
@@ -352,7 +389,7 @@ import '../styles/global.css';
                     <div onclick="openProjectModal('project-4')" class="bg-white rounded-2xl p-6 border border-lab-border shadow-subtle hover:shadow-hover-card transition-all duration-300 cursor-pointer flex flex-col justify-between group">
                         <div class="space-y-4">
                             <div class="h-44 rounded-xl bg-slate-900 border border-slate-800 overflow-hidden relative flex items-center justify-center">
-                                <img src="https://images.unsplash.com/photo-1517842645767-c639042777db?q=80&w=800&auto=format&fit=crop" 
+                                <img src="https://images.unsplash.com/photo-1517842645767-c639042777db?q=80&w=800&auto=format&fit=crop"
                                      alt="灵感记录" class="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-500">
                                 <div class="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-white/90 backdrop-blur-sm text-[10px] font-mono font-medium text-lab-muted border border-slate-200">
                                     小工具
@@ -384,10 +421,10 @@ import '../styles/global.css';
                     <span class="font-mono text-lab-subtle">| Technologies</span>
                 </div>
                 <div class="flex flex-wrap items-center gap-2 font-mono text-[11px]">
-                    <span class="px-2.5 py-1 rounded-md bg-white border border-lab-border">Frontend / Tailwind</span>
-                    <span class="px-2.5 py-1 rounded-md bg-white border border-lab-border">Industrial Design</span>
-                    <span class="px-2.5 py-1 rounded-md bg-white border border-lab-border">AI Workflows</span>
-                    <span class="px-2.5 py-1 rounded-md bg-white border border-lab-border">Product Architecture</span>
+                    <span class="px-2.5 py-1 rounded-md bg-white border border-lab-border">Astro · Tailwind</span>
+                    <span class="px-2.5 py-1 rounded-md bg-white border border-lab-border">工业设计思维</span>
+                    <span class="px-2.5 py-1 rounded-md bg-white border border-lab-border">AI 辅助探索</span>
+                    <span class="px-2.5 py-1 rounded-md bg-white border border-lab-border">产品结构与交互</span>
                 </div>
                 <span class="text-[11px] font-mono text-lab-subtle">持续学习 · 不断进化</span>
             </div>
@@ -398,46 +435,104 @@ import '../styles/global.css';
             <div>
                 <div class="text-xs font-mono text-lab-subtle uppercase mb-1">PORTFOLIO</div>
                 <h1 class="text-3xl font-bold text-lab-text">全部项目库</h1>
-                <p class="text-xs text-lab-muted mt-2">包含 Web 应用、AI 研发实践以及工业设计产出。</p>
+                <p class="text-xs text-lab-muted mt-2">这里整理 Web 与 AI 项目、个人工具构想，以及工业设计方法如何延伸到数字产品的探索。项目卡片会说明它要解决的问题、目前的想法和仍待验证的部分。</p>
             </div>
 
-            <div class="flex flex-wrap items-center gap-2 border-b border-lab-border pb-4 text-xs font-medium">
-                <button onclick="filterProjects('all')" class="project-filter-btn active px-4 py-2 rounded-full bg-lab-navy text-white transition-all">全部</button>
-                <button onclick="filterProjects('web')" class="project-filter-btn px-4 py-2 rounded-full bg-white text-lab-muted hover:text-lab-text border border-lab-border transition-all">Web 应用</button>
-                <button onclick="filterProjects('ai')" class="project-filter-btn px-4 py-2 rounded-full bg-white text-lab-muted hover:text-lab-text border border-lab-border transition-all">AI 应用</button>
-                <button onclick="filterProjects('tool')" class="project-filter-btn px-4 py-2 rounded-full bg-white text-lab-muted hover:text-lab-text border border-lab-border transition-all">小工具</button>
-                <button onclick="filterProjects('hardware')" class="project-filter-btn px-4 py-2 rounded-full bg-white text-lab-muted hover:text-lab-text border border-lab-border transition-all">工业设计/结构</button>
-            </div>
+            <div class="project-timeline-layout grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
+                <nav class="project-timeline-nav lg:col-span-3" aria-label="项目时间轴">
+                    <div class="timeline-caption text-[10px] font-mono tracking-widest text-lab-subtle uppercase mb-4">PROJECT TIMELINE</div>
+                    <button type="button" class="timeline-select is-active" aria-pressed="true" aria-controls="timeline-project-northstar" onclick="selectProjectTimeline('northstar', this)">
+                        <span class="timeline-date">2026.11 — 现在</span><span class="timeline-title">北辰实验室</span><span class="timeline-subtitle">个人技术作品集与实验平台</span>
+                    </button>
+                    <button type="button" class="timeline-select" aria-pressed="false" aria-controls="timeline-project-task" onclick="selectProjectTimeline('task', this)">
+                        <span class="timeline-date">2025.09</span><span class="timeline-title">任务管理系统</span><span class="timeline-subtitle">Web 应用练习</span>
+                    </button>
+                    <button type="button" class="timeline-select" aria-pressed="false" aria-controls="timeline-project-ai" onclick="selectProjectTimeline('ai', this)">
+                        <span class="timeline-date">2025.08</span><span class="timeline-title">AI 资料助手</span><span class="timeline-subtitle">知识整理与问答</span>
+                    </button>
+                    <button type="button" class="timeline-select" aria-pressed="false" aria-controls="timeline-project-ideas" onclick="selectProjectTimeline('ideas', this)">
+                        <span class="timeline-date">2025.06</span><span class="timeline-title">灵感记录应用</span><span class="timeline-subtitle">个人工具构想</span>
+                    </button>
+                </nav>
 
-            <div id="all-projects-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="project-item bg-white rounded-2xl p-6 border border-lab-border shadow-subtle hover:shadow-hover-card transition-all cursor-pointer flex flex-col justify-between group" data-category="web" onclick="openProjectModal('project-1')">
-                    <div class="space-y-4">
-                        <div class="h-44 rounded-xl bg-slate-50 overflow-hidden relative">
-                            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                            <span class="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-white/90 text-[10px] font-mono text-lab-muted">Web 应用</span>
+                <div class="project-timeline-content lg:col-span-9" aria-live="polite">
+                    <article id="timeline-project-northstar" class="timeline-project is-active bg-white rounded-2xl border border-lab-border p-6 md:p-9 shadow-subtle">
+                        <div class="flex flex-wrap gap-2 mb-5">
+                            <span class="px-3 py-1 rounded-full bg-lab-pill text-[11px] font-mono text-lab-navy">个人独立项目</span>
+                            <span class="px-3 py-1 rounded-full bg-lab-pill text-[11px] font-mono text-lab-navy">Web 开发</span>
+                            <span class="px-3 py-1 rounded-full bg-lab-pill text-[11px] font-mono text-lab-navy">技术探索</span>
                         </div>
-                        <h3 class="text-base font-bold text-lab-text group-hover:text-lab-navy">任务管理系统</h3>
-                        <p class="text-xs text-lab-muted line-clamp-2">基于 Astro 构建的轻量级任务管理工具，支持分类与数据视图统计。</p>
-                    </div>
-                    <div class="pt-4 mt-2 flex items-center justify-between text-xs text-lab-subtle border-t border-slate-100">
-                        <span class="font-mono">2025.09</span>
-                        <span class="text-lab-navy font-medium">查看详情 →</span>
-                    </div>
-                </div>
+                        <h2 class="text-2xl md:text-3xl font-bold text-lab-text tracking-tight">北辰实验室 — 个人技术作品集与实验平台</h2>
+                        <p class="mt-4 text-sm text-lab-muted leading-relaxed">这是我的第一个完整 Web 项目，也是我从设计思维走向独立产品开发的一次实践。我希望建立一个属于自己的线上空间，用来展示个人经历、记录技术探索、沉淀项目成果，并逐步尝试将想法转化为真正可用的产品。</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                            <div class="rounded-xl bg-lab-bg p-4">
+                                <div class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase">STATUS</div>
+                                <p class="mt-2 text-sm font-medium text-lab-text">已完成基础框架搭建并上线，持续迭代中</p>
+                            </div>
+                            <div class="rounded-xl bg-lab-bg p-4">
+                                <div class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase">TECH STACK</div>
+                                <p class="mt-2 text-sm text-lab-text">Astro · HTML · CSS · JavaScript · Tailwind CSS v4 · Git · GitHub · Vercel</p>
+                            </div>
+                        </div>
+                        <div class="mt-8">
+                            <h3 class="text-sm font-bold text-lab-text">项目背景</h3>
+                            <p class="mt-2 text-sm text-lab-muted leading-relaxed">我没有直接套用现成的网站模板，而是借助 AI 编程辅助，从项目环境搭建开始，逐步学习并完成网站的设计、开发与部署。这让我能在一个真实项目里，把设计判断、代码实践和工程流程联系起来。</p>
+                        </div>
+                        <div class="mt-8">
+                            <h3 class="text-sm font-bold text-lab-text">核心工作</h3>
+                            <ul class="mt-3 space-y-3 text-sm text-lab-muted leading-relaxed">
+                                <li><strong class="text-lab-text">产品构思与结构规划：</strong>明确网站定位，规划个人介绍、项目展示、技术实验、学习日志和关于我等主要内容模块。</li>
+                                <li><strong class="text-lab-text">视觉与交互设计：</strong>确立简洁、克制的视觉风格，设计桌面端导航、移动端抽屉菜单、内容卡片和页面布局。</li>
+                                <li><strong class="text-lab-text">前端开发：</strong>使用 Astro 搭建项目结构，结合 HTML、CSS、JavaScript 和 Tailwind CSS 实现页面布局与交互。</li>
+                                <li><strong class="text-lab-text">交互功能探索：</strong>实现页面导航切换、移动端菜单、项目展示与筛选、详情弹窗等交互，并持续完善页面动效。</li>
+                                <li><strong class="text-lab-text">工程化与部署：</strong>使用 Git 进行版本管理，通过 GitHub 托管代码，并利用 Vercel 完成线上部署。</li>
+                            </ul>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8 border-t border-lab-border pt-7">
+                            <div>
+                                <h3 class="text-sm font-bold text-lab-text">项目成果</h3>
+                                <ul class="mt-3 space-y-2 text-sm text-lab-muted leading-relaxed list-disc pl-5">
+                                    <li>从零搭建个人网站开发环境，完成网站基础框架。</li>
+                                    <li>建立兼容桌面端与移动端的页面结构。</li>
+                                    <li>打通本地开发、代码提交、远程仓库管理和线上部署流程。</li>
+                                    <li>为后续项目展示、技术实验和独立产品开发建立基础平台。</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h3 class="text-sm font-bold text-lab-text">项目收获</h3>
+                                <p class="mt-3 text-sm text-lab-muted leading-relaxed">这次实践让我从单纯的设计与工具使用，进一步走向对 Web 开发流程的理解。我开始理解网页结构、样式、交互逻辑、项目构建、版本管理与部署之间的关系，也逐渐练习借助 AI 辅助开发、理解代码并持续维护项目。</p>
+                            </div>
+                        </div>
+                        <p class="mt-8 rounded-xl bg-lab-bg p-5 text-base md:text-lg font-semibold text-lab-text">这不仅是一个个人网站，也是我独立构建数字产品的起点。</p>
+                    </article>
 
-                <div class="project-item bg-white rounded-2xl p-6 border border-lab-border shadow-subtle hover:shadow-hover-card transition-all cursor-pointer flex flex-col justify-between group" data-category="ai" onclick="openProjectModal('project-2')">
-                    <div class="space-y-4">
-                        <div class="h-44 rounded-xl bg-slate-900 overflow-hidden relative">
-                            <img src="https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                            <span class="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-white/90 text-[10px] font-mono text-lab-muted">AI 应用</span>
+                    <article id="timeline-project-task" class="timeline-project bg-white rounded-2xl border border-lab-border p-6 md:p-9 shadow-subtle" hidden>
+                        <span class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase">2025.09 · WEB APP</span>
+                        <h2 class="mt-3 text-2xl font-bold text-lab-text">任务管理系统</h2>
+                        <p class="mt-4 text-sm text-lab-muted leading-relaxed">围绕个人学习和工作中的任务分散、优先级不清展开。项目方向是通过分类、标签和数据视图，帮助使用者看清当前重点与每周节奏。</p>
+                        <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="rounded-xl bg-lab-bg p-4"><h3 class="text-sm font-bold text-lab-text">关注的问题</h3><p class="mt-2 text-sm text-lab-muted leading-relaxed">任务记录要足够轻，回顾信息又要足够清楚，避免为了维护系统花掉太多时间。</p></div>
+                            <div class="rounded-xl bg-lab-bg p-4"><h3 class="text-sm font-bold text-lab-text">下一步思考</h3><p class="mt-2 text-sm text-lab-muted leading-relaxed">继续验证哪些统计能帮助人采取行动，而不是只增加图表和操作步骤。</p></div>
                         </div>
-                        <h3 class="text-base font-bold text-lab-text group-hover:text-lab-navy">AI 资料助手</h3>
-                        <p class="text-xs text-lab-muted line-clamp-2">利用大模型能力，构建个人知识库和资料整理工具。</p>
-                    </div>
-                    <div class="pt-4 mt-2 flex items-center justify-between text-xs text-lab-subtle border-t border-slate-100">
-                        <span class="font-mono">2025.08</span>
-                        <span class="text-lab-navy font-medium">查看详情 →</span>
-                    </div>
+                    </article>
+
+                    <article id="timeline-project-ai" class="timeline-project bg-white rounded-2xl border border-lab-border p-6 md:p-9 shadow-subtle" hidden>
+                        <span class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase">2025.08 · AI APP</span>
+                        <h2 class="mt-3 text-2xl font-bold text-lab-text">AI 资料助手</h2>
+                        <p class="mt-4 text-sm text-lab-muted leading-relaxed">一个围绕个人知识整理的项目方向：把 PDF、Markdown 等资料汇集起来，让提问能够回到原始内容寻找依据。</p>
+                        <div class="mt-6 rounded-xl bg-lab-bg p-5"><h3 class="text-sm font-bold text-lab-text">值得继续验证的问题</h3><p class="mt-2 text-sm text-lab-muted leading-relaxed">资料导入是否简单、回答能否附上出处、资料更新后如何维护索引，以及怎样让使用者判断答案是否可靠。</p></div>
+                    </article>
+
+                    <article id="timeline-project-ideas" class="timeline-project bg-white rounded-2xl border border-lab-border p-6 md:p-9 shadow-subtle" hidden>
+                        <span class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase">2025.06 · PERSONAL TOOL</span>
+                        <h2 class="mt-3 text-2xl font-bold text-lab-text">灵感记录应用</h2>
+                        <p class="mt-4 text-sm text-lab-muted leading-relaxed">这是一个轻量个人工具构想，关注灵感出现时如何快速记录、稍后整理并再次找回。</p>
+                        <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-3">
+                            <div class="rounded-xl bg-lab-bg p-4"><span class="text-[10px] font-mono text-lab-subtle">01 / CAPTURE</span><p class="mt-2 text-sm text-lab-text">快速记下原始想法，不打断当下思路。</p></div>
+                            <div class="rounded-xl bg-lab-bg p-4"><span class="text-[10px] font-mono text-lab-subtle">02 / ORGANIZE</span><p class="mt-2 text-sm text-lab-text">用少量标签或主题轻量归档。</p></div>
+                            <div class="rounded-xl bg-lab-bg p-4"><span class="text-[10px] font-mono text-lab-subtle">03 / RETURN</span><p class="mt-2 text-sm text-lab-text">让记录能够被重新找到并继续发展。</p></div>
+                        </div>
+                    </article>
                 </div>
             </div>
         </section>
@@ -447,7 +542,7 @@ import '../styles/global.css';
             <div>
                 <div class="text-xs font-mono text-lab-subtle uppercase mb-1">LAB DEMOS</div>
                 <h1 class="text-3xl font-bold text-lab-text">技术实验室</h1>
-                <p class="text-xs text-lab-muted mt-2">互动代码实验、前端视觉探索以及 AI Sandbox 交互体验。</p>
+                <p class="text-xs text-lab-muted mt-2">实验室用小而具体的例子拆解技术概念：先观察现象，再看代码如何产生结果，最后记录哪些部分值得继续深入。</p>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -459,10 +554,11 @@ import '../styles/global.css';
                         </div>
                         <span class="text-[10px] font-mono bg-slate-100 px-2 py-0.5 rounded text-slate-600">Canvas 2D</span>
                     </div>
-                    <p class="text-xs text-lab-muted">点击或移动鼠标体验引力场模拟，探索代码生成的自然秩序。</p>
+                    <p class="text-xs text-lab-muted">观察粒子自动移动，并在彼此接近时形成连线。粒子速度、数量和连线距离共同改变画面的密度与节奏；这是 Canvas 动画练习，不是对真实引力的物理模拟。</p>
                     <div class="h-56 bg-slate-950 rounded-xl overflow-hidden relative">
-                        <canvas id="particle-canvas" class="w-full h-full cursor-crosshair"></canvas>
+                        <canvas id="particle-canvas" class="w-full h-full"></canvas>
                     </div>
+                    <p class="text-[11px] text-lab-subtle leading-relaxed">观察提示：粒子保持各自速度移动；当两点距离小于设定值时，程序会画出连接线。调节数量、速度或距离，可以感受参数对整体观感的影响。</p>
                 </div>
 
                 <div class="bg-white p-6 rounded-2xl border border-lab-border space-y-4 shadow-subtle">
@@ -473,8 +569,8 @@ import '../styles/global.css';
                         </div>
                         <span class="text-[10px] font-mono bg-slate-100 px-2 py-0.5 rounded text-slate-600">Interactive</span>
                     </div>
-                    <p class="text-xs text-lab-muted">输入模糊想法，模拟转化为结构化 System Prompt。</p>
-                    
+                    <p class="text-xs text-lab-muted">输入一个初步想法，查看它如何被拆成角色、任务和约束。这个小演示只用本地模板展示结构，不会调用在线大模型。</p>
+
                     <div class="space-y-3">
                         <input id="demo-input" type="text" placeholder="例如：帮我写一个简洁的个人介绍..." class="w-full px-3.5 py-2 text-xs rounded-lg border border-lab-border focus:border-lab-navy outline-none">
                         <button onclick="runAiDemo()" class="w-full py-2 bg-lab-navy text-white text-xs rounded-lg hover:bg-lab-navyHover font-medium transition-colors">
@@ -483,6 +579,7 @@ import '../styles/global.css';
                         <div id="demo-output" class="h-28 p-3 rounded-lg bg-slate-900 text-emerald-400 font-mono text-[11px] overflow-y-auto leading-relaxed">
                             // 结构输出将在此展示...
                         </div>
+                        <p class="text-[11px] text-lab-subtle leading-relaxed">试着把同一件事写得更具体，比较任务描述变化后，输出框中的文本会怎样变化。输入仅在当前页面本地使用。</p>
                     </div>
                 </div>
             </div>
@@ -493,11 +590,11 @@ import '../styles/global.css';
             <div>
                 <div class="text-xs font-mono text-lab-subtle uppercase mb-1">NOTES & ESSAYS</div>
                 <h1 class="text-3xl font-bold text-lab-text">学习日志 & 思考</h1>
-                <p class="text-xs text-lab-muted mt-2">记录技术探索、设计思考与日常复盘。</p>
+                <p class="text-xs text-lab-muted mt-2">这里不只记录完成了什么，也记录做决定时的依据、遇到的卡点，以及下一次会怎样验证想法。</p>
             </div>
 
             <div class="space-y-4">
-                <article class="bg-white p-6 rounded-2xl border border-lab-border shadow-subtle hover:border-lab-navy/30 transition-all cursor-pointer flex flex-col md:flex-row md:items-center justify-between gap-4 group">
+                <article class="bg-white p-6 rounded-2xl border border-lab-border shadow-subtle border-lab-border flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div class="space-y-2">
                         <div class="flex items-center gap-3 text-xs font-mono text-lab-subtle">
                             <span>2025.09.18</span>
@@ -505,54 +602,70 @@ import '../styles/global.css';
                             <span class="text-lab-navy bg-slate-100 px-2 py-0.5 rounded">产品思考</span>
                         </div>
                         <h3 class="text-base font-bold text-lab-text group-hover:text-lab-navy transition-colors">从工业设计视角看现代 Web 界面设计中的“触觉感”</h3>
-                        <p class="text-xs text-lab-muted line-clamp-2">为什么微小的阴影、圆角和物理反馈对软件产品的使用体验如此重要？本文总结了我的跨界思考。</p>
+                        <p class="text-xs text-lab-muted leading-relaxed">从工业设计的材料、结构与触感经验出发，讨论界面如何借助明暗层次、圆角、动效和状态反馈，让数字操作更容易被理解，也更有明确的回应。</p>
                     </div>
-                    <div class="text-xs font-mono text-lab-navy font-medium shrink-0 flex items-center gap-1">
-                        阅读全文 <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                    <div class="text-xs font-mono text-lab-subtle font-medium shrink-0 flex items-center gap-1">
+                        文章摘要
                     </div>
                 </article>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2">
+                <div class="bg-white p-6 rounded-2xl border border-lab-border shadow-subtle">
+                    <div class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase mb-3">UP NEXT</div>
+                    <h2 class="text-lg font-bold text-lab-text">接下来想继续记录</h2>
+                    <ul class="mt-4 space-y-3 text-xs text-lab-muted leading-relaxed">
+                        <li class="flex gap-3"><span class="font-mono text-lab-subtle">01</span><span>用 AI 协助写代码时，怎样理解改动、检查结果并保留自己的判断。</span></li>
+                        <li class="flex gap-3"><span class="font-mono text-lab-subtle">02</span><span>从一个模糊想法开始，如何拆出最小原型并明确下一步要验证的问题。</span></li>
+                        <li class="flex gap-3"><span class="font-mono text-lab-subtle">03</span><span>学习 Astro、组件和内容组织时，怎样把一次实践整理成可复用的经验。</span></li>
+                    </ul>
+                </div>
+                <div class="bg-lab-bg p-6 rounded-2xl border border-lab-border">
+                    <div class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase mb-3">FIELD NOTES</div>
+                    <h2 class="text-lg font-bold text-lab-text">一份可复用的复盘提纲</h2>
+                    <p class="mt-3 text-xs text-lab-muted leading-relaxed">每次记录可以从四个问题开始：当时遇到了什么问题？我尝试了什么？结果和预期有什么不同？如果再做一次，我会先改哪一步？</p>
+                </div>
             </div>
         </section>
 
         <!-- SECTION 5: 关于我 -->
-        <section id="section-about" class="spa-section hidden space-y-12 animate-fadeIn">
+        <section id="section-about" class="spa-section hidden space-y-5 animate-fadeIn">
             <div>
                 <div class="text-xs font-mono text-lab-subtle uppercase mb-1">BIOGRAPHY</div>
                 <h1 class="text-3xl font-bold text-lab-text">关于孙国钦</h1>
+
             </div>
 
+
+            <div class="about-reader-shell">
+              <header class="about-reader-heading"><div class="about-reader-kicker">A NOTE FROM THE FOUNDER <span>·</span> NORTHSTAR LAB</div><h2>从设计出发，把想法变成真正可用的东西。</h2><p>一段关于我的经历、转向，以及北辰实验室为何开始的自述。</p></header>
+              <div class="about-audio-bar"><div class="about-audio-copy"><span class="about-audio-orb"><i class="fa-solid fa-volume-high"></i></span><span><strong>听我讲述</strong><small>孙国钦 · 个人简介</small></span></div><audio controls preload="metadata" aria-label="孙国钦个人简介配音"><source src="/audio/northstar-introduction.mp3" type="audio/mpeg">你的浏览器暂不支持音频播放。</audio></div>
+              <div class="about-reader" id="about-reader"><canvas class="about-reader-fx" id="about-reader-fx" aria-hidden="true"></canvas><div class="about-reader-progress"><div id="about-reader-progress-fill"></div></div>
+                <div class="about-reader-content" id="about-reader-content">
+                  <div class="about-reader-chapter"><span>01 / 起点</span><h3>关于我</h3></div>
+                  <p class="about-reader-lead">你好，我是孙国钦，欢迎来到我的个人空间。这里是北辰实验室（NORTHSTAR LAB）。</p>
+                  <p>我有工业设计背景，曾经从事产品结构相关工作，也接触过界面设计和 VBA 编程。一路走来，我始终对设计、技术以及创造事物的过程抱有兴趣。</p>
+                  <p>过去，我的工作和生活更多围绕着现实业务展开。我也参与父亲的建筑与水利工程相关业务，在这些工作中接触到许多具体问题。慢慢地我意识到，自己真正感兴趣的，不只是完成一项任务，而是理解问题、寻找方法，然后亲手把一个想法变成可以使用的东西。</p>
+                  <div class="about-reader-chapter"><span>02 / 转向</span><h3>从完成任务，到创造可能</h3></div>
+                  <p>反复的流程、沟通和应酬并不是我最愿意长期投入的工作状态。我喜欢独立思考，也享受安静地研究和探索。相比重复既有的工作模式，我更愿意花时间学习新的工具，理解技术背后的逻辑，尝试不同的可能性。</p>
+                  <p>这也是我开始关注编程与人工智能的原因。我不希望自己只是一个新技术的使用者。我更希望能够理解它们、驾驭它们，并借助这些技术，把脑海中的想法逐渐变成真实的产品。</p>
+                  <div class="about-reader-chapter"><span>03 / 实验室</span><h3>让想法有一个开始的地方</h3></div>
+                  <p>北辰实验室就是这样一个开始。它记录我的学习、尝试、项目和思考，也承载着我对未来的一些期待。这里的内容或许还不成熟，想法也会不断变化，但我希望每一次探索都能留下真实的成果。</p>
+                  <p>我相信，创造不一定始于一个宏大的计划。有时候，只是一个想法，一点好奇心，以及愿意动手尝试的决心。</p>
+                  <blockquote>从设计出发，向技术深入，把想法变成真正可用的东西。</blockquote><p>这是我正在走的路，也是北辰实验室存在的意义。</p>
+                </div><div class="about-reader-hint"><i class="fa-solid fa-arrow-down"></i> 滚动阅读</div>
+              </div>
+            </div>
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
-                <div class="lg:col-span-7 space-y-6 text-sm text-lab-muted leading-relaxed">
-                    <p class="text-lab-text font-medium text-base">
-                        “相比单纯使用工具，我更渴望理解工具背后的原理与工程逻辑。”
-                    </p>
-                    <p>
-                        我是孙国钦，北辰实验室（Northstar Lab）的创建者。拥有工业设计背景，在产品结构设计、界面交互以及前端开发领域均有持续探索。
-                    </p>
-                </div>
-
-                <div class="lg:col-span-5 bg-white p-6 rounded-2xl border border-lab-border space-y-6 shadow-subtle">
-                    <h3 class="text-sm font-bold text-lab-text">与我取得联系</h3>
-                    <form onsubmit="handleContactSubmit(event)" class="space-y-3 text-xs">
-                        <div>
-                            <label class="block text-lab-subtle font-mono mb-1">你的称呼</label>
-                            <input type="text" required placeholder="例如：张先生" class="w-full px-3.5 py-2 rounded-lg border border-lab-border outline-none focus:border-lab-navy">
-                        </div>
-                        <div>
-                            <label class="block text-lab-subtle font-mono mb-1">电子邮箱</label>
-                            <input type="email" required placeholder="your@email.com" class="w-full px-3.5 py-2 rounded-lg border border-lab-border outline-none focus:border-lab-navy">
-                        </div>
-                        <div>
-                            <label class="block text-lab-subtle font-mono mb-1">留言内容</label>
-                            <textarea rows="3" required placeholder="请填写你想交流的内容..." class="w-full px-3.5 py-2 rounded-lg border border-lab-border outline-none focus:border-lab-navy resize-none"></textarea>
-                        </div>
-                        <button type="submit" class="w-full py-2.5 rounded-lg bg-lab-navy text-white font-medium hover:bg-lab-navyHover transition-colors">
-                            发送消息
-                        </button>
-                    </form>
-                </div>
+              <div class="lg:col-span-7 mt-2 border-t border-lab-border pt-6"><div class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase mb-3">LEARNING ROADMAP</div><h2 class="text-lg font-bold text-lab-text">接下来想继续练习</h2><div class="mt-4 space-y-4">
+                <div class="flex gap-3"><span class="font-mono text-xs text-lab-subtle">01</span><p class="text-xs text-lab-muted leading-relaxed"><strong class="text-lab-text">打牢基础：</strong>继续理解 HTML、CSS、JavaScript 与 Astro 的分工，练习响应式布局、组件拆分和页面状态。</p></div>
+                <div class="flex gap-3"><span class="font-mono text-xs text-lab-subtle">02</span><p class="text-xs text-lab-muted leading-relaxed"><strong class="text-lab-text">形成流程：</strong>用 Git 管理修改，学习把项目和日志整理成易维护的内容结构，并练习定位浏览器与终端错误。</p></div>
+                <div class="flex gap-3"><span class="font-mono text-xs text-lab-subtle">03</span><p class="text-xs text-lab-muted leading-relaxed"><strong class="text-lab-text">完成闭环：</strong>持续完善移动端体验、页面信息和项目说明，熟悉部署，再通过复盘明确下一轮改进。</p></div>
+              </div></div>
+              <div class="lg:col-span-5 bg-white p-6 rounded-2xl border border-lab-border space-y-6 shadow-subtle"><h3 class="text-sm font-bold text-lab-text">与我取得联系</h3><p class="text-xs text-lab-muted leading-relaxed">如果你也在做个人工具、AI 应用或产品设计探索，欢迎交流具体的问题、方法和踩过的坑。</p>
+                <form onsubmit="handleContactSubmit(event)" class="space-y-3 text-xs"><div><label class="block text-lab-subtle font-mono mb-1">你的称呼</label><input type="text" required placeholder="例如：张先生" class="w-full px-3.5 py-2 rounded-lg border border-lab-border outline-none focus:border-lab-navy"></div><div><label class="block text-lab-subtle font-mono mb-1">电子邮箱</label><input type="email" required placeholder="your@email.com" class="w-full px-3.5 py-2 rounded-lg border border-lab-border outline-none focus:border-lab-navy"></div><div><label class="block text-lab-subtle font-mono mb-1">留言内容</label><textarea rows="3" required placeholder="请填写你想交流的内容..." class="w-full px-3.5 py-2 rounded-lg border border-lab-border outline-none focus:border-lab-navy resize-none"></textarea></div><button type="submit" class="w-full py-2.5 rounded-lg bg-lab-navy text-white font-medium hover:bg-lab-navyHover transition-colors">发送消息</button></form>
+              </div>
             </div>
-        </section>
+</section>
     </main>
 
     <!-- Modal -->
@@ -582,31 +695,133 @@ import '../styles/global.css';
         </div>
     </div>
 
+    <div id="version-history-modal" class="fixed inset-0 z-[70] hidden opacity-0 transition-opacity duration-300" role="dialog" aria-modal="true" aria-labelledby="version-history-title">
+        <div class="absolute inset-0 bg-slate-950/45 backdrop-blur-sm" onclick="closeVersionHistory()" aria-hidden="true"></div>
+        <div class="absolute inset-x-4 top-5 bottom-5 md:inset-x-10 md:top-8 md:bottom-8 max-w-3xl mx-auto bg-white rounded-2xl border border-lab-border p-5 md:p-8 overflow-y-auto shadow-2xl">
+            <div class="flex items-start justify-between gap-5 border-b border-lab-border pb-5">
+                <div><div class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase">NORTHSTAR LAB / CHANGELOG</div><h2 id="version-history-title" class="mt-2 text-2xl font-bold text-lab-text">版本更新记录</h2><p class="mt-2 text-xs text-lab-muted">记录网站方向、内容和功能的变化。视觉试验若已回退，也会标明。</p></div>
+                <button type="button" onclick="closeVersionHistory()" aria-label="关闭更新记录" class="version-close w-10 h-10 shrink-0 rounded-full border border-lab-border text-lab-muted hover:text-lab-text"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <ol class="version-list mt-6">
+                <li class="version-entry is-current"><div class="version-entry-head"><span class="version-number">v0.5.0</span><span class="version-date">2026.11.04 · 当前版本</span></div><h3>个人简介沉浸阅读页</h3><ul><li>将独立简介页面的阅读卡片、章节叙事和滚动进度整合进“关于我”。</li><li>接入孙国钦个人简介原始配音，支持边听边跟随阅读。</li><li>保留学习路线与联系区域，并适配窄屏浏览。</li></ul></li>
+                <li class="version-entry"><div class="version-entry-head"><span class="version-number">v0.4.0</span><span class="version-date">2026.11.04</span></div><h3>项目时间轴与版本记录</h3><ul><li>首页增加可点击的版本号与更新记录面板。</li><li>项目库改为左侧时间轴、右侧项目详情，北辰实验室网站置顶展示。</li><li>“关于我”正文扩展为全宽版式。</li></ul></li>
+                <li class="version-entry"><div class="version-entry-head"><span class="version-number">v0.3.0</span><span class="version-date">2026.11.04</span></div><h3>个人表达与页面动效</h3><ul><li>根据个人经历重写首页简介和“关于我”长文。</li><li>首页新增“了解我”按钮。</li><li>参考三个开头页面，增加错峰淡入、页面切换、导航扫光和卡片悬停动效，并支持减少动态效果设置。</li></ul></li>
+                <li class="version-entry"><div class="version-entry-head"><span class="version-number">v0.2.0</span><span class="version-date">2026.11.03</span></div><h3>内容结构扩展</h3><ul><li>扩写个人目标、项目介绍、实验说明和学习日志。</li><li>新增实践原则、待整理主题与学习路线。</li><li>区分项目练习、构想和待验证方向。</li></ul></li>
+                <li class="version-entry is-reverted"><div class="version-entry-head"><span class="version-number">视觉方向试验</span><span class="version-date">2026.11.03 · 已回退</span></div><h3>Vesper.ai 单屏风格探索</h3><ul><li>尝试单屏落地页、视频背景、深色与明亮配色，以及彩色背景光层。</li><li>按后续反馈恢复了原有多板块个人网站；这轮风格试验不属于当前页面。</li></ul></li>
+                <li class="version-entry"><div class="version-entry-head"><span class="version-number">v0.1.0</span><span class="version-date">个人实验室初版</span></div><h3>搭建网站基础框架</h3><ul><li>建立首页、项目库、技术实验、学习日志和关于我五个板块。</li><li>包含桌面侧栏、移动端菜单、项目筛选与详情弹窗。</li><li>加入粒子动画画布与 Prompt 结构演示。</li></ul></li>
+            </ol>
+        </div>
+    </div>
     <!-- JS Scripts -->
     <script is:inline>
-        function switchTab(tabId) {
-            document.querySelectorAll('.spa-section').forEach(section => {
-                section.classList.add('hidden');
-            });
 
-            const targetSection = document.getElementById(`section-${tabId}`);
-            if (targetSection) {
-                targetSection.classList.remove('hidden');
-            }
+function selectProjectTimeline(projectId, trigger) {
+    document.querySelectorAll('.timeline-select').forEach((button) => {
+        const active = button === trigger;
+        button.classList.toggle('is-active', active);
+        button.setAttribute('aria-pressed', String(active));
+    });
+    document.querySelectorAll('.timeline-project').forEach((panel) => {
+        const active = panel.id === `timeline-project-${projectId}`;
+        panel.hidden = !active;
+        panel.classList.toggle('is-active', active);
+    });
+}
 
-            document.querySelectorAll('.nav-item').forEach(btn => {
-                if (btn.getAttribute('data-tab') === tabId) {
-                    btn.classList.add('bg-lab-navy', 'text-white');
-                    btn.classList.remove('text-lab-muted', 'hover:bg-lab-bg');
-                } else {
-                    btn.classList.remove('bg-lab-navy', 'text-white');
-                    btn.classList.add('text-lab-muted', 'hover:bg-lab-bg');
-                }
-            });
+function openVersionHistory() {
+    const modal = document.getElementById('version-history-modal');
+    if (!modal) return;
+    modal.classList.remove('hidden');
+    requestAnimationFrame(() => modal.classList.remove('opacity-0'));
+}
 
-            closeMobileDrawer();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeVersionHistory();
+});
+
+function closeVersionHistory() {
+    const modal = document.getElementById('version-history-modal');
+    if (!modal) return;
+    modal.classList.add('opacity-0');
+    window.setTimeout(() => modal.classList.add('hidden'), 300);
+}
+function moveNavIndicator(item, shine = true) {
+    const indicator = document.getElementById('nav-indicator');
+    if (!indicator || !item) return;
+    indicator.style.transform = `translateY(${item.offsetTop}px)`;
+    indicator.style.height = `${item.offsetHeight}px`;
+    if (shine) {
+        indicator.classList.remove('shining');
+        void indicator.offsetWidth;
+        indicator.classList.add('shining');
+    }
+}
+
+const sidebarNode = document.getElementById('sidebar');
+const ambientGlow = document.getElementById('sidebar-ambient-glow');
+if (sidebarNode && ambientGlow) sidebarNode.addEventListener('pointermove', event => {
+    const rect = sidebarNode.getBoundingClientRect();
+    ambientGlow.style.setProperty('--mouse-x', `${event.clientX - rect.left}px`);
+    ambientGlow.style.setProperty('--mouse-y', `${event.clientY - rect.top}px`);
+});
+const initialSidebarItem = document.querySelector('aside .nav-item.active');
+if (initialSidebarItem) {
+    requestAnimationFrame(() => {
+        const indicator = document.getElementById('nav-indicator');
+        if (indicator) indicator.style.transition = 'none';
+        moveNavIndicator(initialSidebarItem, false);
+        setTimeout(() => { if (indicator) indicator.style.transition = ''; }, 60);
+    });
+}
+window.addEventListener('resize', () => {
+    const active = document.querySelector('aside .nav-item.active');
+    if (active) moveNavIndicator(active, false);
+}, { passive: true });
+
+function switchTab(tabId) {
+
+    // 1. 隐藏所有页面
+    document.querySelectorAll('.spa-section').forEach(section => {
+        section.classList.add('hidden');
+    });
+
+    // 2. 找到这次要显示的页面
+    const targetSection = document.getElementById(`section-${tabId}`);
+
+    if (targetSection) {
+
+        // 3. 先显示目标页面
+        targetSection.classList.remove('hidden');
+
+        // 4. 清除之前的动画类
+        targetSection.classList.remove('page-enter');
+
+        // 5. 强制浏览器重新计算布局
+        // 这样浏览器才会知道动画需要重新开始
+        void targetSection.offsetWidth;
+
+        // 6. 添加动画类，触发进入效果
+        targetSection.classList.add('page-enter');
+        if (tabId === 'about') requestAnimationFrame(() => { window.dispatchEvent(new Event('resize')); targetSection.querySelector('#about-reader')?.dispatchEvent(new Event('scroll')); });
+    }
+
+    // 7. 更新左侧导航与滑动指示块
+    document.querySelectorAll('aside .nav-item').forEach(btn => {
+        const active = btn.getAttribute('data-tab') === tabId;
+        btn.classList.toggle('active', active);
+        if (active) moveNavIndicator(btn);
+    });
+
+    // 8. 切换页面时关闭手机菜单
+    closeMobileDrawer();
+
+    // 9. 页面滚动回顶部
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
 
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const mobileDrawer = document.getElementById('mobile-drawer');
@@ -635,7 +850,7 @@ import '../styles/global.css';
 
         if(mobileDrawerClose) mobileDrawerClose.addEventListener('click', closeMobileDrawer);
 
-        function filterProjects(category) {
+        function filterProjects(category, event) {
             const buttons = document.querySelectorAll('.project-filter-btn');
             buttons.forEach(btn => {
                 btn.classList.remove('bg-lab-navy', 'text-white');
@@ -658,27 +873,33 @@ import '../styles/global.css';
             'project-1': {
                 tag: 'WEB 应用',
                 title: '任务管理系统',
-                desc: '基于 Astro 与 Tailwind 构建的轻量高效任务管理应用。具备多维度任务分类、标签管理以及每周完成率数据图表统计。',
+                desc: '这个项目练习围绕个人学习和工作中的任务分散、优先级不清展开。设想通过分类、标签和进度视图，帮助使用者看清当前重点与每周节奏；后续需要继续验证哪些统计真正有助于行动，而不是增加维护负担。',
                 img: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop'
             },
             'project-2': {
                 tag: 'AI 应用',
                 title: 'AI 资料助手',
-                desc: '基于 LLM 开发的个人知识库问答工具。支持 PDF、Markdown 文档解析与语义检索。',
+                desc: '这是一个个人知识整理方向：把 PDF、Markdown 等资料汇集起来，让提问能够回到原始内容寻找依据。设计时需要关注导入是否简单、回答能否附上来源，以及资料更新后如何保持索引可靠；这些都是值得逐步验证的产品与工程问题。',
                 img: 'https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?q=80&w=800&auto=format&fit=crop'
             },
             'project-3': {
                 tag: '个人网站',
                 title: '北辰实验室·个人站点',
-                desc: '极简克制风格的个人空间，融合侧边固定导航与动态 SPA 模块展示。',
+                desc: '北辰实验室网站本身也是一项持续迭代的 Astro 练习，用来整理项目、实验、学习记录和个人介绍。页面采用分区导航展示不同内容；接下来可以继续改进内容维护方式、移动端体验、语义结构和部署流程。',
                 img: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?q=80&w=800&auto=format&fit=crop'
             },
             'project-4': {
                 tag: '小工具',
                 title: '灵感记录应用',
-                desc: '一款支持极速呼出的便签及想法捕捉应用，无痛分类归档。',
+                desc: '这是一个轻量个人工具构想，关注灵感出现时如何快速记录、稍后整理并再次找回。设计重点是降低记录成本：先捕捉原始想法，再用少量标签或主题归档，同时避免让分类流程本身变得繁琐。',
                 img: 'https://images.unsplash.com/photo-1517842645767-c639042777db?q=80&w=800&auto=format&fit=crop'
-            }
+            },
+            'project-5': {
+                tag: '设计方法档案',
+                title: '从工业设计到数字产品',
+                desc: '这是一份逐步整理的方法档案，不对应某个已经完成的单一交付物。它关注工业设计训练中的场景观察、结构关系和细节体验，如何帮助思考数字产品的信息层级、交互反馈与使用流程。接下来会用实际页面与原型不断验证哪些方法可以迁移。',
+                img: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?q=80&w=800&auto=format&fit=crop'
+            },
         };
 
         const modal = document.getElementById('project-modal');
@@ -702,6 +923,8 @@ import '../styles/global.css';
         }
 
         window.onload = function() {
+            document.body.classList.add('motion-ready');
+            document.body.classList.add('motion-ready');
             switchTab('home');
 
             const canvas = document.getElementById('particle-canvas');
@@ -766,9 +989,21 @@ import '../styles/global.css';
 
         function handleContactSubmit(e) {
             e.preventDefault();
-            alert('消息已发送！');
+            alert('联系表单目前是页面演示，尚未连接邮件发送服务。你可以通过侧边栏的邮箱图标联系我。');
             e.target.reset();
         }
+
+(() => {
+ const reader=document.getElementById('about-reader'), canvas=document.getElementById('about-reader-fx'), fill=document.getElementById('about-reader-progress-fill');
+ if(!reader||!canvas||!fill)return; const ctx=canvas.getContext('2d'); if(!ctx)return;
+ const audio=document.querySelector('.about-audio-bar audio'); let followAudio=false;
+ if(audio){audio.addEventListener('play',()=>{followAudio=true});audio.addEventListener('timeupdate',()=>{if(followAudio&&Number.isFinite(audio.duration)&&audio.duration>0){const max=reader.scrollHeight-reader.clientHeight;reader.scrollTop=max*(audio.currentTime/audio.duration)}});reader.addEventListener('wheel',()=>{followAudio=false},{passive:true});reader.addEventListener('touchstart',()=>{followAudio=false},{passive:true});reader.addEventListener('pointerdown',()=>{followAudio=false},{passive:true})}
+ let particles=[],frame=0,w=0,h=0;
+ const resize=()=>{const r=reader.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,1.5);w=r.width;h=r.height;canvas.width=Math.round(w*d);canvas.height=Math.round(h*d);canvas.style.marginBottom=(-h)+'px';ctx.setTransform(d,0,0,d,0,0)};
+ const draw=()=>{ctx.clearRect(0,0,w,h);particles=particles.filter(p=>p.life>0);particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.life-=.018;ctx.globalAlpha=Math.max(0,p.life);ctx.fillStyle=p.c;ctx.shadowBlur=9;ctx.shadowColor=p.c;ctx.beginPath();ctx.arc(p.x,p.y,p.s,0,Math.PI*2);ctx.fill()});ctx.globalAlpha=1;ctx.shadowBlur=0;if(particles.length)frame=requestAnimationFrame(draw);else frame=0};
+ reader.addEventListener('scroll',()=>{const max=reader.scrollHeight-reader.clientHeight;fill.style.width=(max>0?reader.scrollTop/max*100:100)+'%';if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;for(let i=0;i<5;i++)particles.push({x:Math.random()*w,y:h-10+Math.random()*16,vx:(Math.random()-.5)*.8,vy:-1-Math.random(),s:1+Math.random()*1.5,life:.7,c:['#ff5a1f','#ff9a62','#ffc59f'][Math.floor(Math.random()*3)]});if(!frame)frame=requestAnimationFrame(draw)},{passive:true});
+ window.addEventListener('resize',resize,{passive:true});resize();
+})();
     </script>
 </body>
 </html>

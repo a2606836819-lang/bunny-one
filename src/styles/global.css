@@ -324,7 +324,7 @@ button.project-marquee-tag { cursor:pointer; }
 @media(max-width:767px) { #main-content.projects-active { height:calc(100dvh - 64px); } }
 #version-history-trigger { z-index:40; height:42px; min-height:42px; padding:0 16px; border-color:rgba(15,23,42,.055); border-radius:999px; background:rgba(255,255,255,.74); color:#26364f; font-family:Inter,"Noto Sans SC",sans-serif; font-size:.78rem; font-weight:550; letter-spacing:normal; box-shadow:0 5px 18px rgba(15,23,42,.035); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); }
 #version-history-trigger > span:nth-child(2) { font-family:ui-monospace,monospace; }
-@media(max-width:767px) { #version-history-trigger { height:36px; min-height:36px; padding:0 12px; font-size:.7rem; } }
+@media(max-width:767px) { #version-history-trigger { height:36px; min-height:36px; padding:0 12px; font-size:.7rem; } #main-content:not(.home-active) #version-history-trigger { display:none; } }
 .home-page { position:relative; z-index:0; width:calc(100% + 3rem); margin:0 -1.5rem; color:#111827; }
 .home-hero { position:relative; isolation:isolate; display:flex; aspect-ratio:16/9; min-height:0; align-items:flex-start; overflow:hidden; background:#dce3ec; }
 .home-hero-image,.home-hero-shade { position:absolute; inset:0; width:100%; height:100%; }
@@ -403,9 +403,10 @@ button.project-marquee-tag { cursor:pointer; }
 @media (min-width:48rem) { .home-page { width:calc(100% + 6rem); margin:-3rem -3rem 0; } }
 @media (min-width:64rem) { .home-page { width:calc(100% + 8rem); margin:-4rem -4rem 0; } }
 @media (max-width:767px) {
+  #main-content.home-active { padding-top:0; }
   .home-hero { aspect-ratio:auto; min-height:460px; align-items:flex-start; }
-  .home-hero-image { object-fit:contain; object-position:center bottom; background:#dce3ec; }
-  .home-hero-shade { background:linear-gradient(90deg,rgba(247,248,250,.45),rgba(247,248,250,.08) 80%); }
+  .home-hero-image { object-fit:cover; object-position:58% center; background:#dce3ec; }
+  .home-hero-shade { background:linear-gradient(90deg,rgba(247,248,250,.62),rgba(247,248,250,.34) 62%,rgba(247,248,250,.08)),linear-gradient(180deg,rgba(247,248,250,.16),transparent 72%); }
   .home-hero-content { width:100%; padding:7rem 1.5rem 4rem; }
   .home-hero h1 { margin-top:1rem; font-size:clamp(2.1rem,8.4vw,3rem); }
   .home-intro-name { max-width:300px; font-size:.92rem; }

@@ -223,7 +223,7 @@ import '../styles/global.css';
     </aside>
 
     <!-- MAIN CONTENT CONTAINER -->
-    <main id="main-content" class="flex-1 min-w-0 bg-lab-bg p-6 md:p-12 lg:p-16 max-w-7xl mx-auto w-full relative">
+    <main id="main-content" class="flex-1 min-w-0 bg-lab-bg p-6 md:p-12 lg:p-16 max-w-7xl mx-auto w-full relative home-active">
         <button id="version-history-trigger" type="button" onclick="openVersionHistory()" aria-haspopup="dialog" aria-controls="version-history-modal" class="version-trigger absolute top-6 right-6 md:top-10 md:right-12 inline-flex items-center gap-2 rounded-full border border-lab-border bg-white/80 px-3.5 py-2 text-[11px] font-mono tracking-wide text-lab-muted shadow-sm backdrop-blur-sm">
             <span class="version-indicator" aria-hidden="true"></span>
             <span>v1.0.2</span>
@@ -758,7 +758,10 @@ window.addEventListener('resize', () => {
 
 function switchTab(tabId) {
     const mainContainer = document.getElementById('main-content');
-    if (mainContainer) mainContainer.classList.toggle('projects-active', tabId === 'projects');
+    if (mainContainer) {
+        mainContainer.classList.toggle('projects-active', tabId === 'projects');
+        mainContainer.classList.toggle('home-active', tabId === 'home');
+    }
     if (tabId !== 'projects') closeProjectDirectory();
 
     // 1. 隐藏所有页面

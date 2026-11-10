@@ -339,7 +339,11 @@ button.project-marquee-tag { cursor:pointer; }
 .home-intro-rotator { width:min(100%,25rem); min-height:3.35rem; margin-top:.5rem; padding:.5rem 1rem; font-size:clamp(1.05rem,1.55vw,1.3rem); font-weight:600; line-height:1.4; }
 .home-intro-dot { width:.58rem; height:.58rem; flex:none; border-radius:50%; background:#234d86; box-shadow:0 0 0 4px rgba(35,77,134,.1),0 0 14px rgba(35,77,134,.42); }
 
-.home-rotating-text { display:inline-block; transform-origin:left center; }
+.home-rotating-text { display:inline-block; transform-origin:left center; transition:color .32s ease; }
+.home-rotating-text.tone-1 { color:#1d3557; }
+.home-rotating-text.tone-2 { color:#365f9d; }
+.home-rotating-text.tone-3 { color:#2f6f68; }
+.home-rotating-text.tone-4 { color:#9a573d; }
 .home-rotating-text.is-leaving { animation:home-word-leave .38s cubic-bezier(.55,0,1,.45) both; }
 .home-rotating-text.is-entering { animation:home-word-enter .5s cubic-bezier(.16,1,.3,1) both; }
 @keyframes home-word-leave { to { opacity:0; filter:blur(7px); transform:translateY(-.16em); } }

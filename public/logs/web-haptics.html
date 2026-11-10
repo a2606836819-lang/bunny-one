@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>触觉感设计 - 北辰实验室</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;500;700&display=swap');
+    
+    html { scroll-behavior: smooth; }
+    
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      background-color: #ffffff;
+      color: #1d1d1f;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .serif { font-family: 'Noto Serif SC', serif; }
+
+    /* 极简滚动条 */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #ffffff; }
+    ::-webkit-scrollbar-thumb { background: #d2d2d7; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #86868b; }
+    
+    /* 阅读进度条 (顶部细线) */
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: #1d1d1f;
+      width: 0%;
+      z-index: 50;
+      transition: width 0.1s ease;
+    }
+  </style>
+</head>
+<body class="antialiased selection:bg-[#1d1d1f] selection:text-white">
+
+  <!-- 阅读进度条 -->
+  <div class="progress-bar" id="progressBar"></div>
+
+  <!-- Hero 头部区 -->
+  <header class="max-w-[800px] mx-auto px-6 pt-32 pb-16 md:pt-48 md:pb-24">
+    <div class="flex items-center gap-3 mb-8">
+      <span class="px-3 py-1 bg-[#f5f5f7] text-xs font-semibold tracking-wider text-[#86868b] rounded-full uppercase">Design & Tech</span>
+      <span class="text-sm text-[#86868b]">学习日志</span>
+    </div>
+    
+    <h1 class="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-[#1d1d1f] leading-[1.15] mb-8">
+      从工业设计视角看现代 Web 界面设计中的「触觉感」
+    </h1>
+    
+    <p class="text-xl md:text-2xl text-[#86868b] leading-relaxed font-light mb-10">
+      做个人网站的这段时间，我开始重新思考一个问题：为什么有些网页看起来很简单，却让人觉得精致、舒服，甚至会产生一种想要触碰它的感觉？
+    </p>
+    
+    <div class="w-full h-px bg-[#d2d2d7]/50"></div>
+  </header>
+
+  <!-- 正文内容区 -->
+  <main class="max-w-[800px] mx-auto px-6 pb-32">
+    
+    <article class="space-y-16">
+      
+      <!-- 引言 -->
+      <div class="text-lg md:text-xl text-[#1d1d1f] leading-loose">
+        <p>这让我想到了工业设计中的一个概念——<strong class="font-medium">触觉感</strong>。</p>
+        <p class="mt-6">在工业设计里，触觉感并不只是材料摸起来是否光滑、粗糙，也包括产品的重量感、边缘处理、表面质感、按键反馈，以及人与产品接触时产生的整体感受。一个优秀的产品，不仅要解决功能问题，还要让使用者在接触它的过程中感受到设计的细节。</p>
+        <p class="mt-6">而现代 Web 界面，其实也存在类似的设计逻辑。</p>
+      </div>
+
+      <!-- 01 -->
+      <section>
+        <h2 class="text-2xl md:text-3xl font-semibold tracking-tight text-[#1d1d1f] mb-6 flex items-baseline gap-4">
+          <span class="text-[#86868b] font-mono text-lg font-normal">01.</span> 屏幕虽然没有真实的触感，但可以创造触感
+        </h2>
+        <div class="text-lg text-[#86868b] leading-loose space-y-6">
+          <p>网页与实体产品最大的区别，是用户无法真正触摸屏幕里的物体。但设计师可以通过视觉和交互，让人产生对材质、空间和反馈的感知。</p>
+          <p>例如：</p>
+          <ul class="space-y-4 pl-2">
+            <li class="flex items-start gap-3">
+              <span class="mt-2.5 w-1.5 h-1.5 rounded-full bg-[#1d1d1f] shrink-0"></span>
+              <span><strong class="text-[#1d1d1f] font-medium">层次感：</strong>通过阴影、明暗和前后关系，让卡片、按钮看起来具有一定的空间深度。</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="mt-2.5 w-1.5 h-1.5 rounded-full bg-[#1d1d1f] shrink-0"></span>
+              <span><strong class="text-[#1d1d1f] font-medium">材质感：</strong>通过透明度、模糊、渐变和细腻的纹理，模拟玻璃、金属或磨砂表面的视觉特征。</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="mt-2.5 w-1.5 h-1.5 rounded-full bg-[#1d1d1f] shrink-0"></span>
+              <span><strong class="text-[#1d1d1f] font-medium">反馈感：</strong>鼠标悬停、按钮按下、页面切换时的细微变化，让用户知道自己的操作已经被系统接收。</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="mt-2.5 w-1.5 h-1.5 rounded-full bg-[#1d1d1f] shrink-0"></span>
+              <span><strong class="text-[#1d1d1f] font-medium">运动感：</strong>元素出现、移动和消失的节奏，可以让界面显得自然，而不是机械地跳动。</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="mt-2.5 w-1.5 h-1.5 rounded-full bg-[#1d1d1f] shrink-0"></span>
+              <span><strong class="text-[#1d1d1f] font-medium">秩序感：</strong>字体、间距、比例和对齐关系，会影响用户对界面精致程度的判断。</span>
+            </li>
+          </ul>
+          <p>这些细节单独看可能并不起眼，但组合起来，就会形成一种完整的界面体验。</p>
+          <p>我逐渐意识到，所谓高级感，并不一定来自复杂的视觉效果。很多时候，它来自对细节的控制，以及对不必要元素的克制。</p>
+        </div>
+      </section>
+
+      <!-- 02 -->
+      <section>
+        <h2 class="text-2xl md:text-3xl font-semibold tracking-tight text-[#1d1d1f] mb-6 flex items-baseline gap-4">
+          <span class="text-[#86868b] font-mono text-lg font-normal">02.</span> 工业设计与 Web 设计，其实有很多相通之处
+        </h2>
+        <div class="text-lg text-[#86868b] leading-loose space-y-6">
+          <p>以前接触工业设计时，我比较关注产品的外观、结构、比例、材料，以及使用过程中的体验。现在开始制作网页，我发现这些思考方式依然适用。</p>
+          <p>一个按钮，可以理解为实体产品上的一个操作部件；一个卡片，可以理解为具有边界和层次的视觉模块；页面中的留白，则有点像实体产品设计中的空间关系。</p>
+          <p>它们都需要回答几个问题：</p>
+          <div class="bg-[#f5f5f7] p-6 rounded-2xl my-6">
+            <ul class="space-y-3">
+              <li class="flex items-center gap-3"><span class="text-[#d2d2d7]">→</span> 用户第一眼会注意到什么？</li>
+              <li class="flex items-center gap-3"><span class="text-[#d2d2d7]">→</span> 哪些信息应该突出，哪些应该退后？</li>
+              <li class="flex items-center gap-3"><span class="text-[#d2d2d7]">→</span> 操作是否直观？</li>
+              <li class="flex items-center gap-3"><span class="text-[#d2d2d7]">→</span> 各个元素之间是否协调？</li>
+              <li class="flex items-center gap-3"><span class="text-[#d2d2d7]">→</span> 使用过程中有没有多余的干扰？</li>
+            </ul>
+          </div>
+          <p>工业设计强调人与产品之间的关系，Web 设计则强调人与数字界面之间的关系。虽然载体不同，但设计的出发点并没有太大变化。</p>
+        </div>
+      </section>
+
+      <!-- 03 -->
+      <section>
+        <h2 class="text-2xl md:text-3xl font-semibold tracking-tight text-[#1d1d1f] mb-6 flex items-baseline gap-4">
+          <span class="text-[#86868b] font-mono text-lg font-normal">03.</span> 我对「高级感」有了新的理解
+        </h2>
+        <div class="text-lg text-[#86868b] leading-loose space-y-6">
+          <p>在制作个人网站的过程中，我曾经尝试过不少视觉方案。渐渐地，我发现自己越来越喜欢简洁、克制、有秩序的设计。</p>
+          <p>最初可能会觉得，增加一些动画、渐变、发光效果，就能让页面显得更有科技感。但真正反复调整之后才发现，效果越多，不一定越好。</p>
+          <p>一个恰到好处的字体大小、一段舒适的行间距、一张构图准确的图片，甚至一个不那么明显的悬停反馈，都可能比复杂的装饰更有价值。我开始更关注设计背后的原因，而不是单纯追求视觉上的热闹。</p>
+          
+          <blockquote class="border-l-2 border-[#1d1d1f] pl-6 my-10">
+            <p class="serif text-xl md:text-2xl text-[#1d1d1f] font-medium leading-relaxed">
+              “好的界面不需要不断提醒用户它有多漂亮，而是让用户在使用过程中自然感受到它的用心。”
+            </p>
+          </blockquote>
+        </div>
+      </section>
+
+      <!-- 04 -->
+      <section>
+        <h2 class="text-2xl md:text-3xl font-semibold tracking-tight text-[#1d1d1f] mb-6 flex items-baseline gap-4">
+          <span class="text-[#86868b] font-mono text-lg font-normal">04.</span> 回到自己的项目：北辰实验室
+        </h2>
+        <div class="text-lg text-[#86868b] leading-loose space-y-6">
+          <p>这次个人网站的制作，也让我有机会把这些想法真正应用到一个完整项目中。</p>
+          <p>从最初确定网站方向、规划内容和视觉风格，到搭建开发环境、编写页面、调整样式、处理交互问题，再到最终部署上线，我经历了一个相对完整的 Web 产品制作过程。过程中有不少陌生的技术，也有很多需要反复试错的地方。</p>
+          <p>AI 工具确实降低了开发门槛，但它并不能替我完成所有判断。代码能不能运行、页面是否符合预期、不同设备上的体验是否协调，最终仍然需要自己去理解、检查和调整。</p>
+          <p>这也是我觉得这次实践最有价值的地方：<strong class="text-[#1d1d1f] font-medium">我不再只是看别人做出来的产品，而是开始尝试亲手把一个想法变成可以访问、可以使用的东西。</strong></p>
+        </div>
+      </section>
+
+      <!-- 05 -->
+      <section>
+        <h2 class="text-2xl md:text-3xl font-semibold tracking-tight text-[#1d1d1f] mb-6 flex items-baseline gap-4">
+          <span class="text-[#86868b] font-mono text-lg font-normal">05.</span> 一个阶段的结束，也是下一个阶段的开始
+        </h2>
+        <div class="text-lg text-[#86868b] leading-loose space-y-6">
+          <p>现在，北辰实验室已经正式上线。</p>
+          <p>回头看，它或许还不够完善，页面还有可以优化的地方，交互和内容也有很多扩展空间。但我认为，一个项目并不需要等到所有细节都完美，才算真正完成。至少在现阶段，我已经完成了从构思、设计、开发到部署的完整实践。</p>
+          <p>所以，我愿意把这个项目定义为：<strong class="text-[#1d1d1f] font-medium">第一个完整项目，正式完结。</strong></p>
+          <p>接下来要做的，不再是不断推翻重来，而是在现有基础上持续完善。加入新的作品，记录新的实验，优化使用体验，也让这个网站随着自己的学习和实践慢慢成长。</p>
+          <p>这次经历让我重新找回了一种久违的感觉：有一个想法，然后一点点把它做出来。比起单纯学习某种技术，这种从零到一的过程更让我着迷。</p>
+        </div>
+      </section>
+
+    </article>
+  </main>
+
+  <!-- 尾声 & 版权 -->
+  <footer class="bg-[#f5f5f7] py-32 text-center">
+    <div class="max-w-[800px] mx-auto px-6">
+      <h3 class="serif text-3xl md:text-4xl text-[#1d1d1f] font-bold tracking-widest mb-6">
+        探索未知，持续创造。
+      </h3>
+      <p class="text-lg text-[#86868b] mb-12">北辰实验室，第一阶段完成。</p>
+      
+      <div class="w-12 h-px bg-[#d2d2d7] mx-auto mb-12"></div>
+      
+      <p class="text-xs text-[#86868b]">© 2026 北辰实验室. Designed & Built with passion.</p>
+    </div>
+  </footer>
+
+  <!-- 阅读进度条逻辑 -->
+  <script>
+    window.addEventListener('scroll', () => {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById('progressBar').style.width = scrolled + '%';
+    });
+  </script>
+</body>
+</html>

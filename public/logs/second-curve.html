@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>智性突围 - 北辰实验室</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;500;700&display=swap');
+    
+    html { scroll-behavior: smooth; }
+    
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      background-color: #ffffff;
+      color: #1d1d1f;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .serif { font-family: 'Noto Serif SC', serif; }
+
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #ffffff; }
+    ::-webkit-scrollbar-thumb { background: #d2d2d7; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #86868b; }
+    
+    .progress-bar {
+      position: fixed; top: 0; left: 0; height: 3px; background: #1d1d1f; width: 0%; z-index: 50; transition: width 0.1s ease;
+    }
+  </style>
+</head>
+<body class="antialiased selection:bg-[#1d1d1f] selection:text-white">
+
+  <div class="progress-bar" id="progressBar"></div>
+
+  <header class="max-w-[800px] mx-auto px-6 pt-32 pb-16 md:pt-48 md:pb-24 text-center">
+    <div class="flex items-center justify-center gap-3 mb-8">
+      <span class="px-3 py-1 bg-[#f5f5f7] text-xs font-semibold tracking-wider text-[#1d1d1f] rounded-full uppercase">Life & Growth</span>
+      <span class="text-sm text-[#424245]">认知日志</span>
+    </div>
+    
+    <h1 class="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-[#1d1d1f] leading-[1.2] mb-8">
+      智性突围：寻找我的“第二曲线”
+    </h1>
+    
+    <p class="text-lg md:text-xl text-[#424245] leading-relaxed font-light">
+      写于 2026 年 · 一次关于自我、目标与重新出发的对话
+    </p>
+    
+    <div class="w-12 h-px bg-[#d2d2d7] mx-auto mt-12"></div>
+  </header>
+
+  <main class="max-w-[800px] mx-auto px-6 pb-32">
+    <article class="space-y-20">
+      
+      <section>
+        <h2 class="text-2xl md:text-3xl font-semibold tracking-tight text-[#1d1d1f] mb-8">一、烟火气之下，我真正想要的生活</h2>
+        <div class="text-lg text-[#424245] leading-loose space-y-6">
+          <p class="text-[#1d1d1f] font-medium text-xl">31岁，有两个孩子，每天帮父亲打理建筑公司的业务。</p>
+          <p>生活看起来已经有了明确的轨道：工作、家庭、责任，以及日复一日需要处理的琐碎事务。</p>
+          <p>但我心里始终有一个声音。</p>
+          <p>建筑行业的环境正在发生变化，日常工作充斥着繁琐的流程、反复的沟通、利益的拉扯，以及各种无法回避的社交应酬。我不喜欢抽烟，不喜欢喝酒，也不喜欢为了业务而进行的无效社交。</p>
+          <p>比起热闹的酒桌，我更愿意在忙完一天之后，一个人安静地待在房间里，打开电脑，研究一些真正属于自己的东西。</p>
+          <p>回想过去，无论是做产品结构工程师，还是现在参与公司的经营，我似乎一直不太适应那种高度标准化、重复性的工作模式。</p>
+          <p>我并不是不愿意承担责任，也不是没有能力做好眼前的事情。</p>
+          <p>只是，<strong class="text-[#1d1d1f] font-medium">我不甘心把自己的全部精力，都消耗在这些机械而重复的事务里。</strong></p>
+          <p>我始终觉得，自己还有一部分能力没有真正发挥出来。</p>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-2xl md:text-3xl font-semibold tracking-tight text-[#1d1d1f] mb-8">二、重新认识自己：我需要的是挑战</h2>
+        <div class="text-lg text-[#424245] leading-loose space-y-6">
+          <p>重新审视过去，我发现自己其实一直有一些鲜明的特点。</p>
+          
+          <div class="bg-[#f5f5f7] p-8 rounded-2xl my-8 space-y-4">
+            <h3 class="text-xl font-semibold text-[#1d1d1f]">1. 我享受深度思考和解决难题的过程。</h3>
+            <p>学生时代，我最喜欢挑战数学试卷最后一道压轴题。相比于重复练习已经掌握的知识，我更享受面对一道陌生难题，从毫无头绪到逐渐找到突破口，最终把它完整解出来的过程。</p>
+            <p>后来自学 VBA，我也有过类似的体验。为了实现一个自动化功能，我可以花大量时间研究逻辑、拆解问题、反复调试。直到程序终于按照预期运行，那种豁然开朗的感觉，能够给我带来非常强烈的满足感。</p>
+            <p>我喜欢的可能不只是编程，而是通过自己的思考，把复杂的问题变得清晰，把原本做不到的事情变成现实。</p>
+          </div>
+
+          <div class="bg-[#f5f5f7] p-8 rounded-2xl my-8 space-y-4">
+            <h3 class="text-xl font-semibold text-[#1d1d1f]">2. 我骨子里有一种竞争意识。</h3>
+            <p>我喜欢挑战，也喜欢和优秀的人比较。当身边有值得追赶的高手，有明确的目标，有可以衡量进步的结果时，我往往能爆发出很强的行动力。</p>
+            <p>我需要的不是简单地完成任务，而是不断突破自己的能力边界。</p>
+          </div>
+
+          <p>现在回头看，过去一段时间的迷茫，也许并不是因为懒惰，更不是因为年龄增长。</p>
+          <p>而是因为生活中缺少了真正能够调动我思考能力的挑战。</p>
+          <p>当一个人长期处于重复、琐碎，又缺少正向反馈的环境里，很容易逐渐失去那种主动探索的热情。</p>
+          <p class="text-[#1d1d1f] font-medium">我需要重新找到能够让我全身心投入的事情。</p>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-2xl md:text-3xl font-semibold tracking-tight text-[#1d1d1f] mb-8">三、我的第二曲线：建立自己的竞技场</h2>
+        <div class="text-lg text-[#424245] leading-loose space-y-6">
+          <p>我开始重新理解工作、生活和个人成长之间的关系。</p>
+          <p>主业和家庭是我必须认真承担的责任，也是我生活的根基。它们给了我稳定的现实基础，让我有条件去探索更多可能。但我不希望人生只有这些。</p>
+          <p>我想在现有生活之外，建立一个属于自己的第二竞技场。</p>
+          <p>在那里，我可以研究技术、学习编程、探索 AI、开发工具，把工作和生活中真实存在的问题，当成一道道值得攻克的难题。</p>
+          <p>我不想只做技术的使用者。我更希望有一天，能够独立地提出问题、设计方案、编写程序，并最终把一个想法做成真正可用的产品。</p>
+          
+          <p class="mt-10 font-medium text-[#1d1d1f]">为此，我需要做几件事：</p>
+          
+          <div class="space-y-6 mt-6">
+            <div class="border-l-2 border-[#1d1d1f] pl-6">
+              <h3 class="text-xl font-semibold text-[#1d1d1f] mb-2">第一，寻找有挑战的环境。</h3>
+              <p class="text-base">主动接触更优秀的人，进入有技术交流、有作品展示、有竞争和反馈的圈子。让自己始终保持学习的压力和前进的动力。</p>
+            </div>
+            <div class="border-l-2 border-[#1d1d1f] pl-6">
+              <h3 class="text-xl font-semibold text-[#1d1d1f] mb-2">第二，把现实问题变成自己的课题。</h3>
+              <p class="text-base">不为了学习技术而学习技术。把工作中的低效流程、生活中的不便，以及那些一直想实现的想法，变成一个个具体的开发项目。</p>
+            </div>
+            <div class="border-l-2 border-[#1d1d1f] pl-6">
+              <h3 class="text-xl font-semibold text-[#1d1d1f] mb-2">第三，积累真正属于自己的成果。</h3>
+              <p class="text-base">认真记录每一次探索，完成每一个项目，把零散的代码、想法和经验，逐渐沉淀为自己的数字资产。</p>
+            </div>
+          </div>
+
+          <p class="mt-8">我希望未来回头看时，能看到一条清晰的成长轨迹：从一个有想法的人，逐渐成长为一个能够独立创造产品的人。</p>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-2xl md:text-3xl font-semibold tracking-tight text-[#1d1d1f] mb-8">四、重新出发</h2>
+        <div class="text-lg text-[#424245] leading-loose space-y-6">
+          <p>写下这些文字的时候，我感到了一种久违的轻松。</p>
+          <p>因为我终于不再只是模糊地觉得生活缺少些什么，而是开始理解自己真正需要的是什么。</p>
+          <p>我不需要推翻现在的生活，也不需要急着证明什么。我需要做的，是在承担好现实责任的同时，认真经营自己的另一种可能。</p>
+          <p>31岁，并不算晚。</p>
+          <p>我依然喜欢那些复杂的问题，依然享受独立思考的过程，也依然期待某一天，能够凭借自己的能力完成一件真正有价值的作品。</p>
+        </div>
+      </section>
+
+      <section class="py-12 border-t border-b border-[#d2d2d7]/50 my-16">
+        <blockquote class="text-center">
+          <p class="serif text-2xl md:text-3xl text-[#1d1d1f] font-medium leading-relaxed mb-6">
+            过去，我喜欢解数学试卷最后一道压轴题。<br>
+            现在，我想给自己出一道更大的题。
+          </p>
+          <p class="text-[#424245] text-lg">这一次，没有标准答案，也没有人替我划定边界。</p>
+        </blockquote>
+      </section>
+
+    </article>
+  </main>
+
+  <footer class="bg-[#1d1d1f] py-32 text-center text-white">
+    <div class="max-w-[800px] mx-auto px-6">
+      <h3 class="serif text-3xl md:text-4xl font-bold tracking-widest mb-6">
+        31岁，重新找回我的智力竞技场。
+      </h3>
+      <p class="text-lg text-[#a1a1a6] mb-12">从今天开始，正式启动。</p>
+      <div class="w-12 h-px bg-[#86868b] mx-auto mb-12"></div>
+      <p class="text-xs text-[#86868b]">© 2026 北辰实验室. Designed & Built with passion.</p>
+    </div>
+  </footer>
+
+  <script>
+    window.addEventListener('scroll', () => {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById('progressBar').style.width = scrolled + '%';
+    });
+  </script>
+</body>
+</html>

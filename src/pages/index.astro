@@ -215,30 +215,33 @@ import '../styles/global.css';
             <div class="projects-inner">
                 <div class="project-title">项目库 <span>PROJECTS</span></div>
                 <button type="button" class="sub-item active" data-project-id="northstar" onclick="selectProjectFromDrawer('northstar', this)"><span class="sub-date">2026.11 — 现在</span><span class="sub-title">北辰实验室</span><span class="sub-info">个人技术作品集与实验平台</span></button>
+                <button type="button" class="sub-item" data-project-id="calculator" onclick="selectProjectFromDrawer('calculator', this)"><span class="sub-date">个人独立项目</span><span class="sub-title">参数计算器</span><span class="sub-info">网页工具与微信小程序</span></button>
                 <button type="button" class="sub-item" data-project-id="task" onclick="selectProjectFromDrawer('task', this)"><span class="sub-date">2025.09</span><span class="sub-title">任务管理系统</span><span class="sub-info">基于 Astro 的轻量级 Web 应用</span></button>
                 <button type="button" class="sub-item" data-project-id="ai" onclick="selectProjectFromDrawer('ai', this)"><span class="sub-date">2025.08</span><span class="sub-title">AI 资料助手</span><span class="sub-info">大模型驱动的知识整理与问答</span></button>
                 <button type="button" class="sub-item" data-project-id="ideas" onclick="selectProjectFromDrawer('ideas', this)"><span class="sub-date">2025.06</span><span class="sub-title">灵感记录应用</span><span class="sub-info">随时捕捉想法的个人小工具</span></button>
+
             </div>
         </aside>
     </aside>
 
     <!-- MAIN CONTENT CONTAINER -->
     <main id="main-content" class="flex-1 min-w-0 bg-lab-bg p-6 md:p-12 lg:p-16 max-w-7xl mx-auto w-full relative home-active">
-        <button id="version-history-trigger" type="button" onclick="openVersionHistory()" aria-haspopup="dialog" aria-controls="version-history-modal" class="version-trigger absolute top-6 right-6 md:top-10 md:right-12 inline-flex items-center gap-2 rounded-full border border-lab-border bg-white/80 px-3.5 py-2 text-[11px] font-mono tracking-wide text-lab-muted shadow-sm backdrop-blur-sm">
-            <span class="version-indicator" aria-hidden="true"></span>
-            <span>v1.0.2</span>
-            <span class="version-trigger-label">更新记录 <i class="fa-solid fa-arrow-up-right-from-square ml-1 text-[9px]"></i></span>
-        </button>
+
 
         <!-- SECTION 1: 首页 -->
         <section id="section-home" class="spa-section home-page animate-fadeIn">
+        <button id="version-history-trigger" type="button" onclick="openVersionHistory()" aria-haspopup="dialog" aria-controls="version-history-modal" class="version-trigger absolute top-6 right-6 md:top-10 md:right-12 inline-flex items-center gap-2 rounded-full border border-lab-border bg-white/80 px-3.5 py-2 text-[11px] font-mono tracking-wide text-lab-muted shadow-sm backdrop-blur-sm">
+            <span class="version-indicator" aria-hidden="true"></span>
+            <span>v1.0.4</span>
+            <span class="version-trigger-label">更新记录 <i class="fa-solid fa-arrow-up-right-from-square ml-1 text-[9px]"></i></span>
+        </button>
             <div class="home-hero">
                 <img class="home-hero-image" src="/images/background-001.webp" alt="" aria-hidden="true" fetchpriority="high">
                 <div class="home-hero-shade" aria-hidden="true"></div>
                 <div class="home-hero-content">
                     <div class="home-eyebrow">NORTHSTAR LAB</div>
                     <h1>把想法，<br>变成真正可用的东西。</h1>
-                    <div class="home-introduction"><p class="home-intro-name"><span>你好，我是</span><strong>孙国钦</strong></p><p class="home-intro-rotator" aria-live="off"><span class="home-intro-dot" aria-hidden="true"></span><span id="home-rotating-text" class="home-rotating-text">一个不太安分的设计师</span></p></div>
+                    <div class="home-introduction"><p class="home-intro-name"><span>你好，我是</span><strong>孙国钦</strong></p><p class="home-intro-rotator" aria-live="off"><span class="home-intro-dot" aria-hidden="true"></span><span id="home-rotating-text" class="home-rotating-text tone-1">一个不太安分的设计师</span></p></div>
                     <button type="button" onclick="switchTab('projects')" class="home-primary-cta"><span>探索我的项目</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
                 </div>
                 <div class="home-scroll-cue" aria-hidden="true"><span>SCROLL</span><i></i></div>
@@ -248,12 +251,12 @@ import '../styles/global.css';
                 <section class="home-featured-section" aria-labelledby="home-featured-title">
                     <div class="home-section-heading">
                         <div><div class="home-section-eyebrow">精选项目 <span>/</span> FEATURED PROJECTS</div><h2 id="home-featured-title">从想法到产品，<br class="sm:hidden">记录每一次创造的旅程。</h2></div>
-                        <button type="button" onclick="switchTab('projects')" class="home-text-link">查看全部项目 <span>→</span></button>
+
                     </div>
                     <article class="home-feature-card">
                         <div class="home-feature-image"><img src="/images/northstar-mountain.jpg" alt="云海之上的雪山，象征持续探索" loading="lazy"></div>
                         <div class="home-feature-copy">
-                            <div class="home-feature-number"><strong>01</strong><span>/ 04</span></div>
+                            <div class="home-feature-number"><strong>01</strong><span>/ 05</span></div>
                             <div class="home-feature-label">PERSONAL PROJECT</div>
                             <h3>北辰实验室</h3><div class="home-feature-name">NORTHSTAR LAB</div>
                             <p>一个从零开始构建的个人技术作品集，记录设计、编程与 AI 辅助开发的实践过程。</p>
@@ -289,23 +292,25 @@ import '../styles/global.css';
         <!-- SECTION 2: 项目库 -->
         <section id="section-projects" class="spa-section hidden animate-fadeIn">
             <section class="project-marquee" aria-label="项目快速切换">
-
                 <div class="project-marquee-window">
                     <div class="project-marquee-track">
                         <div class="project-marquee-group">
                             <button type="button" class="project-marquee-tag is-active" data-project-id="northstar" aria-pressed="true" onclick="selectProjectTimeline('northstar')"><span class="project-marquee-dot"></span>北辰实验室</button>
+                            <button type="button" class="project-marquee-tag" data-project-id="calculator" aria-pressed="false" onclick="selectProjectTimeline('calculator')"><span class="project-marquee-dot"></span>参数计算器</button>
                             <button type="button" class="project-marquee-tag" data-project-id="task" aria-pressed="false" onclick="selectProjectTimeline('task')"><span class="project-marquee-dot"></span>任务管理系统</button>
                             <button type="button" class="project-marquee-tag" data-project-id="ai" aria-pressed="false" onclick="selectProjectTimeline('ai')"><span class="project-marquee-dot"></span>AI 资料助手</button>
                             <button type="button" class="project-marquee-tag" data-project-id="ideas" aria-pressed="false" onclick="selectProjectTimeline('ideas')"><span class="project-marquee-dot"></span>灵感记录应用</button>
                         </div>
                         <div class="project-marquee-group" aria-hidden="true">
                             <span class="project-marquee-tag"><span class="project-marquee-dot"></span>北辰实验室</span>
+                            <span class="project-marquee-tag"><span class="project-marquee-dot"></span>参数计算器</span>
                             <span class="project-marquee-tag"><span class="project-marquee-dot"></span>任务管理系统</span>
                             <span class="project-marquee-tag"><span class="project-marquee-dot"></span>AI 资料助手</span>
                             <span class="project-marquee-tag"><span class="project-marquee-dot"></span>灵感记录应用</span>
                         </div>
                         <div class="project-marquee-group" aria-hidden="true">
                             <span class="project-marquee-tag"><span class="project-marquee-dot"></span>北辰实验室</span>
+                            <span class="project-marquee-tag"><span class="project-marquee-dot"></span>参数计算器</span>
                             <span class="project-marquee-tag"><span class="project-marquee-dot"></span>任务管理系统</span>
                             <span class="project-marquee-tag"><span class="project-marquee-dot"></span>AI 资料助手</span>
                             <span class="project-marquee-tag"><span class="project-marquee-dot"></span>灵感记录应用</span>
@@ -315,9 +320,11 @@ import '../styles/global.css';
             </section>
             <nav class="mobile-project-directory" aria-label="项目目录">
                 <button type="button" class="mobile-project-link active" data-project-id="northstar" aria-pressed="true" onclick="selectProjectTimeline('northstar')"><span class="mobile-project-date">2026.11 — 现在</span><span>北辰实验室</span></button>
+                <button type="button" class="mobile-project-link" data-project-id="calculator" aria-pressed="false" onclick="selectProjectTimeline('calculator')"><span class="mobile-project-date">个人独立项目</span><span>参数计算器</span></button>
                 <button type="button" class="mobile-project-link" data-project-id="task" aria-pressed="false" onclick="selectProjectTimeline('task')"><span class="mobile-project-date">2025.09</span><span>任务管理系统</span></button>
                 <button type="button" class="mobile-project-link" data-project-id="ai" aria-pressed="false" onclick="selectProjectTimeline('ai')"><span class="mobile-project-date">2025.08</span><span>AI 资料助手</span></button>
                 <button type="button" class="mobile-project-link" data-project-id="ideas" aria-pressed="false" onclick="selectProjectTimeline('ideas')"><span class="mobile-project-date">2025.06</span><span>灵感记录应用</span></button>
+
             </nav>
             <div class="project-timeline-layout">
 
@@ -388,6 +395,45 @@ import '../styles/global.css';
   <footer class="-mx-6 md:-mx-10 mt-3 rounded-b-2xl bg-lab-bg px-6 py-10 md:px-10 md:py-14 text-center"><div class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase">09 / EPILOGUE</div><h3 class="mt-3 text-2xl md:text-3xl font-semibold text-lab-text">探索 · 创造 · 成长</h3><p class="mx-auto mt-4 max-w-2xl text-sm text-lab-muted leading-relaxed">北辰实验室是一个起点。它记录的不只是一个网站从无到有的过程，也记录着我重新认识自己、探索技术边界和尝试创造产品的过程。我希望未来的自己，能够持续把想法变成现实。</p><p class="mt-5 font-serif text-lg font-medium italic text-lab-text">“好的产品，始于好奇，成于实践。”</p></footer>
 </article>
 
+                    <article id="timeline-project-calculator" class="timeline-project bg-white rounded-2xl border border-lab-border p-6 md:p-9 shadow-subtle" hidden>
+                        <header class="border-b border-lab-border pb-7 md:pb-9">
+                            <div class="text-[10px] font-mono tracking-[.2em] text-lab-subtle uppercase">PERSONAL TOOL · WEB &amp; MINI PROGRAM</div>
+                            <h2 class="mt-4 text-3xl md:text-5xl font-semibold tracking-tight text-lab-text">参数计算器</h2>
+                            <div class="mt-2 text-sm md:text-base font-mono tracking-[.14em] text-lab-subtle">PARAMETRIC CALCULATOR</div>
+                            <p class="mt-7 text-xl md:text-2xl font-medium leading-snug text-lab-text">从一个手机工具的想法，到网页和微信小程序都能使用的产品。</p>
+                            <p class="mt-4 max-w-3xl text-sm md:text-base text-lab-muted leading-relaxed">一个面向日常使用的轻量参数计算工具。项目从网页原型起步，逐步完成计算交互、移动端适配和微信小程序上线。</p>
+                                                        <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <a href="/projects/parametric-calculator.html" target="_blank" rel="noopener noreferrer" class="rounded-2xl border border-lab-border bg-lab-bg p-5 transition-colors hover:border-lab-navy/30 hover:bg-white">
+                                    <span class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase">WEB VERSION</span><h3 class="mt-2 text-base font-semibold text-lab-text">网页版 Web</h3><p class="mt-2 text-sm text-lab-muted leading-relaxed">支持手机、平板与电脑浏览器，计算历史保存在本地。</p><span class="mt-4 inline-flex items-center gap-2 text-sm font-medium text-lab-navy">立即在线体验 ↗</span>
+                                </a>
+                                <div class="rounded-2xl border border-lab-border bg-lab-bg p-5">
+                                    <span class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase">WECHAT MINI PROGRAM</span><h3 class="mt-2 text-base font-semibold text-lab-text">小程序版 WeChat</h3><p class="mt-2 text-sm text-lab-muted leading-relaxed">微信小程序已上线，体验链接暂待补充。</p><span class="mt-4 inline-flex text-sm font-medium text-lab-subtle">链接待补充</span>
+                                </div>
+                            </div>
+                        </header>
+                        <section class="grid grid-cols-1 sm:grid-cols-2 gap-5 py-7 border-b border-lab-border">
+                            <div class="rounded-xl bg-lab-bg p-5"><div class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase">PROJECT TYPE</div><p class="mt-2 text-sm font-medium text-lab-text">个人独立项目 / Web 工具 / 微信小程序</p></div>
+                            <div class="rounded-xl bg-lab-bg p-5"><div class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase">PROJECT STATUS</div><p class="mt-2 text-sm font-medium text-lab-text">网页版可在线体验，小程序体验链接待补充</p></div>
+                            <div class="sm:col-span-2 rounded-xl bg-lab-bg p-5"><div class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase">TECH STACK</div><p class="mt-2 text-sm text-lab-text">HTML · CSS · JavaScript · 微信小程序原生 API · 本地存储</p></div>
+                        </section>
+                        <section class="py-7 border-b border-lab-border">
+                            <div class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase">01 / ORIGIN</div><h3 class="mt-2 text-xl font-semibold text-lab-text">从一个简单的想法开始</h3>
+                            <div class="mt-4 max-w-3xl space-y-3 text-sm text-lab-muted leading-relaxed"><p>我想做一个手机上可以随时使用的参数计算工具，让使用者输入参数、完成计算，并清晰地查看结果。</p><p>最初尝试使用 MIT App Inventor，但随着界面和逻辑逐渐复杂，组件调整与积木嵌套开始限制实现效率。于是我改用熟悉的前端方式，从页面结构、视觉样式到计算交互逐步搭建网页原型。</p></div>
+                        </section>
+                        <section class="py-7 border-b border-lab-border">
+                            <div class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase">02 / WEB TO MINI PROGRAM</div><h3 class="mt-2 text-xl font-semibold text-lab-text">从网页走向微信小程序</h3>
+                            <div class="mt-4 max-w-3xl space-y-3 text-sm text-lab-muted leading-relaxed"><p>网页原型完成后，我开始关注手机浏览器对复制等功能的限制，并重新思考工具的交付方式。最终，我将项目迁移到微信小程序，在保留前端开发思路的同时，接入平台提供的原生能力。</p><p>小程序使用本地存储保存计算历史，并通过微信剪贴板接口复制结果。网页版本则无需安装即可在手机、平板和电脑浏览器中使用，数据保存在浏览器本地。</p></div>
+                        </section>
+                        <section class="py-7 border-b border-lab-border">
+                            <div class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase">03 / TEST &amp; LAUNCH</div><h3 class="mt-2 text-xl font-semibold text-lab-text">处理异常，再完成上线</h3>
+                            <div class="mt-4 max-w-3xl space-y-3 text-sm text-lab-muted leading-relaxed"><p>开发测试时，程序曾因不必要的定时触发逻辑和输入判断不足而卡死。这让我意识到，计算工具除了完成核心逻辑，还必须妥善处理空值、异常输入和状态变化。</p><p>完成调整后，我通过真机预览检查使用效果，补充项目信息与隐私内容，并完成小程序上传和平台审核。项目最终从本地原型走到了可以被实际使用的线上产品。</p></div>
+                        </section>
+                        <section class="py-7">
+                            <div class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase">04 / TAKEAWAYS</div><h3 class="mt-2 text-xl font-semibold text-lab-text">从这次实践中得到的经验</h3>
+                            <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-3"><div class="rounded-xl bg-lab-bg p-4"><h4 class="text-sm font-semibold text-lab-text">选合适的工具</h4><p class="mt-2 text-sm text-lab-muted leading-relaxed">轻量问题用合适的技术解决，工具应帮助想法落地。</p></div><div class="rounded-xl bg-lab-bg p-4"><h4 class="text-sm font-semibold text-lab-text">把细节做完整</h4><p class="mt-2 text-sm text-lab-muted leading-relaxed">空值处理、复制、历史记录和移动端适配共同决定工具是否可用。</p></div><div class="rounded-xl bg-lab-bg p-4"><h4 class="text-sm font-semibold text-lab-text">理解后再修改</h4><p class="mt-2 text-sm text-lab-muted leading-relaxed">借助 AI 提高效率，也要理解程序、判断问题并验证结果。</p></div></div>
+                        </section>
+                    </article>
+
                     <article id="timeline-project-task" class="timeline-project bg-white rounded-2xl border border-lab-border p-6 md:p-9 shadow-subtle" hidden>
                         <span class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase">2025.09 · WEB APP</span>
                         <h2 class="mt-3 text-2xl font-bold text-lab-text">任务管理系统</h2>
@@ -415,6 +461,9 @@ import '../styles/global.css';
                             <div class="rounded-xl bg-lab-bg p-4"><span class="text-[10px] font-mono text-lab-subtle">03 / RETURN</span><p class="mt-2 text-sm text-lab-text">让记录能够被重新找到并继续发展。</p></div>
                         </div>
                     </article>
+
+
+
                 </div>
             </div>
         </section>
@@ -476,20 +525,30 @@ import '../styles/global.css';
             </div>
 
             <div class="space-y-4">
-                <article class="bg-white p-6 rounded-2xl border border-lab-border shadow-subtle border-lab-border flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div class="space-y-2">
-                        <div class="flex items-center gap-3 text-xs font-mono text-lab-subtle">
-                            <span>2025.09.18</span>
-                            <span>•</span>
-                            <span class="text-lab-navy bg-slate-100 px-2 py-0.5 rounded">产品思考</span>
+                <button type="button" onclick="openLearningLogArticle('/logs/second-curve.html', '智性突围：寻找我的“第二曲线”')" class="group w-full text-left bg-white p-6 rounded-2xl border border-lab-border shadow-subtle transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-lab-navy/30">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-3 text-xs font-mono text-lab-subtle">
+                                <span>2026</span><span>•</span><span class="text-lab-navy bg-slate-100 px-2 py-0.5 rounded">个人成长</span>
+                            </div>
+                            <h3 class="text-base font-bold text-lab-text transition-colors group-hover:text-lab-navy">智性突围：寻找我的“第二曲线”</h3>
+                            <p class="text-xs text-lab-muted leading-relaxed">从重复的现实事务出发，重新认识自己需要的挑战，并尝试建立一个属于自己的技术与创造“第二竞技场”。</p>
                         </div>
-                        <h3 class="text-base font-bold text-lab-text group-hover:text-lab-navy transition-colors">从工业设计视角看现代 Web 界面设计中的“触觉感”</h3>
-                        <p class="text-xs text-lab-muted leading-relaxed">从工业设计的材料、结构与触感经验出发，讨论界面如何借助明暗层次、圆角、动效和状态反馈，让数字操作更容易被理解，也更有明确的回应。</p>
+                        <span class="text-xs font-mono text-lab-subtle font-medium shrink-0 flex items-center gap-2">阅读全文 <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
                     </div>
-                    <div class="text-xs font-mono text-lab-subtle font-medium shrink-0 flex items-center gap-1">
-                        文章摘要
+                </button>
+                <button type="button" onclick="openLearningLogArticle('/logs/web-haptics.html', '从工业设计视角看现代 Web 界面设计中的「触觉感」')" class="group w-full text-left bg-white p-6 rounded-2xl border border-lab-border shadow-subtle transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-lab-navy/30">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-3 text-xs font-mono text-lab-subtle">
+                                <span>2026</span><span>•</span><span class="text-lab-navy bg-slate-100 px-2 py-0.5 rounded">设计与技术</span>
+                            </div>
+                            <h3 class="text-base font-bold text-lab-text transition-colors group-hover:text-lab-navy">从工业设计视角看现代 Web 界面设计中的「触觉感」</h3>
+                            <p class="text-xs text-lab-muted leading-relaxed">从材料、结构和触感经验出发，思考数字界面如何通过层次、材质、动效与反馈，创造清晰而细腻的使用感受。</p>
+                        </div>
+                        <span class="text-xs font-mono text-lab-subtle font-medium shrink-0 flex items-center gap-2">阅读全文 <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
                     </div>
-                </article>
+                </button>
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2">
                 <div class="bg-white p-6 rounded-2xl border border-lab-border shadow-subtle">
@@ -550,6 +609,18 @@ import '../styles/global.css';
 </section>
     </main>
 
+    <div id="learning-log-modal" class="fixed inset-0 z-[75] hidden opacity-0 transition-opacity duration-300" role="dialog" aria-modal="true" aria-labelledby="learning-log-title">
+                <button type="button" class="absolute inset-0" style="background:rgba(255,255,255,.04);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)" onclick="closeLearningLogArticle()" aria-label="关闭文章"></button>
+                <div class="absolute inset-0 m-3 md:my-4 md:mx-8 max-w-none flex flex-col overflow-hidden rounded-2xl border border-lab-border bg-white shadow-2xl">
+                    <header class="flex items-center justify-between gap-4 border-b border-lab-border px-5 py-3 md:px-7">
+                        <h2 id="learning-log-title" class="min-w-0 truncate text-sm font-bold text-lab-text">学习日志</h2>
+                        <button type="button" onclick="closeLearningLogArticle()" aria-label="关闭文章" title="关闭文章" class="w-11 h-11 shrink-0 rounded-full border border-slate-200 bg-slate-100/90 text-slate-600 shadow-sm transition-all duration-200 hover:scale-105 hover:border-slate-300 hover:bg-slate-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-100"><i class="fa-solid fa-xmark text-lg"></i></button>
+                    </header>
+                    <iframe id="learning-log-frame" title="学习日志正文" class="min-h-0 flex-1 w-full border-0 bg-white" loading="lazy"></iframe>
+                </div>
+            </div>
+
+
     <!-- Modal -->
     <div id="project-modal" class="fixed inset-0 z-50 hidden opacity-0 transition-opacity duration-300">
         <div onclick="closeProjectModal()" class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
@@ -585,7 +656,7 @@ import '../styles/global.css';
                 <button type="button" onclick="closeVersionHistory()" aria-label="关闭更新记录" class="version-close w-10 h-10 shrink-0 rounded-full border border-lab-border text-lab-muted hover:text-lab-text"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <ol class="version-list mt-6">
-                <li class="version-entry is-current"><div class="version-entry-head"><span class="version-number">v1.0.2</span><span class="version-date">2026.11.09 · 当前版本</span></div><h3>项目部署架构复盘</h3><ul><li>在北辰实验室项目详情中新增基础设施选型与部署架构演进章节。</li><li>补充从早期海外托管到国产静态托管及 CI/CD 发布链路的复盘。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.1</span><span class="version-date">2026.11.09</span></div><h3>首页个人介绍轮换</h3><ul><li>将首页介绍改为“你好，我是孙国钦”，并轮换展示四种自我描述。</li><li>参考玻璃胶囊样式，放大描述文字并加入柔和的模糊淡入淡出动效。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.0</span><span class="version-date">2026.11.09</span></div><h3>首页视觉重设计</h3><ul><li>按首页设计图重做沉浸式山海 Hero、精选项目展示、技术探索与关于我横幅。</li><li>复用本地背景与山景素材，保留现有栏目导航和首页入口交互。</li></ul></li>
+                <li class="version-entry is-current"><div class="version-entry-head"><span class="version-number">v1.0.4</span><span class="version-date">2026.11.10 · 当前版本</span></div><h3>新增两篇个人学习日志</h3><ul><li>加入关于个人成长与寻找“第二曲线”的认知日志。</li><li>加入从工业设计视角探讨 Web 界面触觉感的文章，并保留全文阅读入口。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.3</span><span class="version-date">2026.11.10</span></div><h3>参数计算器项目展示</h3><ul><li>参数计算器调整至北辰实验室之后，完整项目详情加入可直接体验的网页版。</li><li>小程序版保留展示卡片，等待补充体验链接；删除首页截图中的重复入口。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.2</span><span class="version-date">2026.11.09</span></div><h3>项目部署架构复盘</h3><ul><li>在北辰实验室项目详情中新增基础设施选型与部署架构演进章节。</li><li>补充从早期海外托管到国产静态托管及 CI/CD 发布链路的复盘。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.1</span><span class="version-date">2026.11.09</span></div><h3>首页个人介绍轮换</h3><ul><li>将首页介绍改为“你好，我是孙国钦”，并轮换展示四种自我描述。</li><li>参考玻璃胶囊样式，放大描述文字并加入柔和的模糊淡入淡出动效。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.0</span><span class="version-date">2026.11.09</span></div><h3>首页视觉重设计</h3><ul><li>按首页设计图重做沉浸式山海 Hero、精选项目展示、技术探索与关于我横幅。</li><li>复用本地背景与山景素材，保留现有栏目导航和首页入口交互。</li></ul></li>
                 <li class="version-entry"><div class="version-entry-head"><span class="version-number">v0.9.1</span><span class="version-date">2026.11.09</span></div><h3>移动端项目目录</h3><ul><li>手机端新增四个项目的紧凑切换入口，选中后直接展示对应详情。</li><li>手机和桌面项目目录共享同一选中状态。</li></ul></li>
                 <li class="version-entry"><div class="version-entry-head"><span class="version-number">v0.9.0</span><span class="version-date">2026.11.05</span></div><h3>项目页精简</h3><ul><li>移除项目页的标题说明区和移动端当前项目选择条，让项目详情直接进入视野。</li></ul></li>
                 <li class="version-entry"><div class="version-entry-head"><span class="version-number">v0.8.0</span><span class="version-date">2026.11.05</span></div><h3>项目详情与目录细节</h3><ul><li>将独立制作的北辰实验室项目介绍整合为完整项目详情。</li><li>收拢主目录时让品牌图标居中，并固定导航纵向坐标。</li><li>未选中的二级项目隐藏日期，突出当前选择。</li></ul></li>
@@ -614,6 +685,7 @@ import '../styles/global.css';
         '一个喜欢折腾的人',
         '一个对新鲜事物保持好奇的人'
     ];
+    const tones = ['tone-1', 'tone-2', 'tone-3', 'tone-4'];
     let phraseIndex = 0;
     let switching = false;
 
@@ -624,6 +696,8 @@ import '../styles/global.css';
         window.setTimeout(() => {
             phraseIndex = (phraseIndex + 1) % phrases.length;
             rotatingText.textContent = phrases[phraseIndex];
+            rotatingText.classList.remove(...tones);
+            rotatingText.classList.add(tones[phraseIndex]);
             rotatingText.classList.remove('is-leaving');
             rotatingText.classList.add('is-entering');
             switching = false;
@@ -690,6 +764,55 @@ function expandProjectDirectory() {
 }
 
 
+window.openLearningLogArticle = function (src, title) {
+    const modal = document.getElementById('learning-log-modal');
+    const frame = document.getElementById('learning-log-frame');
+    const heading = document.getElementById('learning-log-title');
+    if (!modal || !frame || !heading) return;
+    heading.textContent = title;
+    frame.onload = () => {
+        try {
+            const doc = frame.contentDocument;
+            if (!doc || doc.getElementById('northstar-reader-overrides')) return;
+            const style = doc.createElement('style');
+            style.id = 'northstar-reader-overrides';
+            style.textContent = `
+                html { scroll-behavior: smooth; }
+                body { background: #fff !important; }
+                header { max-width: 1040px !important; padding: 2.25rem 1.5rem 1.5rem !important; text-align: left !important; }
+                header > div { justify-content: flex-start !important; }
+                header h1 { font-size: clamp(2rem, 5vw, 3.25rem) !important; line-height: 1.2 !important; margin-bottom: 1rem !important; }
+                header > p { font-size: 1rem !important; line-height: 1.7 !important; margin-bottom: 1.25rem !important; }
+                header > .w-12 { margin-left: 0 !important; margin-top: 1rem !important; }
+                main { max-width: 1040px !important; padding-bottom: 3rem !important; }
+                main article { gap: 3rem !important; }
+                footer { padding: 3rem 1rem !important; }
+                @media (max-width: 640px) {
+                    header { padding: 1.5rem 1.25rem 1rem !important; }
+                    header h1 { font-size: 2rem !important; }
+                    main { padding-left: 1.25rem !important; padding-right: 1.25rem !important; }
+                }
+            `;
+            doc.head.appendChild(style);
+        } catch (error) { console.warn('无法调整日志阅读样式', error); }
+    };
+    frame.src = src;
+    modal.classList.remove('hidden');
+    document.body.classList.add('overflow-hidden');
+    requestAnimationFrame(() => modal.classList.remove('opacity-0'));
+};
+
+window.closeLearningLogArticle = function () {
+    const modal = document.getElementById('learning-log-modal');
+    const frame = document.getElementById('learning-log-frame');
+    if (!modal) return;
+    modal.classList.add('opacity-0');
+    document.body.classList.remove('overflow-hidden');
+    window.setTimeout(() => {
+        modal.classList.add('hidden');
+        if (frame) frame.src = 'about:blank';
+    }, 300);
+};
 function openVersionHistory() {
     const modal = document.getElementById('version-history-modal');
     if (!modal) return;
@@ -698,7 +821,7 @@ function openVersionHistory() {
 }
 
 document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') closeVersionHistory();
+    if (event.key === 'Escape') { closeVersionHistory(); window.closeLearningLogArticle(); }
 });
 
 function closeVersionHistory() {

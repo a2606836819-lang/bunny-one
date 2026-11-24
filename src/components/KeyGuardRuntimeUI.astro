@@ -1,0 +1,248 @@
+<div id="kg-runtime">
+<div class="app-container">
+<!-- 头部 -->
+<header class="header">
+<div class="logo-area">
+<!-- KeyGuard Logo (SVG) -->
+<svg class="logo-icon" fill="none" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<rect fill="#1E56E8" height="24" rx="6" width="24"></rect>
+<path d="M12 7C9.79086 7 8 8.79086 8 11C8 13.2091 9.79086 15 12 15C12.5 15 13 14.9 13.4 14.7L15.5 16.8C15.9 17.2 16.5 17.2 16.9 16.8L17.5 16.2C17.9 15.8 17.9 15.2 17.5 14.8L15.4 12.7C15.8 12.2 16 11.6 16 11C16 8.79086 14.2091 7 12 7ZM12 9C13.1046 9 14 9.89543 14 11C14 12.1046 13.1046 13 12 13C10.8954 13 10 12.1046 10 11C10 9.89543 10.8954 9 12 9Z" fill="white"></path>
+</svg>
+            KeyGuard
+        </div>
+<div class="header-actions">
+<!-- 设置图标 -->
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<circle cx="12" cy="12" r="3"></circle>
+<path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+</svg>
+<!-- 关闭图标 -->
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<line x1="18" x2="6" y1="6" y2="18"></line>
+<line x1="6" x2="18" y1="6" y2="18"></line>
+</svg>
+</div>
+</header>
+<!-- 主体 -->
+<main class="main-content">
+<!-- 大盾牌图标 -->
+<div class="status-icon-container">
+<svg class="shield-icon" fill="none" viewbox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+<!-- 盾牌左侧深色 -->
+<path d="M32 6L10 14V30C10 44.4 19.5 56.8 32 60V6Z" fill="#1E56E8"></path>
+<!-- 盾牌右侧浅色边框 -->
+<path d="M32 6L54 14V30C54 44.4 44.5 56.8 32 60V6Z" fill="#4F81FF"></path>
+<!-- 内部白色线条装饰 (根据原图，类似一个反光或分界线) -->
+<path d="M32 6L32 60" stroke="white" stroke-opacity="0.5" stroke-width="2"></path>
+</svg>
+</div>
+<h2 class="status-title">
+<span class="status-dot"></span>
+            保护运行中
+        </h2>
+<p class="status-subtitle">键盘防抖保护已启用，正在过滤异常高频连击</p>
+<!-- 数据区域 -->
+<div class="stats-container">
+<div class="stat-box">
+<span class="stat-label">当前消抖时间</span>
+<div class="stat-value">10 <span class="stat-unit">ms</span></div>
+</div>
+<div class="stat-box">
+<span class="stat-label">已过滤按键次数</span>
+<div class="stat-value">110</div>
+</div>
+</div>
+<!-- 按钮区域 -->
+<div class="actions">
+<button class="btn btn-secondary">
+<!-- 暂停图标 (正方形) -->
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<rect height="12" rx="2" ry="2" width="12" x="6" y="6"></rect>
+</svg>
+                暂停保护
+            </button>
+<button class="btn btn-primary">
+<!-- 钥匙图标 -->
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path>
+</svg>
+                激活
+            </button>
+</div>
+<!-- 底部提示 -->
+<p class="footer-note">KeyGuard v1.0.0 · 界面预览</p>
+</main>
+</div>
+</div><style>#kg-runtime /* 基础重置 */
+    *{
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+#kg-runtime{
+        background-color: #f7f8fa; /* 页面背景色 */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        color: #333;
+    }
+#kg-runtime /* 主卡片容器 */
+    .app-container{
+        background-color: #ffffff;
+        width: 640px;
+        border-radius: 12px;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+#kg-runtime /* 顶部导航栏 */
+    .header{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 24px;
+    }
+#kg-runtime .logo-area{
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 18px;
+        font-weight: 700;
+        color: #1a1a1a;
+    }
+#kg-runtime .logo-icon{
+        width: 24px;
+        height: 24px;
+    }
+#kg-runtime .header-actions{
+        display: flex;
+        gap: 16px;
+        color: #666;
+    }
+#kg-runtime .header-actions svg{
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+#kg-runtime .header-actions svg:hover{
+        color: #000;
+    }
+#kg-runtime /* 主体内容区域 */
+    .main-content{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px 40px 40px;
+    }
+#kg-runtime /* 状态图标区域 */
+    .status-icon-container{
+        margin-bottom: 16px;
+    }
+#kg-runtime .shield-icon{
+        width: 80px;
+        height: 80px;
+    }
+#kg-runtime /* 状态文字 */
+    .status-title{
+        font-size: 24px;
+        font-weight: 700;
+        color: #1a1a1a;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 12px;
+    }
+#kg-runtime .status-dot{
+        width: 10px;
+        height: 10px;
+        background-color: #10b981; /* 绿色小圆点 */
+        border-radius: 50%;
+    }
+#kg-runtime .status-subtitle{
+        font-size: 14px;
+        color: #6b7280;
+        margin-bottom: 48px;
+    }
+#kg-runtime /* 数据统计区域 */
+    .stats-container{
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        max-width: 400px;
+        margin-bottom: 40px;
+    }
+#kg-runtime .stat-box{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 50%;
+    }
+#kg-runtime .stat-label{
+        font-size: 14px;
+        color: #6b7280;
+        margin-bottom: 12px;
+    }
+#kg-runtime .stat-value{
+        font-size: 36px;
+        font-weight: 700;
+        color: #1a1a1a;
+        display: flex;
+        align-items: baseline;
+        gap: 4px;
+    }
+#kg-runtime .stat-unit{
+        font-size: 20px;
+        font-weight: 700;
+    }
+#kg-runtime /* 按钮区域 */
+    .actions{
+        display: flex;
+        gap: 16px;
+        width: 100%;
+        max-width: 400px;
+        justify-content: center;
+        margin-bottom: 32px;
+    }
+#kg-runtime .btn{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 32px;
+        border-radius: 50px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        border: none;
+        transition: all 0.2s;
+    }
+#kg-runtime .btn svg{
+        width: 16px;
+        height: 16px;
+    }
+#kg-runtime .btn-secondary{
+        background-color: #f3f4f6;
+        color: #1a1a1a;
+    }
+#kg-runtime .btn-secondary:hover{
+        background-color: #e5e7eb;
+    }
+#kg-runtime .btn-primary{
+        background-color: #2563eb;
+        color: #ffffff;
+    }
+#kg-runtime .btn-primary:hover{
+        background-color: #1d4ed8;
+    }
+#kg-runtime /* 底部提示文字 */
+    .footer-note{
+        font-size: 12px;
+        color: #9ca3af;
+    }
+#kg-runtime{min-height:0;padding:18px;background:#f7f8fa}
+#kg-runtime .app-container{width:min(640px,100%)}
+@media(max-width:560px){#kg-runtime{padding:10px}#kg-runtime .main-content{padding:18px 16px 24px}#kg-runtime .header{padding:16px}#kg-runtime .status-title{font-size:20px}#kg-runtime .stat-value{font-size:30px}#kg-runtime .actions{gap:8px;flex-wrap:wrap}#kg-runtime .btn{padding:11px 18px}}</style>

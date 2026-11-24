@@ -1,0 +1,25 @@
+---
+import '../../styles/global.css';
+import KeyGuardProduct from '../../components/KeyGuardProduct.astro';
+---
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f7f8fa" />
+    <meta name="description" content="KeyGuard Windows 键盘重复输入过滤工具产品详情、功能介绍、授权说明与购买咨询。" />
+    <title>KeyGuard 产品详情 — 北辰实验室</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <KeyGuardProduct />
+    <style is:global>
+      /* 独立产品页缩短导航栏与首屏标题之间的留白，并让品牌图标占位有明确底色。 */
+      #kg-product #intro { padding-top: 2rem !important; }
+      #kg-product header nav > a > svg { background: linear-gradient(135deg, #1e3a8a, #2563eb); }
+    </style>
+  </body>
+</html>

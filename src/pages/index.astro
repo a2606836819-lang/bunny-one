@@ -1,5 +1,7 @@
 ---
 import '../styles/global.css';
+import KeyGuardStory from '../components/KeyGuardStory.astro';
+import KeyGuardProduct from '../components/KeyGuardProduct.astro';
 ---
 <!DOCTYPE html>
 <html lang="zh-CN" class="scroll-smooth">
@@ -128,10 +130,7 @@ import '../styles/global.css';
                 </nav>
             </div>
             <div class="border-t border-lab-border pt-4 text-xs text-lab-muted space-y-2">
-                <p>—<br>从想法出发，以技术构建，让创造真正发生。</p>
-                <p class="text-emerald-600 flex items-center gap-1.5 font-medium">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> 持续探索中
-                </p>
+                <p>微信：bunny1442<br>欢迎交流与反馈。</p>
             </div>
         </div>
     </div>
@@ -187,14 +186,9 @@ import '../styles/global.css';
             <div class="space-y-3">
                 <span class="block text-lab-subtle font-serif">—</span>
                 <p class="text-xs text-lab-muted leading-relaxed">
-                    从想法出发，<br>
-                    以技术构建，<br>
-                    让创造真正发生。
+                    微信：bunny1442<br>
+                    欢迎交流与反馈。
                 </p>
-                <div class="flex items-center gap-2 text-xs text-slate-700 font-medium">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span>持续探索中</span>
-                </div>
             </div>
 
             <div class="flex items-center gap-4 text-lab-muted text-sm pt-2">
@@ -214,11 +208,9 @@ import '../styles/global.css';
             <button type="button" class="drawer-handle" aria-label="重新展开项目目录" onclick="expandProjectDirectory()"><span></span></button>
             <div class="projects-inner">
                 <div class="project-title">项目库 <span>PROJECTS</span></div>
-                <button type="button" class="sub-item active" data-project-id="northstar" onclick="selectProjectFromDrawer('northstar', this)"><span class="sub-date">2026.11 — 现在</span><span class="sub-title">北辰实验室</span><span class="sub-info">个人技术作品集与实验平台</span></button>
+                <button type="button" class="sub-item active" data-project-id="keyguard" aria-pressed="true" onclick="selectProjectFromDrawer('keyguard',this)"><span class="sub-date">Windows 桌面软件</span><span class="sub-title">KeyGuard</span><span class="sub-info">键盘重复输入过滤工具</span></button>
+                <button type="button" class="sub-item" data-project-id="northstar" onclick="selectProjectFromDrawer('northstar', this)"><span class="sub-date">个人独立项目</span><span class="sub-title">北辰实验室</span><span class="sub-info">个人技术作品集与实验平台</span></button>
                 <button type="button" class="sub-item" data-project-id="calculator" onclick="selectProjectFromDrawer('calculator', this)"><span class="sub-date">个人独立项目</span><span class="sub-title">参数计算器</span><span class="sub-info">网页工具与微信小程序</span></button>
-                <button type="button" class="sub-item" data-project-id="task" onclick="selectProjectFromDrawer('task', this)"><span class="sub-date">2025.09</span><span class="sub-title">任务管理系统</span><span class="sub-info">基于 Astro 的轻量级 Web 应用</span></button>
-                <button type="button" class="sub-item" data-project-id="ai" onclick="selectProjectFromDrawer('ai', this)"><span class="sub-date">2025.08</span><span class="sub-title">AI 资料助手</span><span class="sub-info">大模型驱动的知识整理与问答</span></button>
-                <button type="button" class="sub-item" data-project-id="ideas" onclick="selectProjectFromDrawer('ideas', this)"><span class="sub-date">2025.06</span><span class="sub-title">灵感记录应用</span><span class="sub-info">随时捕捉想法的个人小工具</span></button>
 
             </div>
         </aside>
@@ -232,7 +224,7 @@ import '../styles/global.css';
         <section id="section-home" class="spa-section home-page animate-fadeIn">
         <button id="version-history-trigger" type="button" onclick="openVersionHistory()" aria-haspopup="dialog" aria-controls="version-history-modal" class="version-trigger absolute top-6 right-6 md:top-10 md:right-12 inline-flex items-center gap-2 rounded-full border border-lab-border bg-white/80 px-3.5 py-2 text-[11px] font-mono tracking-wide text-lab-muted shadow-sm backdrop-blur-sm">
             <span class="version-indicator" aria-hidden="true"></span>
-            <span>v1.0.5</span>
+            <span>v1.0.7</span>
             <span class="version-trigger-label">更新记录 <i class="fa-solid fa-arrow-up-right-from-square ml-1 text-[9px]"></i></span>
         </button>
             <div class="home-hero">
@@ -254,15 +246,15 @@ import '../styles/global.css';
                         <button type="button" onclick="openLearningLogArticle('/logs/second-curve.html', '智性突围：寻找我的“第二曲线”')" class="home-text-link home-log-link">读一篇关于「第二曲线」的思考 <span>→</span></button>
                     </div>
                     <article class="home-feature-card">
-                        <div class="home-feature-image"><img src="/images/northstar-mountain.jpg" alt="云海之上的雪山，象征持续探索" loading="lazy"></div>
+                        <div class="home-feature-image"><img src="/images/keyguard-real-screenshot.png" alt="KeyGuard 实际运行中的桌面软件界面" loading="lazy"></div>
                         <div class="home-feature-copy">
-                            <div class="home-feature-number"><strong>01</strong><span>/ 05</span></div>
-                            <div class="home-feature-label">PERSONAL PROJECT</div>
-                            <h3>北辰实验室</h3><div class="home-feature-name">NORTHSTAR LAB</div>
-                            <p>一个从零开始构建的个人技术作品集，记录设计、编程与 AI 辅助开发的实践过程。</p>
-                            <div class="home-feature-stack-label">技术栈</div>
-                            <div class="home-stack-tags"><span>Astro</span><span>Tailwind CSS</span><span>JavaScript</span><span>GitHub</span></div>
-                            <button type="button" onclick="switchTab('projects')" class="home-text-link home-detail-link">查看详情 <span>→</span></button>
+                            <div class="home-feature-number"><strong>01</strong><span>/ 03</span></div>
+                            <div class="home-feature-label">WINDOWS DESKTOP SOFTWARE</div>
+                            <h3>KeyGuard</h3><div class="home-feature-name">键盘重复输入过滤工具</div>
+                            <p>一个已完成开发的 Windows 桌面软件项目，通过低延迟键盘事件过滤，减少异常重复输入；本地记录诊断日志，并提供紧急停止机制。</p>
+                            <div class="home-feature-stack-label">技术实现</div>
+                            <div class="home-stack-tags"><span>Python</span><span>CustomTkinter</span><span>Windows Hook</span><span>Ed25519</span></div>
+                            <button type="button" onclick="openKeyGuardProject()" class="home-text-link home-detail-link">查看项目详情 <span>→</span></button>
                         </div>
                     </article>
                 </section>
@@ -296,47 +288,40 @@ import '../styles/global.css';
                 <div class="project-marquee-window">
                     <div class="project-marquee-track">
                         <div class="project-marquee-group">
-                            <button type="button" class="project-marquee-tag is-active" data-project-id="northstar" aria-pressed="true" onclick="selectProjectTimeline('northstar')"><span class="project-marquee-dot"></span>北辰实验室</button>
+                            <button type="button" class="project-marquee-tag is-active" data-project-id="keyguard" aria-pressed="true" onclick="selectProjectTimeline('keyguard')"><span class="project-marquee-dot"></span>KeyGuard</button>
+                            <button type="button" class="project-marquee-tag" data-project-id="northstar" aria-pressed="false" onclick="selectProjectTimeline('northstar')"><span class="project-marquee-dot"></span>北辰实验室</button>
                             <button type="button" class="project-marquee-tag" data-project-id="calculator" aria-pressed="false" onclick="selectProjectTimeline('calculator')"><span class="project-marquee-dot"></span>参数计算器</button>
-                            <button type="button" class="project-marquee-tag" data-project-id="task" aria-pressed="false" onclick="selectProjectTimeline('task')"><span class="project-marquee-dot"></span>任务管理系统</button>
-                            <button type="button" class="project-marquee-tag" data-project-id="ai" aria-pressed="false" onclick="selectProjectTimeline('ai')"><span class="project-marquee-dot"></span>AI 资料助手</button>
-                            <button type="button" class="project-marquee-tag" data-project-id="ideas" aria-pressed="false" onclick="selectProjectTimeline('ideas')"><span class="project-marquee-dot"></span>灵感记录应用</button>
                         </div>
                         <div class="project-marquee-group" aria-hidden="true">
+                            <span class="project-marquee-tag"><span class="project-marquee-dot"></span>KeyGuard</span>
                             <span class="project-marquee-tag"><span class="project-marquee-dot"></span>北辰实验室</span>
                             <span class="project-marquee-tag"><span class="project-marquee-dot"></span>参数计算器</span>
-                            <span class="project-marquee-tag"><span class="project-marquee-dot"></span>任务管理系统</span>
-                            <span class="project-marquee-tag"><span class="project-marquee-dot"></span>AI 资料助手</span>
-                            <span class="project-marquee-tag"><span class="project-marquee-dot"></span>灵感记录应用</span>
                         </div>
                         <div class="project-marquee-group" aria-hidden="true">
+                            <span class="project-marquee-tag"><span class="project-marquee-dot"></span>KeyGuard</span>
                             <span class="project-marquee-tag"><span class="project-marquee-dot"></span>北辰实验室</span>
                             <span class="project-marquee-tag"><span class="project-marquee-dot"></span>参数计算器</span>
-                            <span class="project-marquee-tag"><span class="project-marquee-dot"></span>任务管理系统</span>
-                            <span class="project-marquee-tag"><span class="project-marquee-dot"></span>AI 资料助手</span>
-                            <span class="project-marquee-tag"><span class="project-marquee-dot"></span>灵感记录应用</span>
                         </div>
                     </div>
                 </div>
             </section>
             <nav class="mobile-project-directory" aria-label="项目目录">
-                <button type="button" class="mobile-project-link active" data-project-id="northstar" aria-pressed="true" onclick="selectProjectTimeline('northstar')"><span class="mobile-project-date">2026.11 — 现在</span><span>北辰实验室</span></button>
+                <button type="button" class="mobile-project-link active" data-project-id="keyguard" aria-pressed="true" onclick="selectProjectTimeline('keyguard')"><span class="mobile-project-date">Windows 桌面软件</span><span>KeyGuard</span></button>
+                <button type="button" class="mobile-project-link" data-project-id="northstar" aria-pressed="false" onclick="selectProjectTimeline('northstar')"><span class="mobile-project-date">个人独立项目</span><span>北辰实验室</span></button>
                 <button type="button" class="mobile-project-link" data-project-id="calculator" aria-pressed="false" onclick="selectProjectTimeline('calculator')"><span class="mobile-project-date">个人独立项目</span><span>参数计算器</span></button>
-                <button type="button" class="mobile-project-link" data-project-id="task" aria-pressed="false" onclick="selectProjectTimeline('task')"><span class="mobile-project-date">2025.09</span><span>任务管理系统</span></button>
-                <button type="button" class="mobile-project-link" data-project-id="ai" aria-pressed="false" onclick="selectProjectTimeline('ai')"><span class="mobile-project-date">2025.08</span><span>AI 资料助手</span></button>
-                <button type="button" class="mobile-project-link" data-project-id="ideas" aria-pressed="false" onclick="selectProjectTimeline('ideas')"><span class="mobile-project-date">2025.06</span><span>灵感记录应用</span></button>
-
             </nav>
             <div class="project-status-summary" aria-label="项目状态统计">
                 <span class="project-status-heading">项目阶段</span>
-                <span class="project-status-count is-completed"><i></i>已完成 <strong>2</strong></span>
+                <span class="project-status-count is-completed"><i></i>已完成 <strong>3</strong></span>
                 <span class="project-status-count is-progress"><i></i>进行中 <strong>0</strong></span>
-                <span class="project-status-count is-exploration"><i></i>探索与构想 <strong>3</strong></span>
+                <span class="project-status-count is-exploration"><i></i>探索与构想 <strong>0</strong></span>
             </div>            <div class="project-timeline-layout">
 
 
                 <div class="project-timeline-content" aria-live="polite">
-                    <article id="timeline-project-northstar" class="timeline-project is-active bg-white rounded-2xl border border-lab-border p-6 md:p-10 shadow-subtle">
+                    <article id="timeline-project-keyguard" class="timeline-project is-active bg-white rounded-2xl border border-lab-border p-0 shadow-subtle"><div id="kg-project-view"><KeyGuardStory /></div><div id="kg-product-view" class="hidden"><KeyGuardProduct /></div></article>
+
+<article id="timeline-project-northstar" class="timeline-project bg-white rounded-2xl border border-lab-border p-6 md:p-10 shadow-subtle" hidden>
   <header class="northstar-project-hero border-b border-lab-border pb-8 md:pb-10">
     <div class="flex flex-wrap items-center justify-between gap-3"><span class="text-[10px] font-mono tracking-[.2em] text-lab-subtle uppercase">PERSONAL PROJECT</span><span class="project-state-badge is-completed">已完成 · 持续迭代</span></div>
     <h2 class="mt-4 text-3xl md:text-5xl font-semibold tracking-tight text-lab-text">北辰实验室</h2>
@@ -440,33 +425,6 @@ import '../styles/global.css';
                         </section>
                     </article>
 
-                    <article id="timeline-project-task" class="timeline-project bg-white rounded-2xl border border-lab-border p-6 md:p-9 shadow-subtle" hidden>
-                        <div class="flex items-center justify-between gap-3"><span class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase">2025.09 · WEB APP</span><span class="project-state-badge is-exploration">探索与构想</span></div>
-                        <h2 class="mt-3 text-2xl font-bold text-lab-text">任务管理系统</h2>
-                        <p class="mt-4 text-sm text-lab-muted leading-relaxed">围绕个人学习和工作中的任务分散、优先级不清展开。项目方向是通过分类、标签和数据视图，帮助使用者看清当前重点与每周节奏。</p>
-                        <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="rounded-xl bg-lab-bg p-4"><h3 class="text-sm font-bold text-lab-text">关注的问题</h3><p class="mt-2 text-sm text-lab-muted leading-relaxed">任务记录要足够轻，回顾信息又要足够清楚，避免为了维护系统花掉太多时间。</p></div>
-                            <div class="rounded-xl bg-lab-bg p-4"><h3 class="text-sm font-bold text-lab-text">下一步思考</h3><p class="mt-2 text-sm text-lab-muted leading-relaxed">继续验证哪些统计能帮助人采取行动，而不是只增加图表和操作步骤。</p></div>
-                        </div>
-                    </article>
-
-                    <article id="timeline-project-ai" class="timeline-project bg-white rounded-2xl border border-lab-border p-6 md:p-9 shadow-subtle" hidden>
-                        <div class="flex items-center justify-between gap-3"><span class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase">2025.08 · AI APP</span><span class="project-state-badge is-exploration">探索与构想</span></div>
-                        <h2 class="mt-3 text-2xl font-bold text-lab-text">AI 资料助手</h2>
-                        <p class="mt-4 text-sm text-lab-muted leading-relaxed">一个围绕个人知识整理的项目方向：把 PDF、Markdown 等资料汇集起来，让提问能够回到原始内容寻找依据。</p>
-                        <div class="mt-6 rounded-xl bg-lab-bg p-5"><h3 class="text-sm font-bold text-lab-text">值得继续验证的问题</h3><p class="mt-2 text-sm text-lab-muted leading-relaxed">资料导入是否简单、回答能否附上出处、资料更新后如何维护索引，以及怎样让使用者判断答案是否可靠。</p></div>
-                    </article>
-
-                    <article id="timeline-project-ideas" class="timeline-project bg-white rounded-2xl border border-lab-border p-6 md:p-9 shadow-subtle" hidden>
-                        <div class="flex items-center justify-between gap-3"><span class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase">2025.06 · PERSONAL TOOL</span><span class="project-state-badge is-exploration">探索与构想</span></div>
-                        <h2 class="mt-3 text-2xl font-bold text-lab-text">灵感记录应用</h2>
-                        <p class="mt-4 text-sm text-lab-muted leading-relaxed">这是一个轻量个人工具构想，关注灵感出现时如何快速记录、稍后整理并再次找回。</p>
-                        <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-3">
-                            <div class="rounded-xl bg-lab-bg p-4"><span class="text-[10px] font-mono text-lab-subtle">01 / CAPTURE</span><p class="mt-2 text-sm text-lab-text">快速记下原始想法，不打断当下思路。</p></div>
-                            <div class="rounded-xl bg-lab-bg p-4"><span class="text-[10px] font-mono text-lab-subtle">02 / ORGANIZE</span><p class="mt-2 text-sm text-lab-text">用少量标签或主题轻量归档。</p></div>
-                            <div class="rounded-xl bg-lab-bg p-4"><span class="text-[10px] font-mono text-lab-subtle">03 / RETURN</span><p class="mt-2 text-sm text-lab-text">让记录能够被重新找到并继续发展。</p></div>
-                        </div>
-                    </article>
 
 
 
@@ -655,33 +613,6 @@ import '../styles/global.css';
             </div>
 
 
-    <!-- Modal -->
-    <div id="project-modal" class="fixed inset-0 z-50 hidden opacity-0 transition-opacity duration-300">
-        <div onclick="closeProjectModal()" class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
-        <div class="absolute inset-x-4 top-12 bottom-12 max-w-2xl mx-auto bg-white rounded-2xl border border-lab-border p-6 md:p-8 overflow-y-auto shadow-2xl flex flex-col justify-between space-y-6">
-            <div>
-                <div class="flex items-center justify-between pb-4 border-b border-lab-border">
-                    <span id="modal-tag" class="px-2.5 py-1 rounded bg-slate-100 text-[10px] font-mono text-lab-muted">WEB 应用</span>
-                    <button onclick="closeProjectModal()" class="text-lab-muted hover:text-lab-text">
-                        <i class="fa-solid fa-xmark text-lg"></i>
-                    </button>
-                </div>
-
-                <div class="mt-4 space-y-3">
-                    <h2 id="modal-title" class="text-2xl font-bold text-lab-text">项目名称</h2>
-                    <p id="modal-desc" class="text-xs text-lab-muted leading-relaxed">详细介绍...</p>
-                    <div class="h-52 rounded-xl overflow-hidden border border-lab-border">
-                        <img id="modal-img" src="" alt="Preview" class="w-full h-full object-cover">
-                    </div>
-                </div>
-            </div>
-
-            <div class="pt-4 border-t border-lab-border flex justify-end">
-                <button onclick="closeProjectModal()" class="px-5 py-2 rounded-lg bg-lab-navy text-white text-xs font-medium">关闭预览</button>
-            </div>
-        </div>
-    </div>
-
     <div id="version-history-modal" class="fixed inset-0 z-[70] hidden opacity-0 transition-opacity duration-300" role="dialog" aria-modal="true" aria-labelledby="version-history-title">
         <div class="absolute inset-0 bg-slate-950/45 backdrop-blur-sm" onclick="closeVersionHistory()" aria-hidden="true"></div>
         <div class="absolute inset-x-4 top-5 bottom-5 md:inset-x-10 md:top-8 md:bottom-8 max-w-3xl mx-auto bg-white rounded-2xl border border-lab-border p-5 md:p-8 overflow-y-auto shadow-2xl">
@@ -690,7 +621,7 @@ import '../styles/global.css';
                 <button type="button" onclick="closeVersionHistory()" aria-label="关闭更新记录" class="version-close w-10 h-10 shrink-0 rounded-full border border-lab-border text-lab-muted hover:text-lab-text"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <ol class="version-list mt-6">
-                <li class="version-entry is-current"><div class="version-entry-head"><span class="version-number">v1.0.5</span><span class="version-date">2026.11.13 · 当前版本</span></div><h3>项目分类与个人经历梳理</h3><ul><li>项目按已完成、进行中和探索构想标注，并展示各阶段数量。</li><li>学习日志增加人生思考、技术复盘、项目记录分类标签和筛选。</li><li>首页增加“寻找我的第二曲线”日志入口；关于我新增经历脉络与能力工具区域。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.4</span><span class="version-date">2026.11.10</span></div><h3>新增两篇个人学习日志</h3><ul><li>加入关于个人成长与寻找“第二曲线”的认知日志。</li><li>加入从工业设计视角探讨 Web 界面触觉感的文章，并保留全文阅读入口。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.3</span><span class="version-date">2026.11.10</span></div><h3>参数计算器项目展示</h3><ul><li>参数计算器调整至北辰实验室之后，完整项目详情加入可直接体验的网页版。</li><li>小程序版保留展示卡片，等待补充体验链接；删除首页截图中的重复入口。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.2</span><span class="version-date">2026.11.09</span></div><h3>项目部署架构复盘</h3><ul><li>在北辰实验室项目详情中新增基础设施选型与部署架构演进章节。</li><li>补充从早期海外托管到国产静态托管及 CI/CD 发布链路的复盘。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.1</span><span class="version-date">2026.11.09</span></div><h3>首页个人介绍轮换</h3><ul><li>将首页介绍改为“你好，我是孙国钦”，并轮换展示四种自我描述。</li><li>参考玻璃胶囊样式，放大描述文字并加入柔和的模糊淡入淡出动效。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.0</span><span class="version-date">2026.11.09</span></div><h3>首页视觉重设计</h3><ul><li>按首页设计图重做沉浸式山海 Hero、精选项目展示、技术探索与关于我横幅。</li><li>复用本地背景与山景素材，保留现有栏目导航和首页入口交互。</li></ul></li>
+                <li class="version-entry is-current"><div class="version-entry-head"><span class="version-number">v1.0.7</span><span class="version-date">2026.11.24 · 当前版本</span></div><h3>KeyGuard 产品信息与授权说明补全</h3><ul><li>补充 ZIP 计划分发形式、版本、开发者和兼容性说明，不展示未确认的安装包参数或下载地址。</li><li>补充 3 天试用、永久个人授权、多设备不限、不绑定设备及微信购买咨询说明。</li><li>完善退款 FAQ、隐私政策、用户协议和完整《KeyGuard 使用说明与免责声明》。</li><li>清理没有实际服务支撑的激活码找回提示；未接入支付、订单和在线发码服务不作已上线展示。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.6</span><span class="version-date">2026.11.24</span></div><h3>KeyGuard 项目展示与页面完善</h3><ul><li>首页恢复“探索我的项目”入口，KeyGuard 作为重点项目。</li><li>项目库保留 KeyGuard、北辰实验室与参数计算器。</li><li>KeyGuard 页面补充真实程序截图、客服二维码和使用说明原文。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.5</span><span class="version-date">2026.11.13</span></div><h3>项目分类与个人经历梳理</h3><ul><li>项目按已完成、进行中和探索构想标注，并展示各阶段数量。</li><li>学习日志增加人生思考、技术复盘、项目记录分类标签和筛选。</li><li>首页增加“寻找我的第二曲线”日志入口；关于我新增经历脉络与能力工具区域。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.4</span><span class="version-date">2026.11.10</span></div><h3>新增两篇个人学习日志</h3><ul><li>加入关于个人成长与寻找“第二曲线”的认知日志。</li><li>加入从工业设计视角探讨 Web 界面触觉感的文章，并保留全文阅读入口。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.3</span><span class="version-date">2026.11.10</span></div><h3>参数计算器项目展示</h3><ul><li>参数计算器调整至北辰实验室之后，完整项目详情加入可直接体验的网页版。</li><li>小程序版保留展示卡片，等待补充体验链接；删除首页截图中的重复入口。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.2</span><span class="version-date">2026.11.09</span></div><h3>项目部署架构复盘</h3><ul><li>在北辰实验室项目详情中新增基础设施选型与部署架构演进章节。</li><li>补充从早期海外托管到国产静态托管及 CI/CD 发布链路的复盘。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.1</span><span class="version-date">2026.11.09</span></div><h3>首页个人介绍轮换</h3><ul><li>将首页介绍改为“你好，我是孙国钦”，并轮换展示四种自我描述。</li><li>参考玻璃胶囊样式，放大描述文字并加入柔和的模糊淡入淡出动效。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.0</span><span class="version-date">2026.11.09</span></div><h3>首页视觉重设计</h3><ul><li>按首页设计图重做沉浸式山海 Hero、精选项目展示、技术探索与关于我横幅。</li><li>复用本地背景与山景素材，保留现有栏目导航和首页入口交互。</li></ul></li>
                 <li class="version-entry"><div class="version-entry-head"><span class="version-number">v0.9.1</span><span class="version-date">2026.11.09</span></div><h3>移动端项目目录</h3><ul><li>手机端新增四个项目的紧凑切换入口，选中后直接展示对应详情。</li><li>手机和桌面项目目录共享同一选中状态。</li></ul></li>
                 <li class="version-entry"><div class="version-entry-head"><span class="version-number">v0.9.0</span><span class="version-date">2026.11.05</span></div><h3>项目页精简</h3><ul><li>移除项目页的标题说明区和移动端当前项目选择条，让项目详情直接进入视野。</li></ul></li>
                 <li class="version-entry"><div class="version-entry-head"><span class="version-number">v0.8.0</span><span class="version-date">2026.11.05</span></div><h3>项目详情与目录细节</h3><ul><li>将独立制作的北辰实验室项目介绍整合为完整项目详情。</li><li>收拢主目录时让品牌图标居中，并固定导航纵向坐标。</li><li>未选中的二级项目隐藏日期，突出当前选择。</li></ul></li>
@@ -742,12 +673,18 @@ import '../styles/global.css';
     });
 })();
 
+function showKeyGuardStory(updateUrl=false){const story=document.getElementById('kg-project-view'),product=document.getElementById('kg-product-view');if(story)story.classList.remove('hidden');if(product)product.classList.add('hidden');if(updateUrl)history.pushState({keyguardView:'story'},'','/#section-projects');window.scrollTo({top:0,behavior:'smooth'});}
+function showKeyGuardProduct(){const story=document.getElementById('kg-project-view'),product=document.getElementById('kg-product-view');if(story)story.classList.add('hidden');if(product)product.classList.remove('hidden');history.pushState({keyguardView:'product'},'','/#keyguard-product');window.scrollTo({top:0,behavior:'smooth'});}
+function openKeyGuardProject(){if(document.getElementById('section-projects')?.classList.contains('hidden'))switchTab('projects');selectProjectTimeline('keyguard');showKeyGuardStory(false);if(location.hash!=='#section-projects')history.pushState({keyguardView:'story'},'','/#section-projects');}
+function returnToNorthstarHome(){history.pushState({keyguardView:'home'},'','/');switchTab('home');}
+window.addEventListener('popstate',()=>{if(location.hash==='#keyguard-product'){if(document.getElementById('section-projects')?.classList.contains('hidden'))switchTab('projects');selectProjectTimeline('keyguard');showKeyGuardProduct();}else if(location.hash==='#section-projects'){openKeyGuardProject();}else if(!location.hash)switchTab('home');});
 function selectProjectTimeline(projectId) {
     document.querySelectorAll('.timeline-project').forEach(panel => {
         const active = panel.id === `timeline-project-${projectId}`;
         panel.hidden = !active;
         panel.classList.toggle('is-active', active);
     });
+    if(projectId==='keyguard'){showKeyGuardStory(false);if(location.hash==='#keyguard-product')history.replaceState({keyguardView:'story'},'','/#section-projects');}
     document.querySelectorAll('.sub-item, .mobile-project-link, .project-marquee-tag[data-project-id]').forEach(item => {
         const active = item.dataset.projectId === projectId;
         item.classList.toggle('active', active);
@@ -1007,82 +944,10 @@ function switchTab(tabId) {
 
         if(mobileDrawerClose) mobileDrawerClose.addEventListener('click', closeMobileDrawer);
 
-        function filterProjects(category, event) {
-            const buttons = document.querySelectorAll('.project-filter-btn');
-            buttons.forEach(btn => {
-                btn.classList.remove('bg-lab-navy', 'text-white');
-                btn.classList.add('bg-white', 'text-lab-muted');
-            });
-            event.target.classList.add('bg-lab-navy', 'text-white');
-            event.target.classList.remove('bg-white', 'text-lab-muted');
-
-            const items = document.querySelectorAll('.project-item');
-            items.forEach(item => {
-                if (category === 'all' || item.getAttribute('data-category') === category) {
-                    item.style.display = 'flex';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
-        }
-
-        const projectsData = {
-            'project-1': {
-                tag: 'WEB 应用',
-                title: '任务管理系统',
-                desc: '这个项目练习围绕个人学习和工作中的任务分散、优先级不清展开。设想通过分类、标签和进度视图，帮助使用者看清当前重点与每周节奏；后续需要继续验证哪些统计真正有助于行动，而不是增加维护负担。',
-                img: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop'
-            },
-            'project-2': {
-                tag: 'AI 应用',
-                title: 'AI 资料助手',
-                desc: '这是一个个人知识整理方向：把 PDF、Markdown 等资料汇集起来，让提问能够回到原始内容寻找依据。设计时需要关注导入是否简单、回答能否附上来源，以及资料更新后如何保持索引可靠；这些都是值得逐步验证的产品与工程问题。',
-                img: 'https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?q=80&w=800&auto=format&fit=crop'
-            },
-            'project-3': {
-                tag: '个人网站',
-                title: '北辰实验室·个人站点',
-                desc: '北辰实验室网站本身也是一项持续迭代的 Astro 练习，用来整理项目、实验、学习记录和个人介绍。页面采用分区导航展示不同内容；接下来可以继续改进内容维护方式、移动端体验、语义结构和部署流程。',
-                img: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?q=80&w=800&auto=format&fit=crop'
-            },
-            'project-4': {
-                tag: '小工具',
-                title: '灵感记录应用',
-                desc: '这是一个轻量个人工具构想，关注灵感出现时如何快速记录、稍后整理并再次找回。设计重点是降低记录成本：先捕捉原始想法，再用少量标签或主题归档，同时避免让分类流程本身变得繁琐。',
-                img: 'https://images.unsplash.com/photo-1517842645767-c639042777db?q=80&w=800&auto=format&fit=crop'
-            },
-            'project-5': {
-                tag: '设计方法档案',
-                title: '从工业设计到数字产品',
-                desc: '这是一份逐步整理的方法档案，不对应某个已经完成的单一交付物。它关注工业设计训练中的场景观察、结构关系和细节体验，如何帮助思考数字产品的信息层级、交互反馈与使用流程。接下来会用实际页面与原型不断验证哪些方法可以迁移。',
-                img: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?q=80&w=800&auto=format&fit=crop'
-            },
-        };
-
-        const modal = document.getElementById('project-modal');
-
-        function openProjectModal(id) {
-            const data = projectsData[id];
-            if (!data) return;
-
-            document.getElementById('modal-tag').textContent = data.tag;
-            document.getElementById('modal-title').textContent = data.title;
-            document.getElementById('modal-desc').textContent = data.desc;
-            document.getElementById('modal-img').src = data.img;
-
-            modal.classList.remove('hidden');
-            setTimeout(() => modal.classList.remove('opacity-0'), 10);
-        }
-
-        function closeProjectModal() {
-            modal.classList.add('opacity-0');
-            setTimeout(() => modal.classList.add('hidden'), 300);
-        }
-
         window.onload = function() {
             document.body.classList.add('motion-ready');
             document.body.classList.add('motion-ready');
-            switchTab('home');
+            if(location.hash==='#keyguard-product'){switchTab('projects');selectProjectTimeline('keyguard');showKeyGuardProduct();}else if(location.hash==='#section-projects'){switchTab('projects');selectProjectTimeline('keyguard');showKeyGuardStory(false);}else{switchTab('home');}
 
             const canvas = document.getElementById('particle-canvas');
             if (canvas) {

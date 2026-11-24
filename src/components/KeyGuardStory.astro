@@ -1,0 +1,1623 @@
+---
+---
+<div id="kg-story">
+
+<section class="hero-section" id="overview">
+<div class="container">
+
+<div class="hero-title-group reveal">
+
+<h1 class="hero-title">KeyGuard</h1>
+<p class="hero-subtitle">让每一次键盘输入，都准确可靠。</p>
+<p class="hero-lead">
+            从一个关于键盘异常重复输入的想法开始，我尝试用代码理解问题、构建规则，最终将它打磨成一款真正可运行、已上线销售的 Windows 桌面软件。
+          </p><div class="kg-product-entry"><p>了解 KeyGuard 完整产品功能、授权方式与购买信息。</p><a href="/keyguard/product/">进入 KeyGuard 产品详情 →</a></div>
+</div>
+<a class="scroll-cue" href="#origin">
+<span>向下阅读完整开发故事</span>
+<svg fill="none" height="16" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="16">
+<line x1="12" x2="12" y1="5" y2="19"></line>
+<polyline points="19 12 12 19 5 12"></polyline>
+</svg>
+</a>
+</div>
+</section>
+
+<section class="story-section" id="origin">
+<div class="container">
+<div class="chapter-header reveal">
+<span class="chapter-num">02 / 起点 · ORIGIN</span>
+<h2 class="chapter-title">一切始于一个简单的问题。</h2>
+<div class="chapter-prose">
+<p>键盘输入本应是准确、可靠的。但在某些情况下，短时间内的异常重复输入会影响正常操作。</p>
+<p>我开始思考：能不能开发一个独立的软件，实时监测键盘事件，识别特定的异常重复输入，并根据规则进行过滤？</p>
+<p>最初的想法并不复杂。真正开始开发后，我才发现，问题远比想象中复杂。</p>
+</div>
+</div>
+<!-- 输入事件时间轴原理示意图 -->
+<div class="principle-card reveal">
+<div class="principle-header">
+<span class="principle-title">按键事件时间间隔对比（原理示意图）</span>
+<span class="principle-note">仅用于说明事件间隔判定逻辑，非实测数据</span>
+</div>
+<div class="timeline-demo-grid">
+<!-- 正常连续输入 -->
+<div class="signal-row">
+<div class="signal-label">
+<span>场景 A：正常连续按键输入</span>
+<span>间隔大于设定阈值 → 完整保留</span>
+</div>
+<div class="signal-track">
+<div class="signal-line"></div>
+<div class="pulse-nodes">
+<span class="pulse-item normal">Key Down (A)</span>
+<span class="pulse-gap-normal">正常输入间隔（Δt &gt; 阈值）</span>
+<span class="pulse-item normal">Key Down (A)</span>
+</div>
+</div>
+</div>
+<!-- 异常短间隔重复输入 -->
+<div class="signal-row">
+<div class="signal-label">
+<span>场景 B：短间隔异常重复输入</span>
+<span>间隔小于设定阈值 → 识别并过滤</span>
+</div>
+<div class="signal-track">
+<div class="signal-line"></div>
+<div class="pulse-nodes">
+<span class="pulse-item normal">Key Down (A)</span>
+<span class="pulse-gap-short">Δt &lt; 阈值</span>
+<span class="pulse-item filtered">异常重复 (A) · 已拦截</span>
+<span class="pulse-gap-normal">后续正常流程</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="story-section alt-bg" id="exploration">
+<div class="container">
+<div class="chapter-header reveal">
+<span class="chapter-num">03 / 技术探索 · TECHNICAL EXPLORATION</span>
+<h2 class="chapter-title">先理解问题，再决定怎么实现。</h2>
+<div class="chapter-prose">
+<p>确定问题边界后，我选择使用 Python 作为主要开发语言，并借助 AI 工具辅助查阅文档、验证技术细节与编写原型代码。过程中并没有直接依赖生成结果，而是先逐一弄清 Windows 底层是如何传递键盘信号的，再逐步设计过滤逻辑。</p>
+<p>KeyGuard 通过 Windows 低级键盘钩子监测键盘事件，分析事件之间的时间间隔，再根据设定规则处理符合条件的事件。</p>
+</div>
+</div>
+<!-- 研究的核心技术概念 -->
+<div class="tech-concepts reveal">
+<div class="concept-chip">
+<div class="concept-name">Python</div>
+<div class="concept-desc">核心逻辑实现、状态管理与桌面应用构建。</div>
+</div>
+<div class="concept-chip">
+<div class="concept-name">Low-Level Keyboard Hook</div>
+<div class="concept-desc">通过 Windows 底层钩子在系统分发前捕获按键消息。</div>
+</div>
+<div class="concept-chip">
+<div class="concept-name">Virtual Key &amp; Scan Code</div>
+<div class="concept-desc">区分虚拟键码与硬件扫描码，准确识别具体按键来源。</div>
+</div>
+<div class="concept-chip">
+<div class="concept-name">按下与释放事件</div>
+<div class="concept-desc">区分 KeyDown 与 KeyUp，保障按键生命周期完整。</div>
+</div>
+<div class="concept-chip">
+<div class="concept-name">高精度时间戳</div>
+<div class="concept-desc">获取毫秒级事件发生时刻，为间隔计算提供基准。</div>
+</div>
+<div class="concept-chip">
+<div class="concept-name">事件间隔分析与过滤规则</div>
+<div class="concept-desc">比对相邻同键事件时间差，按设定阈值决定放行或拦截。</div>
+</div>
+</div>
+<!-- 技术流程图 -->
+<div class="flow-wrapper reveal">
+<div class="flow-caption">KeyGuard 键盘事件处理流程</div>
+<div aria-label="键盘输入到保留或过滤事件的处理流程图" class="flow-pipeline" role="img">
+<div class="flow-node">
+<span class="flow-node-step">STEP 01</span>
+<div class="flow-node-title">键盘输入</div>
+</div>
+<div aria-hidden="true" class="flow-arrow">
+<svg fill="none" height="20" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="20">
+<line x1="5" x2="19" y1="12" y2="12"></line>
+<polyline points="12 5 19 12 12 19"></polyline>
+</svg>
+</div>
+<div class="flow-node">
+<span class="flow-node-step">STEP 02</span>
+<div class="flow-node-title">Windows 键盘事件</div>
+</div>
+<div aria-hidden="true" class="flow-arrow">
+<svg fill="none" height="20" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="20">
+<line x1="5" x2="19" y1="12" y2="12"></line>
+<polyline points="12 5 19 12 12 19"></polyline>
+</svg>
+</div>
+<div class="flow-node core">
+<span class="flow-node-step">STEP 03</span>
+<div class="flow-node-title">KeyGuard 事件监测</div>
+</div>
+<div aria-hidden="true" class="flow-arrow">
+<svg fill="none" height="20" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="20">
+<line x1="5" x2="19" y1="12" y2="12"></line>
+<polyline points="12 5 19 12 12 19"></polyline>
+</svg>
+</div>
+<div class="flow-node core">
+<span class="flow-node-step">STEP 04</span>
+<div class="flow-node-title">时间间隔分析</div>
+</div>
+<div aria-hidden="true" class="flow-arrow">
+<svg fill="none" height="20" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="20">
+<line x1="5" x2="19" y1="12" y2="12"></line>
+<polyline points="12 5 19 12 12 19"></polyline>
+</svg>
+</div>
+<div class="flow-node core">
+<span class="flow-node-step">STEP 05</span>
+<div class="flow-node-title">规则判断</div>
+</div>
+<div aria-hidden="true" class="flow-arrow">
+<svg fill="none" height="20" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="20">
+<line x1="5" x2="19" y1="12" y2="12"></line>
+<polyline points="12 5 19 12 12 19"></polyline>
+</svg>
+</div>
+<div class="flow-branch">
+<div class="branch-item pass">
+<span>● 正常事件 → 保留放行</span>
+</div>
+<div class="branch-item block">
+<span>● 异常重复 → 过滤拦截</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="story-section" id="challenges">
+<div class="container">
+<div class="chapter-header reveal">
+<span class="chapter-num">04 / 开发历程 · CHALLENGES</span>
+<h2 class="chapter-title">写出代码只是开始，解决问题才是开发。</h2>
+<div class="chapter-prose">
+<p>从能跑通一段简单的键盘监听脚本，到成为一个不会干扰正常打字和操作的桌面工具，中间真正花时间的是对细节问题的拆解与修正。</p>
+</div>
+</div>
+<div class="challenges-timeline">
+<article class="challenge-item reveal">
+<span class="challenge-tag">CHALLENGE 01</span>
+<h3 class="challenge-title">如何稳定捕获键盘事件？</h3>
+<p class="challenge-body">
+              最初从普通的键盘监听方式入手，但很快发现常规上层监听难以在全局范围内精确控制输入流。于是转向研究 Windows 底层键盘事件监测机制，逐步理解低级键盘钩子的回调结构以及不同消息类型的含义。
+            </p>
+</article>
+<article class="challenge-item reveal">
+<span class="challenge-tag">CHALLENGE 02</span>
+<h3 class="challenge-title">如何识别真正需要过滤的输入？</h3>
+<p class="challenge-body">
+              核心并不是简单判断同一个按键是否重复出现——正常长按或快速输入同样会产生重复信号。真正的关键在于精确记录每次事件的时间戳，分析事件之间的时间间隔，并结合设定的过滤规则进行判断。
+            </p>
+</article>
+<article class="challenge-item reveal">
+<span class="challenge-tag">CHALLENGE 03</span>
+<h3 class="challenge-title">如何避免影响正常输入？</h3>
+<p class="challenge-body">
+              如果只粗暴拦截按下事件却忽略释放事件，很容易造成系统认为某个按键一直处于按下状态。过滤逻辑必须成对关注按下（Key Down）与释放（Key Up）事件之间的关系，避免引起按键状态异常。
+            </p>
+</article>
+<article class="challenge-item reveal">
+<span class="challenge-tag">CHALLENGE 04</span>
+<h3 class="challenge-title">如何让问题可以被追踪？</h3>
+<p class="challenge-body">
+              键盘事件发生在一瞬间，仅靠肉眼很难判断某次按键为何被放行或拦截。为此在软件中设计了本地诊断日志，记录事件时间、按键名称、事件类型、事件间隔和处理结果，让异常情况有据可查。
+            </p>
+</article>
+<article class="challenge-item reveal">
+<span class="challenge-tag">CHALLENGE 05</span>
+<h3 class="challenge-title">如何让程序成为一个真正的产品？</h3>
+<p class="challenge-body">
+              当核心过滤逻辑跑通后，工作才完成一半。要让普通用户也能放心使用，还需要补齐图形界面、紧急停止保护、3 天试用机制、离线授权验证、打包分发以及清晰的使用须知与免责声明。
+            </p>
+</article>
+</div>
+</div>
+</section>
+
+<section class="story-section alt-bg" id="implementation">
+<div class="container">
+<div class="chapter-header reveal">
+<span class="chapter-num">05 / 产品实现 · IMPLEMENTATION</span>
+<h2 class="chapter-title">让代码拥有真正的使用界面。</h2>
+<div class="chapter-prose">
+<p>为了让软件脱离命令行环境、直观呈现工作状态并方便日常调节，我为 KeyGuard 设计了简洁的桌面图形界面，并将核心功能模块化整合进完整客户端中。</p>
+</div>
+</div>
+<div class="feature-checklist reveal">
+<div class="feature-box">
+<span class="feature-dot"></span>
+<span class="feature-text">键盘事件监测</span>
+</div>
+<div class="feature-box">
+<span class="feature-dot"></span>
+<span class="feature-text">短间隔重复输入识别</span>
+</div>
+<div class="feature-box">
+<span class="feature-dot"></span>
+<span class="feature-text">特定异常事件过滤</span>
+</div>
+<div class="feature-box">
+<span class="feature-dot"></span>
+<span class="feature-text">本地事件日志</span>
+</div>
+<div class="feature-box">
+<span class="feature-dot"></span>
+<span class="feature-text">运行状态展示</span>
+</div>
+<div class="feature-box">
+<span class="feature-dot"></span>
+<span class="feature-text">Ctrl + Alt + F12 紧急停止</span>
+</div>
+<div class="feature-box">
+<span class="feature-dot"></span>
+<span class="feature-text">3 天免费试用</span>
+</div>
+<div class="feature-box">
+<span class="feature-dot"></span>
+<span class="feature-text">Ed25519 离线授权验证</span>
+</div>
+</div>
+<!-- 双视图真实软件截图预留槽 -->
+
+</div>
+</section>
+
+<section class="story-section" id="engineering">
+<div class="container">
+<div class="chapter-header reveal">
+<span class="chapter-num">06 / 工程化 · ENGINEERING</span>
+<h2 class="chapter-title">一个真正的软件，不只是能够运行。</h2>
+<div class="chapter-prose">
+<p>在产品化阶段，我重点思考了一个独立桌面软件交付给他人时需要具备的完整闭环——从异常保护机制到离线授权方式，每一步都尽量保持克制、清晰和可维护。</p>
+</div>
+</div>
+<div class="eng-grid reveal">
+<div class="eng-node">
+<span class="eng-node-num">01 / INTERFACE</span>
+<h3 class="eng-node-title">克制清晰的用户界面</h3>
+<p class="eng-node-desc">聚焦核心开关、消抖时间调节与状态反馈，避免冗余选项干扰日常使用。</p>
+</div>
+<div class="eng-node">
+<span class="eng-node-num">02 / FAIL-SAFE</span>
+<h3 class="eng-node-title">运行状态与异常处理</h3>
+<p class="eng-node-desc">内置 Ctrl + Alt + F12 紧急停止快捷键，随时一键解除键盘钩子并恢复正常输入。</p>
+</div>
+<div class="eng-node">
+<span class="eng-node-num">03 / DIAGNOSTICS</span>
+<h3 class="eng-node-title">本地诊断日志</h3>
+<p class="eng-node-desc">所有按键事件记录仅保存在本地，便于用户和开发者排查特定按键的触发间隔。</p>
+</div>
+<div class="eng-node">
+<span class="eng-node-num">04 / COMPLIANCE</span>
+<h3 class="eng-node-title">使用须知与免责声明</h3>
+<p class="eng-node-desc">在软件内明确告知工作原理、适用边界与注意事项，建立透明的使用预期。</p>
+</div>
+<div class="eng-node">
+<span class="eng-node-num">05 / LICENSING</span>
+<h3 class="eng-node-title">Ed25519 离线签名授权</h3>
+<p class="eng-node-desc">采用非对称数字签名校验激活码，无需注册账号，也无需持续联网验证，保护用户隐私。</p>
+</div>
+<div class="eng-node">
+<span class="eng-node-num">06 / PACKAGING</span>
+<h3 class="eng-node-title">试用机制与发行打包规划</h3>
+<p class="eng-node-desc">设计 3 天完整功能试用流程，规划独立可执行文件打包，降低用户的首次上手与体验门槛。</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="story-section alt-bg" id="outcome">
+<div class="container">
+<div class="chapter-header reveal">
+<span class="chapter-num">07 / 最终成果 · OUTCOME</span>
+<h2 class="chapter-title">从一个想法，到一个可以使用的软件。</h2>
+<div class="chapter-prose">
+<p>经过多轮需求梳理、底层事件调试与界面打磨，KeyGuard 形成了清晰的产品规格与授权模式。</p>
+</div>
+</div>
+<div class="outcome-card reveal">
+<div class="outcome-top">
+<div>
+<h3 class="outcome-product-name">KeyGuard</h3>
+<p class="outcome-slogan">让每一次键盘输入，都准确可靠。</p>
+</div>
+<span class="outcome-version-badge">计划正式版本 · v1.0.0</span>
+</div>
+<div class="specs-grid">
+<div class="spec-item">
+<span class="spec-label">运行平台</span>
+<span class="spec-value">Windows 10 / 11（64位，兼容性以实际测试为准）</span>
+</div>
+<div class="spec-item">
+<span class="spec-label">体验方式</span>
+<span class="spec-value">3 天免费试用</span>
+</div>
+<div class="spec-item">
+<span class="spec-label">授权定价</span>
+<span class="spec-value">¥6.8 一次性购买</span>
+</div>
+<div class="spec-item">
+<span class="spec-label">授权范围</span>
+<span class="spec-value">个人使用，多设备不限，不允许转售</span>
+</div>
+</div>
+<div class="outcome-actions">
+<a class="btn-primary" href="/keyguard/product/">
+<span>查看 KeyGuard 产品详情</span>
+<svg fill="none" height="16" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="16">
+<line x1="5" x2="19" y1="12" y2="12"></line>
+<polyline points="12 5 19 12 12 19"></polyline>
+</svg>
+</a>
+<a class="btn-secondary" href="/">返回北辰实验室</a>
+</div>
+</div>
+</div>
+</section>
+
+<section class="story-section" id="reflection">
+<div class="container">
+<div class="chapter-header reveal">
+<span class="chapter-num">08 / 项目总结 · REFLECTION</span>
+<h2 class="chapter-title">把想法，变成真正可用的东西。</h2>
+</div>
+<div class="closing-box reveal">
+<div class="closing-text">
+<p>KeyGuard 是我从一个想法出发，逐步完成技术研究、方案设计、程序开发、调试和产品化的一个真实项目。</p>
+<p>这段过程让我更加理解：开发软件，不只是让代码运行起来，而是要让一个想法最终成为别人可以使用的产品。</p>
+<p>从工业设计出发，到 UI 设计，再到 Python 和 Windows 桌面软件开发，我一直在尝试把不同领域的知识连接起来。</p>
+<p>这也是北辰实验室存在的意义。持续探索技术、产品与创造的可能。</p>
+</div>
+<div class="signature-block">
+<span class="signature-author">一川工</span>
+<span class="signature-brand">NORTHSTAR LAB / 北辰实验室</span>
+</div>
+</div>
+</div>
+</section>
+<section class="product-detail-cta reveal"><div><p class="cta-kicker">KEYGUARD PRODUCT</p><h2>从一个想法，到一款真正可用的软件。</h2><p>了解 KeyGuard 完整产品功能、授权方式与购买信息。</p></div><a class="btn-primary detail-entry-button" href="/keyguard/product/">进入 KeyGuard 产品详情 →</a></section></div><style>
+
+    /* ==========================================================================
+       1. 设计系统变量 (Design Tokens — NORTHSTAR LAB)
+       克制、浅色、极简工程作品集风格，便于后续直接迁移至 Astro
+       ========================================================================== */
+    #kg-story {
+      --bg-page: #F8FAFC;
+      --bg-surface: #FFFFFF;
+      --bg-subtle: #F1F5F9;
+      --bg-code: #0F172A;
+
+      --text-primary: #0F172A;
+      --text-secondary: #475569;
+      --text-muted: #64748B;
+      --text-inverse: #F8FAFC;
+
+      --brand-navy: #1A2B4C;
+      --brand-blue: #2563EB;
+      --brand-blue-soft: rgba(37, 99, 235, 0.08);
+      --brand-blue-border: rgba(37, 99, 235, 0.2);
+
+      --border-light: #E2E8F0;
+      --border-medium: #CBD5E1;
+
+      --status-ok: #10B981;
+      --status-warn: #F59E0B;
+      --status-filter: #EF4444;
+
+      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
+      --shadow-md: 0 8px 24px -4px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
+      --shadow-lg: 0 20px 40px -12px rgba(15, 23, 42, 0.08);
+
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+
+      --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", Roboto, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+      --container-max: 1040px;
+      --nav-height: 64px;
+    }
+
+    /* ==========================================================================
+       2. 基础重置与排版 (Base & Typography)
+       ========================================================================== */
+    #kg-story, #kg-story *, #kg-story *::before, #kg-story *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    #kg-story {
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    #kg-story {
+      font-family: var(--font-sans);
+      background-color: var(--bg-page);
+      color: var(--text-primary);
+      line-height: 1.75;
+      overflow-x: hidden;
+    }
+
+    #kg-story a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    #kg-story ul, #kg-story ol {
+      list-style: none;
+    }
+
+    #kg-story button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    #kg-story .container {
+      width: 100%;
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ==========================================================================
+       3. 顶部导航栏 (Sticky Navigation)
+       ========================================================================== */
+    #kg-story .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--nav-height);
+      background: rgba(248, 250, 252, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-light);
+      z-index: 100;
+      transition: box-shadow 0.2s ease;
+    }
+
+    #kg-story .site-header.scrolled {
+      box-shadow: var(--shadow-sm);
+    }
+
+    #kg-story .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+    }
+
+    #kg-story .brand-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    #kg-story .brand-mark {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      background: var(--brand-navy);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    #kg-story .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+    }
+
+    #kg-story .brand-en {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--brand-navy);
+      text-transform: uppercase;
+    }
+
+    #kg-story .brand-cn {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    #kg-story .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    #kg-story .nav-links a {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      padding: 6px 2px;
+      position: relative;
+      transition: color 0.2s ease;
+    }
+
+    #kg-story .nav-links a:hover, #kg-story .nav-links a.active {
+      color: var(--brand-navy);
+    }
+
+    #kg-story .nav-links a.active::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--brand-blue);
+      border-radius: 2px;
+    }
+
+    #kg-story .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    #kg-story .nav-home-btn {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--brand-navy);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      padding: 6px 14px;
+      border-radius: 999px;
+      transition: all 0.2s ease;
+    }
+
+    #kg-story .nav-home-btn:hover {
+      border-color: var(--border-medium);
+      background: var(--bg-subtle);
+    }
+
+    #kg-story .mobile-menu-btn {
+      display: none;
+      width: 36px;
+      height: 36px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      color: var(--text-primary);
+    }
+
+    #kg-story .mobile-menu-btn:hover {
+      background: var(--bg-subtle);
+    }
+
+    /* 移动端折叠抽屉 */
+    #kg-story .mobile-drawer {
+      display: none;
+      position: fixed;
+      top: var(--nav-height);
+      left: 0;
+      right: 0;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-light);
+      padding: 16px 24px 24px;
+      box-shadow: var(--shadow-md);
+      z-index: 99;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    #kg-story .mobile-drawer.open {
+      display: flex;
+    }
+
+    #kg-story .mobile-drawer a {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      padding: 8px 0;
+      border-bottom: 1px solid var(--bg-subtle);
+    }
+
+    #kg-story .mobile-drawer a:last-child {
+      border-bottom: none;
+    }
+
+    /* ==========================================================================
+       4. Hero 首屏 (Hero Section)
+       ========================================================================== */
+    #kg-story .hero-section {
+      /* 项目详情嵌在个人网站内容区，不再预留独立站导航栏的高度。 */
+      padding: 32px 0 64px;
+      border-bottom: 1px solid var(--border-light);
+      background: linear-gradient(180deg, #FFFFFF 0%, var(--bg-page) 100%);
+    }
+
+    #kg-story .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    #kg-story .tag-pill {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--brand-navy);
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-light);
+      padding: 4px 12px;
+      border-radius: 999px;
+    }
+
+    #kg-story .tag-pill.highlight {
+      color: var(--brand-blue);
+      background: var(--brand-blue-soft);
+      border-color: var(--brand-blue-border);
+    }
+
+    #kg-story .hero-title-group {
+      max-width: 760px;
+      margin-bottom: 48px;
+    }
+
+    #kg-story .hero-kicker {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--brand-blue);
+      margin-bottom: 12px;
+    }
+
+    #kg-story .hero-title {
+      font-size: clamp(40px, 6vw, 60px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+    }
+
+    #kg-story .hero-subtitle {
+      font-size: clamp(20px, 3vw, 26px);
+      font-weight: 500;
+      color: var(--brand-navy);
+      letter-spacing: -0.01em;
+      margin-bottom: 20px;
+    }
+
+    #kg-story .hero-lead {
+      font-size: 17px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      max-width: 660px;
+    }
+
+    /* 真实软件截图展示槽 (不虚构 UI，规范化预留替换路径) */
+    #kg-story .screenshot-frame {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      box-shadow: var(--shadow-lg);
+      margin-bottom: 40px;
+    }
+
+    #kg-story .screenshot-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4px 8px 14px;
+      border-bottom: 1px solid var(--bg-subtle);
+      margin-bottom: 16px;
+      font-size: 12px;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    #kg-story .window-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    #kg-story .window-dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--border-medium);
+    }
+
+    #kg-story .screenshot-slot {
+      position: relative;
+      width: 100%;
+      min-height: 360px;
+      background: var(--bg-page);
+      border: 1.5px dashed var(--border-medium);
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 24px;
+      overflow: hidden;
+    }
+
+    #kg-story .screenshot-slot img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 10px;
+    }
+
+    #kg-story .slot-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--brand-navy);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      padding: 6px 12px;
+      border-radius: 6px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    #kg-story .slot-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+
+    #kg-story .slot-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      max-width: 480px;
+    }
+
+    #kg-story .slot-path {
+      margin-top: 12px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--brand-blue);
+      background: var(--brand-blue-soft);
+      padding: 4px 10px;
+      border-radius: 4px;
+    }
+
+    #kg-story .scroll-cue {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    #kg-story .scroll-cue:hover {
+      color: var(--brand-navy);
+      transform: translateY(2px);
+    }
+
+    /* ==========================================================================
+       5. 通用章节布局 (Story Chapters)
+       ========================================================================== */
+    #kg-story .story-section {
+      padding: 96px 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    #kg-story .story-section.alt-bg {
+      background: var(--bg-surface);
+    }
+
+    #kg-story .chapter-header {
+      max-width: 700px;
+      margin-bottom: 48px;
+    }
+
+    #kg-story .chapter-num {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--brand-blue);
+      letter-spacing: 0.06em;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    #kg-story .chapter-title {
+      font-size: clamp(28px, 4vw, 36px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      color: var(--text-primary);
+      margin-bottom: 18px;
+    }
+
+    #kg-story .chapter-prose {
+      font-size: 16.5px;
+      color: var(--text-secondary);
+      line-height: 1.85;
+    }
+
+    #kg-story .chapter-prose p + p {
+      margin-top: 16px;
+    }
+
+    /* ==========================================================================
+       6. 第二章：输入事件原理示意图 (Principle Diagram)
+       ========================================================================== */
+    #kg-story .principle-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      box-shadow: var(--shadow-md);
+      margin-top: 36px;
+    }
+
+    #kg-story .principle-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--bg-subtle);
+    }
+
+    #kg-story .principle-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    #kg-story .principle-note {
+      font-size: 12px;
+      color: var(--text-muted);
+      background: var(--bg-subtle);
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+
+    #kg-story .timeline-demo-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+
+    #kg-story .signal-row {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    #kg-story .signal-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    #kg-story .signal-track {
+      position: relative;
+      height: 54px;
+      background: var(--bg-page);
+      border: 1px solid var(--border-light);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      overflow: hidden;
+    }
+
+    #kg-story .signal-line {
+      position: absolute;
+      left: 20px;
+      right: 20px;
+      height: 1px;
+      background: var(--border-medium);
+      z-index: 1;
+    }
+
+    #kg-story .pulse-nodes {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    #kg-story .pulse-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-medium);
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-primary);
+      box-shadow: var(--shadow-sm);
+    }
+
+    #kg-story .pulse-item.normal {
+      border-color: rgba(16, 185, 129, 0.4);
+    }
+
+    #kg-story .pulse-item.normal::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--status-ok);
+    }
+
+    #kg-story .pulse-item.filtered {
+      border-color: rgba(239, 68, 68, 0.45);
+      background: #FEF2F2;
+      color: #991B1B;
+      text-decoration: line-through;
+    }
+
+    #kg-story .pulse-item.filtered::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--status-filter);
+    }
+
+    #kg-story .pulse-gap-normal {
+      flex: 1;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    #kg-story .pulse-gap-short {
+      padding: 0 8px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--status-filter);
+      font-weight: 600;
+    }
+
+    /* ==========================================================================
+       7. 第三章：技术探索与流程图 (Technical Exploration & Flow)
+       ========================================================================== */
+    #kg-story .tech-concepts {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 14px;
+      margin: 32px 0 44px;
+    }
+
+    #kg-story .concept-chip {
+      background: var(--bg-page);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      transition: border-color 0.2s ease;
+    }
+
+    #kg-story .concept-chip:hover {
+      border-color: var(--brand-blue-border);
+    }
+
+    #kg-story .concept-name {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--brand-navy);
+      margin-bottom: 4px;
+    }
+
+    #kg-story .concept-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* 技术流程图 */
+    #kg-story .flow-wrapper {
+      background: var(--bg-page);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+    }
+
+    #kg-story .flow-caption {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    #kg-story .flow-pipeline {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    #kg-story .flow-node {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      min-width: 135px;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+    }
+
+    #kg-story .flow-node.core {
+      border-color: var(--brand-blue-border);
+      background: var(--brand-blue-soft);
+    }
+
+    #kg-story .flow-node-step {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    #kg-story .flow-node-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    #kg-story .flow-arrow {
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #kg-story .flow-branch {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    #kg-story .branch-item {
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border-light);
+      background: var(--bg-surface);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #kg-story .branch-item.pass {
+      color: #065F46;
+      border-color: rgba(16, 185, 129, 0.35);
+      background: #ECFDF5;
+    }
+
+    #kg-story .branch-item.block {
+      color: #991B1B;
+      border-color: rgba(239, 68, 68, 0.35);
+      background: #FEF2F2;
+    }
+
+    /* ==========================================================================
+       8. 第四章：开发挑战时间轴 (Development Challenges Timeline)
+       ========================================================================== */
+    #kg-story .challenges-timeline {
+      position: relative;
+      padding-left: 32px;
+      margin-top: 40px;
+    }
+
+    #kg-story .challenges-timeline::before {
+      content: "";
+      position: absolute;
+      left: 7px;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background: var(--border-light);
+    }
+
+    #kg-story .challenge-item {
+      position: relative;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 26px 28px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    #kg-story .challenge-item:last-child {
+      margin-bottom: 0;
+    }
+
+    #kg-story .challenge-item:hover {
+      box-shadow: var(--shadow-md);
+    }
+
+    #kg-story .challenge-item::before {
+      content: "";
+      position: absolute;
+      left: -31px;
+      top: 30px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--bg-surface);
+      border: 3px solid var(--brand-blue);
+    }
+
+    #kg-story .challenge-tag {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--brand-blue);
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    #kg-story .challenge-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+    }
+
+    #kg-story .challenge-body {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    /* ==========================================================================
+       9. 第五章：产品实现与双视图截图槽 (Product Implementation)
+       ========================================================================== */
+    #kg-story .feature-checklist {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 16px;
+      margin: 32px 0 44px;
+    }
+
+    #kg-story .feature-box {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: var(--bg-page);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+    }
+
+    #kg-story .feature-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--brand-navy);
+      margin-top: 7px;
+      flex-shrink: 0;
+    }
+
+    #kg-story .feature-text {
+      font-size: 14.5px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    #kg-story .dual-screenshots {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    #kg-story .dual-screenshots .screenshot-slot {
+      min-height: 280px;
+      padding: 28px 20px;
+    }
+
+    /* ==========================================================================
+       10. 第六章：工程化节点 (Engineering Maturity)
+       ========================================================================== */
+    #kg-story .eng-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 36px;
+    }
+
+    #kg-story .eng-node {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 22px;
+    }
+
+    #kg-story .eng-node-num {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    #kg-story .eng-node-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--brand-navy);
+      margin-bottom: 6px;
+    }
+
+    #kg-story .eng-node-desc {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    /* ==========================================================================
+       11. 第七章：最终成果展示卡 (Final Outcome Card)
+       ========================================================================== */
+    #kg-story .outcome-card {
+      background: var(--bg-page);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 44px;
+      box-shadow: var(--shadow-md);
+      margin-top: 36px;
+    }
+
+    #kg-story .outcome-top {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border-light);
+      margin-bottom: 32px;
+    }
+
+    #kg-story .outcome-product-name {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+
+    #kg-story .outcome-slogan {
+      font-size: 16px;
+      color: var(--brand-navy);
+      font-weight: 500;
+    }
+
+    #kg-story .outcome-version-badge {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--brand-blue);
+      background: var(--brand-blue-soft);
+      border: 1px solid var(--brand-blue-border);
+      padding: 6px 14px;
+      border-radius: 999px;
+    }
+
+    #kg-story .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px 32px;
+      margin-bottom: 36px;
+    }
+
+    #kg-story .spec-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    #kg-story .spec-label {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    #kg-story .spec-value {
+      font-size: 15.5px;
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    #kg-story .outcome-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    #kg-story .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--brand-navy);
+      color: #FFFFFF;
+      font-size: 15px;
+      font-weight: 500;
+      padding: 12px 24px;
+      border-radius: 10px;
+      transition: background 0.2s ease, transform 0.15s ease;
+    }
+
+    #kg-story .btn-primary:hover {
+      background: #111D35;
+      transform: translateY(-1px);
+    }
+
+    #kg-story .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      border: 1px solid var(--border-medium);
+      font-size: 15px;
+      font-weight: 500;
+      padding: 12px 24px;
+      border-radius: 10px;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+
+    #kg-story .btn-secondary:hover {
+      background: var(--bg-subtle);
+      border-color: var(--text-muted);
+    }
+
+    /* ==========================================================================
+       12. 第八章：项目总结与落款 (Closing Reflection)
+       ========================================================================== */
+    #kg-story .closing-box {
+      max-width: 680px;
+    }
+
+    #kg-story .closing-text {
+      font-size: 17.5px;
+      color: var(--text-secondary);
+      line-height: 1.9;
+      margin-bottom: 36px;
+    }
+
+    #kg-story .closing-text p + p {
+      margin-top: 18px;
+    }
+
+    #kg-story .signature-block {
+      padding-top: 24px;
+      border-top: 1px solid var(--border-light);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    #kg-story .signature-author {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    #kg-story .signature-brand {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+    }
+
+    /* ==========================================================================
+       13. 页脚与返回顶部 (Footer & Back to Top)
+       ========================================================================== */
+    #kg-story .site-footer {
+      padding: 48px 0;
+      background: var(--bg-surface);
+      font-size: 13.5px;
+      color: var(--text-muted);
+    }
+
+    #kg-story .footer-inner {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    #kg-story .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    #kg-story .footer-links a:hover {
+      color: var(--brand-navy);
+    }
+
+    #kg-story .back-to-top {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      color: var(--brand-navy);
+      box-shadow: var(--shadow-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(10px);
+      transition: all 0.25s ease;
+      z-index: 90;
+    }
+
+    #kg-story .back-to-top.visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    #kg-story .back-to-top:hover {
+      background: var(--brand-navy);
+      color: #FFFFFF;
+    }
+
+    /* ==========================================================================
+       14. 滚动渐入动效 (Subtle Reveal Animation)
+       ========================================================================== */
+    #kg-story .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #kg-story .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ==========================================================================
+       15. 响应式适配 (Responsive Design)
+       ========================================================================== */
+    @media (max-width: 860px) {
+      #kg-story .eng-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      #kg-story .dual-screenshots {
+        grid-template-columns: 1fr;
+      }
+
+      #kg-story .flow-pipeline {
+        flex-direction: column;
+      }
+
+      #kg-story .flow-arrow {
+        transform: rotate(90deg);
+      }
+    }
+
+    @media (max-width: 680px) {
+      #kg-story .nav-links, #kg-story .nav-home-btn {
+        display: none;
+      }
+
+      #kg-story .mobile-menu-btn {
+        display: flex;
+      }
+
+      #kg-story .story-section {
+        padding: 68px 0;
+      }
+
+      #kg-story .eng-grid, #kg-story .specs-grid {
+        grid-template-columns: 1fr;
+      }
+
+      #kg-story .outcome-card {
+        padding: 28px 22px;
+      }
+
+      #kg-story .challenges-timeline {
+        padding-left: 24px;
+      }
+
+      #kg-story .challenge-item {
+        padding: 20px;
+      }
+
+      #kg-story .challenge-item::before {
+        left: -23px;
+      }
+    }
+  
+#kg-story { min-height:100vh; margin:0; padding:0; scroll-behavior:smooth; }
+#kg-story .product-detail-cta { width:min(var(--container-max),calc(100% - 48px)); margin:0 auto 72px; padding:clamp(28px,5vw,52px); display:flex; align-items:center; justify-content:space-between; gap:28px; border-radius:var(--radius-lg); background:linear-gradient(135deg,var(--brand-navy),#284b7c); color:var(--text-inverse); box-shadow:var(--shadow-lg); }
+#kg-story .product-detail-cta h2 { margin:0; color:#fff; font-size:clamp(24px,3.5vw,36px); line-height:1.35; }
+#kg-story .product-detail-cta p:not(.cta-kicker) { margin:10px 0 0; color:rgba(248,250,252,.82); font-size:15px; }
+#kg-story .product-detail-cta .cta-kicker { margin:0 0 8px; color:#b9d0f2; font:700 11px/1.4 var(--font-mono); letter-spacing:.16em; }
+#kg-story .product-detail-cta .detail-entry-button { min-height:58px; flex:none; padding:0 26px; border:1px solid rgba(255,255,255,.24); background:#fff; color:var(--brand-navy); font-size:16px; font-weight:750; box-shadow:0 8px 24px rgba(0,0,0,.16); }
+#kg-story .product-detail-cta .detail-entry-button:hover { background:#eff6ff; transform:translateY(-2px); }
+@media(max-width:680px){#kg-story .product-detail-cta{width:calc(100% - 32px);margin-bottom:48px;align-items:stretch;flex-direction:column}#kg-story .product-detail-cta .detail-entry-button{width:100%;white-space:normal}}
+
+#kg-story .kg-product-entry{margin:30px auto 42px;max-width:760px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px;padding:22px 26px;border-radius:18px;background:#1a2b4c;color:#fff;box-shadow:0 14px 32px rgba(15,23,42,.18)}#kg-story .kg-product-entry p{margin:0;color:rgba(255,255,255,.86);font-size:15px}#kg-story .kg-product-entry a{display:inline-flex;align-items:center;min-height:54px;padding:0 24px;border-radius:12px;background:#fff;color:#1a2b4c;font-size:16px;font-weight:750;text-decoration:none;transition:transform .2s,background .2s}#kg-story .kg-product-entry a:hover{background:#eff6ff;transform:translateY(-2px)}#kg-story .screenshot-slot{padding:0;overflow:hidden;background:#f7f8fa}@media(max-width:680px){#kg-story .kg-product-entry{margin:22px 16px 34px;padding:20px;align-items:stretch;flex-direction:column}#kg-story .kg-product-entry a{justify-content:center;width:100%;text-align:center}}</style><script>
+  const storyRoot = document.querySelector('#kg-story');
+  if (storyRoot) {
+    const revealItems = [...storyRoot.querySelectorAll('.reveal')];
+    if ('IntersectionObserver' in window) {
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, {
+        root: document.querySelector('#timeline-project-keyguard'),
+        threshold: 0.12,
+        rootMargin: '0px 0px -40px 0px'
+      });
+      revealItems.forEach((item) => revealObserver.observe(item));
+    } else {
+      revealItems.forEach((item) => item.classList.add('is-visible'));
+    }
+  }
+</script>

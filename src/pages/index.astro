@@ -232,7 +232,7 @@ import '../styles/global.css';
         <section id="section-home" class="spa-section home-page animate-fadeIn">
         <button id="version-history-trigger" type="button" onclick="openVersionHistory()" aria-haspopup="dialog" aria-controls="version-history-modal" class="version-trigger absolute top-6 right-6 md:top-10 md:right-12 inline-flex items-center gap-2 rounded-full border border-lab-border bg-white/80 px-3.5 py-2 text-[11px] font-mono tracking-wide text-lab-muted shadow-sm backdrop-blur-sm">
             <span class="version-indicator" aria-hidden="true"></span>
-            <span>v1.0.4</span>
+            <span>v1.0.5</span>
             <span class="version-trigger-label">更新记录 <i class="fa-solid fa-arrow-up-right-from-square ml-1 text-[9px]"></i></span>
         </button>
             <div class="home-hero">
@@ -241,7 +241,7 @@ import '../styles/global.css';
                 <div class="home-hero-content">
                     <div class="home-eyebrow">NORTHSTAR LAB</div>
                     <h1>把想法，<br>变成真正可用的东西。</h1>
-                    <div class="home-introduction"><p class="home-intro-name"><span>你好，我是</span><strong>孙国钦</strong></p><p class="home-intro-rotator" aria-live="off"><span class="home-intro-dot" aria-hidden="true"></span><span id="home-rotating-text" class="home-rotating-text tone-1">一个不太安分的设计师</span></p></div>
+                    <div class="home-introduction"><p class="home-intro-name"><span>你好，我是</span><strong>孙国钦</strong></p><p class="home-intro-rotator" aria-live="off"><span class="home-intro-dot" aria-hidden="true"></span><span id="home-rotating-text" class="home-rotating-text tone-1">一个喜欢把想法做成产品的人</span></p></div>
                     <button type="button" onclick="switchTab('projects')" class="home-primary-cta"><span>探索我的项目</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
                 </div>
                 <div class="home-scroll-cue" aria-hidden="true"><span>SCROLL</span><i></i></div>
@@ -251,7 +251,7 @@ import '../styles/global.css';
                 <section class="home-featured-section" aria-labelledby="home-featured-title">
                     <div class="home-section-heading">
                         <div><div class="home-section-eyebrow">精选项目 <span>/</span> FEATURED PROJECTS</div><h2 id="home-featured-title">从想法到产品，<br class="sm:hidden">记录每一次创造的旅程。</h2></div>
-
+                        <button type="button" onclick="openLearningLogArticle('/logs/second-curve.html', '智性突围：寻找我的“第二曲线”')" class="home-text-link home-log-link">读一篇关于「第二曲线」的思考 <span>→</span></button>
                     </div>
                     <article class="home-feature-card">
                         <div class="home-feature-image"><img src="/images/northstar-mountain.jpg" alt="云海之上的雪山，象征持续探索" loading="lazy"></div>
@@ -291,6 +291,7 @@ import '../styles/global.css';
 
         <!-- SECTION 2: 项目库 -->
         <section id="section-projects" class="spa-section hidden animate-fadeIn">
+
             <section class="project-marquee" aria-label="项目快速切换">
                 <div class="project-marquee-window">
                     <div class="project-marquee-track">
@@ -326,13 +327,18 @@ import '../styles/global.css';
                 <button type="button" class="mobile-project-link" data-project-id="ideas" aria-pressed="false" onclick="selectProjectTimeline('ideas')"><span class="mobile-project-date">2025.06</span><span>灵感记录应用</span></button>
 
             </nav>
-            <div class="project-timeline-layout">
+            <div class="project-status-summary" aria-label="项目状态统计">
+                <span class="project-status-heading">项目阶段</span>
+                <span class="project-status-count is-completed"><i></i>已完成 <strong>2</strong></span>
+                <span class="project-status-count is-progress"><i></i>进行中 <strong>0</strong></span>
+                <span class="project-status-count is-exploration"><i></i>探索与构想 <strong>3</strong></span>
+            </div>            <div class="project-timeline-layout">
 
 
                 <div class="project-timeline-content" aria-live="polite">
                     <article id="timeline-project-northstar" class="timeline-project is-active bg-white rounded-2xl border border-lab-border p-6 md:p-10 shadow-subtle">
   <header class="northstar-project-hero border-b border-lab-border pb-8 md:pb-10">
-    <div class="text-[10px] font-mono tracking-[.2em] text-lab-subtle uppercase">PERSONAL PROJECT</div>
+    <div class="flex flex-wrap items-center justify-between gap-3"><span class="text-[10px] font-mono tracking-[.2em] text-lab-subtle uppercase">PERSONAL PROJECT</span><span class="project-state-badge is-completed">已完成 · 持续迭代</span></div>
     <h2 class="mt-4 text-3xl md:text-5xl font-semibold tracking-tight text-lab-text">北辰实验室</h2>
     <div class="mt-2 text-sm md:text-base font-mono tracking-[.14em] text-lab-subtle">NORTHSTAR LAB</div>
     <p class="mt-8 text-xl md:text-2xl font-medium leading-snug text-lab-text">从一个想法开始，到一个真正运行的产品。</p>
@@ -397,7 +403,7 @@ import '../styles/global.css';
 
                     <article id="timeline-project-calculator" class="timeline-project bg-white rounded-2xl border border-lab-border p-6 md:p-9 shadow-subtle" hidden>
                         <header class="border-b border-lab-border pb-7 md:pb-9">
-                            <div class="text-[10px] font-mono tracking-[.2em] text-lab-subtle uppercase">PERSONAL TOOL · WEB &amp; MINI PROGRAM</div>
+                            <div class="flex flex-wrap items-center justify-between gap-3"><span class="text-[10px] font-mono tracking-[.2em] text-lab-subtle uppercase">PERSONAL TOOL · WEB &amp; MINI PROGRAM</span><span class="project-state-badge is-completed">已完成</span></div>
                             <h2 class="mt-4 text-3xl md:text-5xl font-semibold tracking-tight text-lab-text">参数计算器</h2>
                             <div class="mt-2 text-sm md:text-base font-mono tracking-[.14em] text-lab-subtle">PARAMETRIC CALCULATOR</div>
                             <p class="mt-7 text-xl md:text-2xl font-medium leading-snug text-lab-text">从一个手机工具的想法，到网页和微信小程序都能使用的产品。</p>
@@ -435,7 +441,7 @@ import '../styles/global.css';
                     </article>
 
                     <article id="timeline-project-task" class="timeline-project bg-white rounded-2xl border border-lab-border p-6 md:p-9 shadow-subtle" hidden>
-                        <span class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase">2025.09 · WEB APP</span>
+                        <div class="flex items-center justify-between gap-3"><span class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase">2025.09 · WEB APP</span><span class="project-state-badge is-exploration">探索与构想</span></div>
                         <h2 class="mt-3 text-2xl font-bold text-lab-text">任务管理系统</h2>
                         <p class="mt-4 text-sm text-lab-muted leading-relaxed">围绕个人学习和工作中的任务分散、优先级不清展开。项目方向是通过分类、标签和数据视图，帮助使用者看清当前重点与每周节奏。</p>
                         <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -445,14 +451,14 @@ import '../styles/global.css';
                     </article>
 
                     <article id="timeline-project-ai" class="timeline-project bg-white rounded-2xl border border-lab-border p-6 md:p-9 shadow-subtle" hidden>
-                        <span class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase">2025.08 · AI APP</span>
+                        <div class="flex items-center justify-between gap-3"><span class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase">2025.08 · AI APP</span><span class="project-state-badge is-exploration">探索与构想</span></div>
                         <h2 class="mt-3 text-2xl font-bold text-lab-text">AI 资料助手</h2>
                         <p class="mt-4 text-sm text-lab-muted leading-relaxed">一个围绕个人知识整理的项目方向：把 PDF、Markdown 等资料汇集起来，让提问能够回到原始内容寻找依据。</p>
                         <div class="mt-6 rounded-xl bg-lab-bg p-5"><h3 class="text-sm font-bold text-lab-text">值得继续验证的问题</h3><p class="mt-2 text-sm text-lab-muted leading-relaxed">资料导入是否简单、回答能否附上出处、资料更新后如何维护索引，以及怎样让使用者判断答案是否可靠。</p></div>
                     </article>
 
                     <article id="timeline-project-ideas" class="timeline-project bg-white rounded-2xl border border-lab-border p-6 md:p-9 shadow-subtle" hidden>
-                        <span class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase">2025.06 · PERSONAL TOOL</span>
+                        <div class="flex items-center justify-between gap-3"><span class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase">2025.06 · PERSONAL TOOL</span><span class="project-state-badge is-exploration">探索与构想</span></div>
                         <h2 class="mt-3 text-2xl font-bold text-lab-text">灵感记录应用</h2>
                         <p class="mt-4 text-sm text-lab-muted leading-relaxed">这是一个轻量个人工具构想，关注灵感出现时如何快速记录、稍后整理并再次找回。</p>
                         <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -521,15 +527,21 @@ import '../styles/global.css';
             <div>
                 <div class="text-xs font-mono text-lab-subtle uppercase mb-1">NOTES & ESSAYS</div>
                 <h1 class="text-3xl font-bold text-lab-text">学习日志 & 思考</h1>
-                <p class="text-xs text-lab-muted mt-2">这里不只记录完成了什么，也记录做决定时的依据、遇到的卡点，以及下一次会怎样验证想法。</p>
+                <p class="text-xs text-lab-muted mt-2">记录人生思考、技术复盘与项目实践，也留下每一次决策、问题和成长。</p>
             </div>
 
-            <div class="space-y-4">
-                <button type="button" onclick="openLearningLogArticle('/logs/second-curve.html', '智性突围：寻找我的“第二曲线”')" class="group w-full text-left bg-white p-6 rounded-2xl border border-lab-border shadow-subtle transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-lab-navy/30">
+            <div class="log-category-filters" role="group" aria-label="按日志分类筛选">
+                <button type="button" class="log-category-filter is-active" aria-pressed="true" onclick="filterLearningLogs('all', this)">全部</button>
+                <button type="button" class="log-category-filter" aria-pressed="false" onclick="filterLearningLogs('life', this)">人生思考</button>
+                <button type="button" class="log-category-filter" aria-pressed="false" onclick="filterLearningLogs('tech', this)">技术复盘</button>
+                <button type="button" class="log-category-filter" aria-pressed="false" onclick="filterLearningLogs('project', this)">项目记录</button>
+            </div>
+            <div class="space-y-4" id="learning-log-list">
+                <button type="button" data-log-category="life" onclick="openLearningLogArticle('/logs/second-curve.html', '智性突围：寻找我的“第二曲线”')" class="group w-full text-left bg-white p-6 rounded-2xl border border-lab-border shadow-subtle transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-lab-navy/30">
                     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <div class="space-y-2">
                             <div class="flex items-center gap-3 text-xs font-mono text-lab-subtle">
-                                <span>2026</span><span>•</span><span class="text-lab-navy bg-slate-100 px-2 py-0.5 rounded">个人成长</span>
+                                <span>2026</span><span>•</span><span class="log-tag">人生思考</span><span class="log-tag">成长</span>
                             </div>
                             <h3 class="text-base font-bold text-lab-text transition-colors group-hover:text-lab-navy">智性突围：寻找我的“第二曲线”</h3>
                             <p class="text-xs text-lab-muted leading-relaxed">从重复的现实事务出发，重新认识自己需要的挑战，并尝试建立一个属于自己的技术与创造“第二竞技场”。</p>
@@ -537,11 +549,11 @@ import '../styles/global.css';
                         <span class="text-xs font-mono text-lab-subtle font-medium shrink-0 flex items-center gap-2">阅读全文 <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
                     </div>
                 </button>
-                <button type="button" onclick="openLearningLogArticle('/logs/web-haptics.html', '从工业设计视角看现代 Web 界面设计中的「触觉感」')" class="group w-full text-left bg-white p-6 rounded-2xl border border-lab-border shadow-subtle transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-lab-navy/30">
+                <button type="button" data-log-category="tech" onclick="openLearningLogArticle('/logs/web-haptics.html', '从工业设计视角看现代 Web 界面设计中的「触觉感」')" class="group w-full text-left bg-white p-6 rounded-2xl border border-lab-border shadow-subtle transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-lab-navy/30">
                     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <div class="space-y-2">
                             <div class="flex items-center gap-3 text-xs font-mono text-lab-subtle">
-                                <span>2026</span><span>•</span><span class="text-lab-navy bg-slate-100 px-2 py-0.5 rounded">设计与技术</span>
+                                <span>2026</span><span>•</span><span class="log-tag">技术复盘</span><span class="log-tag">界面设计</span>
                             </div>
                             <h3 class="text-base font-bold text-lab-text transition-colors group-hover:text-lab-navy">从工业设计视角看现代 Web 界面设计中的「触觉感」</h3>
                             <p class="text-xs text-lab-muted leading-relaxed">从材料、结构和触感经验出发，思考数字界面如何通过层次、材质、动效与反馈，创造清晰而细腻的使用感受。</p>
@@ -550,6 +562,7 @@ import '../styles/global.css';
                     </div>
                 </button>
             </div>
+            <p id="learning-logs-empty" class="hidden rounded-2xl border border-dashed border-lab-border bg-white/70 px-6 py-12 text-center text-sm text-lab-muted">这个分类还没有日志，之后会在这里继续记录。</p>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2">
                 <div class="bg-white p-6 rounded-2xl border border-lab-border shadow-subtle">
                     <div class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase mb-3">UP NEXT</div>
@@ -596,7 +609,28 @@ import '../styles/global.css';
                 </div><div class="about-reader-hint"><i class="fa-solid fa-arrow-down"></i> 滚动阅读</div>
               </div>
             </div>
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+            <section class="about-experience-panel rounded-2xl border border-lab-border bg-white p-6 md:p-8 shadow-subtle" aria-labelledby="about-experience-title">
+              <div class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase">EXPERIENCE &amp; TOOLKIT</div>
+              <h2 id="about-experience-title" class="mt-2 text-xl md:text-2xl font-bold text-lab-text">一路走来的经历与积累</h2>
+              <p class="mt-2 max-w-3xl text-sm text-lab-muted leading-relaxed">从工业设计与产品结构出发，逐渐走向界面设计、自动化编程和现代 Web 开发，并继续探索 Python、AI 与独立产品。</p>
+              <ol class="about-experience-list mt-6">
+                <li><span>01</span><div><h3>工业设计专业背景</h3><p>建立以使用者、功能和形态为起点的设计视角。</p></div></li>
+                <li><span>02</span><div><h3>产品结构设计经验</h3><p>参与产品结构相关工作，关注方案如何落到真实约束中。</p></div></li>
+                <li><span>03</span><div><h3>UI 设计实践</h3><p>把设计经验延伸到数字界面，思考信息、视觉与交互。</p></div></li>
+                <li><span>04</span><div><h3>VBA 自动化编程</h3><p>用代码处理重复流程，开始体会拆解问题并实现工具的过程。</p></div></li>
+                <li><span>05</span><div><h3>现代 Web 开发学习</h3><p>通过北辰实验室与参数计算器，实践页面、交互和部署。</p></div></li>
+                <li><span>06</span><div><h3>Python 与 AI 应用探索</h3><p>持续学习编程，并尝试把 AI 能力转化为可用的应用。</p></div></li>
+                <li><span>07</span><div><h3>独立开发数字产品</h3><p>长期目标：理解需求、设计方案、完成开发，并交付真正可用的产品。</p></div></li>
+              </ol>
+              <div class="about-toolkit mt-8 border-t border-lab-border pt-6">
+                <div><div class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase">CAPABILITIES &amp; TOOLS</div><h3 class="mt-2 text-lg font-bold text-lab-text">能力与工具</h3></div>
+                <div class="about-toolkit-groups mt-5">
+                  <div><h4>设计与产品</h4><p><span>工业设计</span><span>产品结构</span><span>UI 设计</span><span>产品构思</span></p></div>
+                  <div><h4>开发与自动化</h4><p><span>VBA</span><span>HTML / CSS</span><span>JavaScript</span><span>Astro</span><span>Python · 探索中</span></p></div>
+                  <div><h4>AI 与交付</h4><p><span>AI 应用探索</span><span>AI 辅助开发</span><span>Git / GitHub</span><span>静态网站部署</span></p></div>
+                </div>
+              </div>
+            </section>            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
               <div class="lg:col-span-7 mt-2 border-t border-lab-border pt-6"><div class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase mb-3">LEARNING ROADMAP</div><h2 class="text-lg font-bold text-lab-text">接下来想继续练习</h2><div class="mt-4 space-y-4">
                 <div class="flex gap-3"><span class="font-mono text-xs text-lab-subtle">01</span><p class="text-xs text-lab-muted leading-relaxed"><strong class="text-lab-text">打牢基础：</strong>继续理解 HTML、CSS、JavaScript 与 Astro 的分工，练习响应式布局、组件拆分和页面状态。</p></div>
                 <div class="flex gap-3"><span class="font-mono text-xs text-lab-subtle">02</span><p class="text-xs text-lab-muted leading-relaxed"><strong class="text-lab-text">形成流程：</strong>用 Git 管理修改，学习把项目和日志整理成易维护的内容结构，并练习定位浏览器与终端错误。</p></div>
@@ -656,7 +690,7 @@ import '../styles/global.css';
                 <button type="button" onclick="closeVersionHistory()" aria-label="关闭更新记录" class="version-close w-10 h-10 shrink-0 rounded-full border border-lab-border text-lab-muted hover:text-lab-text"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <ol class="version-list mt-6">
-                <li class="version-entry is-current"><div class="version-entry-head"><span class="version-number">v1.0.4</span><span class="version-date">2026.11.10 · 当前版本</span></div><h3>新增两篇个人学习日志</h3><ul><li>加入关于个人成长与寻找“第二曲线”的认知日志。</li><li>加入从工业设计视角探讨 Web 界面触觉感的文章，并保留全文阅读入口。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.3</span><span class="version-date">2026.11.10</span></div><h3>参数计算器项目展示</h3><ul><li>参数计算器调整至北辰实验室之后，完整项目详情加入可直接体验的网页版。</li><li>小程序版保留展示卡片，等待补充体验链接；删除首页截图中的重复入口。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.2</span><span class="version-date">2026.11.09</span></div><h3>项目部署架构复盘</h3><ul><li>在北辰实验室项目详情中新增基础设施选型与部署架构演进章节。</li><li>补充从早期海外托管到国产静态托管及 CI/CD 发布链路的复盘。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.1</span><span class="version-date">2026.11.09</span></div><h3>首页个人介绍轮换</h3><ul><li>将首页介绍改为“你好，我是孙国钦”，并轮换展示四种自我描述。</li><li>参考玻璃胶囊样式，放大描述文字并加入柔和的模糊淡入淡出动效。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.0</span><span class="version-date">2026.11.09</span></div><h3>首页视觉重设计</h3><ul><li>按首页设计图重做沉浸式山海 Hero、精选项目展示、技术探索与关于我横幅。</li><li>复用本地背景与山景素材，保留现有栏目导航和首页入口交互。</li></ul></li>
+                <li class="version-entry is-current"><div class="version-entry-head"><span class="version-number">v1.0.5</span><span class="version-date">2026.11.13 · 当前版本</span></div><h3>项目分类与个人经历梳理</h3><ul><li>项目按已完成、进行中和探索构想标注，并展示各阶段数量。</li><li>学习日志增加人生思考、技术复盘、项目记录分类标签和筛选。</li><li>首页增加“寻找我的第二曲线”日志入口；关于我新增经历脉络与能力工具区域。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.4</span><span class="version-date">2026.11.10</span></div><h3>新增两篇个人学习日志</h3><ul><li>加入关于个人成长与寻找“第二曲线”的认知日志。</li><li>加入从工业设计视角探讨 Web 界面触觉感的文章，并保留全文阅读入口。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.3</span><span class="version-date">2026.11.10</span></div><h3>参数计算器项目展示</h3><ul><li>参数计算器调整至北辰实验室之后，完整项目详情加入可直接体验的网页版。</li><li>小程序版保留展示卡片，等待补充体验链接；删除首页截图中的重复入口。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.2</span><span class="version-date">2026.11.09</span></div><h3>项目部署架构复盘</h3><ul><li>在北辰实验室项目详情中新增基础设施选型与部署架构演进章节。</li><li>补充从早期海外托管到国产静态托管及 CI/CD 发布链路的复盘。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.1</span><span class="version-date">2026.11.09</span></div><h3>首页个人介绍轮换</h3><ul><li>将首页介绍改为“你好，我是孙国钦”，并轮换展示四种自我描述。</li><li>参考玻璃胶囊样式，放大描述文字并加入柔和的模糊淡入淡出动效。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.0</span><span class="version-date">2026.11.09</span></div><h3>首页视觉重设计</h3><ul><li>按首页设计图重做沉浸式山海 Hero、精选项目展示、技术探索与关于我横幅。</li><li>复用本地背景与山景素材，保留现有栏目导航和首页入口交互。</li></ul></li>
                 <li class="version-entry"><div class="version-entry-head"><span class="version-number">v0.9.1</span><span class="version-date">2026.11.09</span></div><h3>移动端项目目录</h3><ul><li>手机端新增四个项目的紧凑切换入口，选中后直接展示对应详情。</li><li>手机和桌面项目目录共享同一选中状态。</li></ul></li>
                 <li class="version-entry"><div class="version-entry-head"><span class="version-number">v0.9.0</span><span class="version-date">2026.11.05</span></div><h3>项目页精简</h3><ul><li>移除项目页的标题说明区和移动端当前项目选择条，让项目详情直接进入视野。</li></ul></li>
                 <li class="version-entry"><div class="version-entry-head"><span class="version-number">v0.8.0</span><span class="version-date">2026.11.05</span></div><h3>项目详情与目录细节</h3><ul><li>将独立制作的北辰实验室项目介绍整合为完整项目详情。</li><li>收拢主目录时让品牌图标居中，并固定导航纵向坐标。</li><li>未选中的二级项目隐藏日期，突出当前选择。</li></ul></li>
@@ -680,12 +714,11 @@ import '../styles/global.css';
     if (!rotatingText || !homeSection || reducedMotion) return;
 
     const phrases = [
-        '一个不太安分的设计师',
+        '一个喜欢把想法做成产品的人',
         '一个技术探索者',
-        '一个喜欢折腾的人',
         '一个对新鲜事物保持好奇的人'
     ];
-    const tones = ['tone-1', 'tone-2', 'tone-3', 'tone-4'];
+    const tones = ['tone-1', 'tone-2', 'tone-3'];
     let phraseIndex = 0;
     let switching = false;
 
@@ -764,6 +797,23 @@ function expandProjectDirectory() {
 }
 
 
+window.filterLearningLogs = function (category, trigger) {
+    const cards = [...document.querySelectorAll('#learning-log-list [data-log-category]')];
+    const filters = [...document.querySelectorAll('.log-category-filter')];
+    let visible = 0;
+    cards.forEach(card => {
+        const matches = category === 'all' || card.dataset.logCategory === category;
+        card.hidden = !matches;
+        if (matches) visible += 1;
+    });
+    filters.forEach(button => {
+        const active = button === trigger;
+        button.classList.toggle('is-active', active);
+        button.setAttribute('aria-pressed', String(active));
+    });
+    const empty = document.getElementById('learning-logs-empty');
+    if (empty) empty.classList.toggle('hidden', visible > 0);
+};
 window.openLearningLogArticle = function (src, title) {
     const modal = document.getElementById('learning-log-modal');
     const frame = document.getElementById('learning-log-frame');

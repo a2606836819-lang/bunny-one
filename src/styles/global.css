@@ -438,3 +438,51 @@ button.project-marquee-tag { cursor:pointer; }
   .home-about-link { align-self:flex-end; }
   .home-footer { align-items:flex-start; flex-direction:column; font-size:.6rem; }
 }
+
+/* Project status taxonomy */
+.project-status-summary { display:flex; flex-wrap:wrap; align-items:center; gap:.55rem; margin:.15rem 0 1rem; }
+.project-status-heading { margin-right:.25rem; color:#7b8798; font-size:.68rem; font-weight:650; }
+.project-status-count,.project-state-badge { display:inline-flex; align-items:center; gap:.4rem; border:1px solid #e2e8f0; border-radius:999px; background:rgba(255,255,255,.8); color:#526176; font-size:.65rem; font-weight:600; white-space:nowrap; }
+.project-status-count { padding:.38rem .68rem; }
+.project-status-count strong { color:#1f2937; font-family:Inter, sans-serif; font-size:.72rem; }
+.project-status-count i { width:.42rem; height:.42rem; border-radius:50%; background:#94a3b8; }
+.project-status-count.is-completed i,.project-state-badge.is-completed::before { background:#48a889; }
+.project-status-count.is-progress i { background:#e6a74b; }
+.project-status-count.is-exploration i,.project-state-badge.is-exploration::before { background:#7894bb; }
+.project-state-badge { padding:.32rem .62rem; }
+.project-state-badge::before { content:""; width:.38rem; height:.38rem; border-radius:50%; background:#94a3b8; }
+
+/* Learning log categories and article tags */
+.log-category-filters { display:flex; flex-wrap:wrap; gap:.5rem; }
+.log-category-filter { padding:.52rem .85rem; border:1px solid #e2e8f0; border-radius:999px; background:rgba(255,255,255,.82); color:#64748b; font-size:.72rem; font-weight:600; transition:all .2s ease; }
+.log-category-filter:hover { border-color:#b9c8da; color:#1a2b4c; }
+.log-category-filter.is-active { border-color:#1a2b4c; background:#1a2b4c; color:white; }
+.log-tag { display:inline-flex; align-items:center; border-radius:999px; background:#eef2f6; padding:.22rem .55rem; color:#40516a; font-family:Inter,"Noto Sans SC",sans-serif; font-size:.62rem; font-weight:600; }
+#learning-log-list [hidden] { display:none !important; }
+
+/* Biography milestones and capability toolkit */
+.about-experience-panel { overflow:hidden; }
+.about-experience-list { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.75rem; }
+.about-experience-list li { display:flex; gap:.75rem; align-items:flex-start; min-height:78px; padding:.9rem; border:1px solid #e7ebf0; border-radius:.9rem; background:#fbfcfd; }
+.about-experience-list li > span { display:grid; width:1.7rem; height:1.7rem; flex:none; place-items:center; border-radius:50%; background:#edf2f7; color:#60728a; font:600 .6rem ui-monospace,monospace; }
+.about-experience-list h3 { color:#1a1d20; font-size:.78rem; font-weight:700; }
+.about-experience-list p { margin-top:.2rem; color:#718096; font-size:.68rem; line-height:1.65; }
+.about-toolkit-groups { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1rem; }
+.about-toolkit-groups > div { padding:1rem; border-radius:.85rem; background:#f7f8fa; }
+.about-toolkit-groups h4 { margin-bottom:.65rem; color:#31425b; font-size:.72rem; font-weight:700; }
+.about-toolkit-groups p { display:flex; flex-wrap:wrap; gap:.4rem; }
+.about-toolkit-groups p span { padding:.3rem .55rem; border:1px solid rgba(148,163,184,.2); border-radius:999px; background:#fff; color:#64748b; font-size:.62rem; }
+.home-log-link { flex:none; }
+@media(max-width:767px) {
+  .project-status-summary { gap:.38rem; margin:.45rem 0 .75rem; }
+  .project-status-heading { width:100%; }
+  .project-status-count { padding:.34rem .55rem; font-size:.6rem; }
+  .project-state-badge { font-size:.58rem; }
+  .log-category-filters { gap:.4rem; }
+  .log-category-filter { padding:.48rem .7rem; font-size:.67rem; }
+  .about-experience-list { grid-template-columns:1fr; gap:.55rem; }
+  .about-experience-list li { min-height:0; padding:.8rem; }
+  .about-toolkit-groups { grid-template-columns:1fr; gap:.65rem; }
+  .home-section-heading { flex-direction:column; gap:.15rem; }
+  .home-section-heading > .home-log-link { margin-top:.35rem; font-size:.66rem; }
+}

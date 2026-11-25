@@ -1,0 +1,3286 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人的研发部门：当 AI 成为我的同事 · 北辰实验室</title>
+<meta name="theme-color" content="#FAFAFC">
+<meta name="description" content="从独立开发到多智能体协作，结合 KeyGuard 开发经历，探索模型、AI 工具分工与工程协作。">
+<style>
+/* ==========================================================================
+   北辰实验室 · 数字出版物设计系统 (Beichen Lab Editorial Design System)
+   ========================================================================== */
+:root {
+  --bg: #FAFAFC;
+  --surface: #FFFFFF;
+  --surface-subtle: #F4F5F8;
+  --ink: #0F1015;
+  --ink-2: #3F414D;
+  --ink-3: #7A7D8C;
+  --ink-4: #A2A5B3;
+  --line: #E4E6EE;
+  --line-2: #F0F1F6;
+  --accent: #1E44D9;
+  --accent-hover: #1635B3;
+  --accent-soft: #EEF2FE;
+  --accent-border: #C7D3FA;
+  --dark-bg: #0B0C10;
+  --dark-surface: #13151C;
+  --dark-border: #222531;
+  --dark-ink: #F3F4F8;
+  --dark-ink-2: #A6A9B8;
+  --dark-ink-3: #6C7082;
+
+  /* 语义标签色彩 */
+  --tag-fact-bg: #E8F4EE;
+  --tag-fact-fg: #176140;
+  --tag-official-bg: #FCF2E0;
+  --tag-official-fg: #8A5B0C;
+  --tag-third-bg: #E8EEFD;
+  --tag-third-fg: #1E3FA8;
+  --tag-second-bg: #F1EDF9;
+  --tag-second-fg: #543D85;
+  --tag-infer-bg: #FCECE8;
+  --tag-infer-fg: #9C3A22;
+
+  --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+  --display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro SC", "PingFang SC", "Hiragino Sans GB", system-ui, sans-serif;
+  --serif: "Songti SC", "Noto Serif SC", "Source Han Serif SC", Georgia, "Times New Roman", serif;
+  --mono: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+
+  --measure: 736px;
+  --container: 1140px;
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.84;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "kern" 1;
+  overflow-x: hidden;
+}
+img, svg { display: block; max-width: 100%; }
+a { color: inherit; }
+::selection { background: #D6E0FD; color: var(--ink); }
+
+/* ==========================================================================
+   阅读进度条与顶部导航条
+   ========================================================================== */
+.progress-track {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  z-index: 300;
+  background: transparent;
+  pointer-events: none;
+}
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent), #5E7DF2);
+  transition: width 0.08s linear;
+}
+
+.topbar {
+  position: fixed;
+  top: 3px; left: 0; right: 0;
+  height: 52px;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 clamp(20px, 4vw, 48px);
+  background: rgba(250, 250, 252, 0.84);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--line);
+  transform: translateY(-110%);
+  opacity: 0;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
+}
+.topbar.visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  text-decoration: none;
+}
+.topbar-brand .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.topbar-current {
+  font-size: 12.5px;
+  color: var(--ink-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 44vw;
+}
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--ink-3);
+}
+.topbar-toc-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink-2);
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+.topbar-toc-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ==========================================================================
+   Hero 首屏封面
+   ========================================================================== */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(96px, 14vh, 168px) clamp(24px, 7vw, 120px) clamp(96px, 12vh, 136px);
+  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+  background: radial-gradient(circle at 82% 24%, rgba(30, 68, 217, 0.045) 0%, transparent 52%), var(--bg);
+}
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--line-2) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line-2) 1px, transparent 1px);
+  background-size: 80px 80px;
+  -webkit-mask-image: radial-gradient(ellipse 75% 65% at 72% 45%, #000 0%, transparent 78%);
+  mask-image: radial-gradient(ellipse 75% 65% at 72% 45%, #000 0%, transparent 78%);
+}
+.hero-orbit {
+  position: absolute;
+  top: 50%;
+  right: clamp(-280px, -8vw, -40px);
+  transform: translateY(-50%);
+  width: min(920px, 94vw);
+  pointer-events: none;
+  opacity: 0.9;
+}
+.orbit-nodes {
+  transform-origin: 400px 400px;
+  animation: orbitSpin 160s linear infinite;
+}
+.orbit-nodes-rev {
+  transform-origin: 400px 400px;
+  animation: orbitSpinRev 220s linear infinite;
+}
+@keyframes orbitSpin { to { transform: rotate(360deg); } }
+@keyframes orbitSpinRev { to { transform: rotate(-360deg); } }
+
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 1060px;
+}
+.hero-kicker-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 18px;
+  margin: 0 0 clamp(26px, 4vh, 44px);
+}
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-weight: 600;
+}
+.eyebrow::before {
+  content: "";
+  width: 28px;
+  height: 1.5px;
+  background: var(--accent);
+}
+.issue-pill {
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--ink-3);
+  letter-spacing: 0.04em;
+}
+.hero h1 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(46px, 8.4vw, 114px);
+  line-height: 0.96;
+  letter-spacing: -0.045em;
+  font-weight: 700;
+  background: linear-gradient(155deg, #0F1015 35%, #3B3E4D 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.hero-sub {
+  margin: clamp(14px, 2.2vh, 24px) 0 0;
+  font-family: var(--display);
+  font-size: clamp(21px, 3.3vw, 40px);
+  font-weight: 400;
+  letter-spacing: -0.022em;
+  color: var(--ink-3);
+}
+.hero-lead {
+  margin: clamp(32px, 4.8vh, 52px) 0 0;
+  max-width: 610px;
+  font-size: clamp(16.5px, 1.45vw, 19px);
+  line-height: 1.85;
+  color: var(--ink-2);
+}
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 28px;
+  margin-top: clamp(40px, 6vh, 68px);
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+  max-width: 680px;
+  font-size: 12.5px;
+  color: var(--ink-3);
+  letter-spacing: 0.02em;
+}
+.hero-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.hero-meta span::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.55;
+  flex: none;
+}
+.scroll-hint {
+  position: absolute;
+  bottom: 28px;
+  left: clamp(24px, 7vw, 120px);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  text-decoration: none;
+}
+.scroll-hint .bar {
+  width: 1px;
+  height: 36px;
+  background: var(--line);
+  position: relative;
+  overflow: hidden;
+}
+.scroll-hint .bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  animation: scrollDown 2.6s cubic-bezier(0.7, 0, 0.3, 1) infinite;
+}
+@keyframes scrollDown {
+  0% { transform: translateY(-100%); }
+  55%, 100% { transform: translateY(100%); }
+}
+
+/* ==========================================================================
+   版心与章节结构
+   ========================================================================== */
+.wrap {
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5vw, 48px);
+}
+.prose {
+  max-width: var(--measure);
+  margin: 0 auto;
+}
+.chapter {
+  padding: clamp(68px, 10.5vh, 128px) 0;
+  border-top: 1px solid var(--line);
+}
+.chapter-head {
+  max-width: var(--measure);
+  margin: 0 auto clamp(36px, 5vh, 56px);
+}
+.chapter-num {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  color: var(--accent);
+  font-weight: 600;
+}
+.chapter-num::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+.chapter h2 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(28px, 4.2vw, 44px);
+  line-height: 1.22;
+  letter-spacing: -0.032em;
+  font-weight: 700;
+  color: var(--ink);
+}
+.chapter-kicker {
+  margin: 14px 0 0;
+  font-size: 14px;
+  color: var(--ink-3);
+  letter-spacing: 0.015em;
+  line-height: 1.7;
+}
+
+/* ==========================================================================
+   编辑正文排版
+   ========================================================================== */
+.prose p { margin: 0 0 1.4em; }
+.prose p:last-child { margin-bottom: 0; }
+.prose .lead {
+  font-size: clamp(18.5px, 1.95vw, 21.5px);
+  line-height: 1.76;
+  color: var(--ink);
+  letter-spacing: -0.012em;
+  font-weight: 450;
+}
+.prose h3 {
+  margin: clamp(40px, 5.2vh, 56px) 0 16px;
+  font-family: var(--display);
+  font-size: clamp(19.5px, 2.15vw, 23.5px);
+  line-height: 1.42;
+  letter-spacing: -0.022em;
+  font-weight: 650;
+  color: var(--ink);
+}
+.prose h4 {
+  margin: 30px 0 12px;
+  font-size: 16.5px;
+  font-weight: 650;
+  letter-spacing: -0.012em;
+}
+.prose strong {
+  font-weight: 650;
+  color: var(--ink);
+}
+.prose a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(30, 68, 217, 0.28);
+  transition: border-color 0.2s;
+}
+.prose a:hover { border-bottom-color: var(--accent); }
+.prose code {
+  font-family: var(--mono);
+  font-size: 0.87em;
+  background: var(--surface-subtle);
+  border: 1px solid var(--line-2);
+  padding: 2px 6px;
+  border-radius: 5px;
+  color: var(--ink);
+}
+
+.pullquote {
+  margin: clamp(44px, 6.2vh, 68px) 0;
+  padding: 6px 0 6px clamp(22px, 3.2vw, 36px);
+  border-left: 2.5px solid var(--accent);
+  font-family: var(--serif);
+  font-size: clamp(19.5px, 2.25vw, 25px);
+  line-height: 1.68;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.pullquote cite {
+  display: block;
+  margin-top: 18px;
+  font-family: var(--sans);
+  font-size: 12.5px;
+  font-style: normal;
+  color: var(--ink-3);
+  letter-spacing: 0.02em;
+  line-height: 1.7;
+}
+
+/* ==========================================================================
+   来源性质标签体系
+   ========================================================================== */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 7px;
+  border-radius: 4px;
+  font-family: var(--sans);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  font-weight: 700;
+  white-space: nowrap;
+  vertical-align: 1.5px;
+  line-height: 1;
+}
+.tag-fact { background: var(--tag-fact-bg); color: var(--tag-fact-fg); }
+.tag-official { background: var(--tag-official-bg); color: var(--tag-official-fg); }
+.tag-third { background: var(--tag-third-bg); color: var(--tag-third-fg); }
+.tag-second { background: var(--tag-second-bg); color: var(--tag-second-fg); }
+.tag-infer { background: var(--tag-infer-bg); color: var(--tag-infer-fg); }
+
+/* ==========================================================================
+   声明框与规则列表
+   ========================================================================== */
+.callout {
+  margin: clamp(32px, 4.2vh, 46px) 0;
+  padding: 22px 26px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  font-size: 14.5px;
+  line-height: 1.8;
+  color: var(--ink-2);
+  box-shadow: 0 2px 10px rgba(15, 16, 21, 0.02);
+}
+.callout-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 10px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+}
+.callout-title::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.callout p { margin: 0 0 0.7em; }
+.callout p:last-child { margin-bottom: 0; }
+
+.rules {
+  list-style: none;
+  margin: 18px 0 0;
+  padding: 0;
+  counter-reset: r;
+}
+.rules li {
+  position: relative;
+  padding: 18px 0 18px 48px;
+  border-top: 1px solid var(--line-2);
+  font-size: 15.5px;
+  line-height: 1.78;
+  color: var(--ink-2);
+  counter-increment: r;
+}
+.rules li:first-child { border-top: none; padding-top: 4px; }
+.rules li::before {
+  content: counter(r, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 19px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  font-weight: 600;
+}
+.rules li:first-child::before { top: 5px; }
+.rules li strong { color: var(--ink); }
+
+.legend-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin: clamp(28px, 4vh, 38px) 0;
+}
+.legend-cell {
+  background: var(--surface);
+  padding: 18px 20px;
+}
+.legend-cell .tag { margin-bottom: 10px; }
+.legend-cell p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.68;
+  color: var(--ink-3);
+}
+
+/* ==========================================================================
+   数据可视化容器 (Data Journalism Frame)
+   ========================================================================== */
+.viz {
+  margin: clamp(44px, 6.2vh, 68px) 0;
+}
+.viz-frame {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: clamp(20px, 3.2vw, 36px);
+  box-shadow: 0 4px 24px rgba(15, 16, 21, 0.025);
+}
+.viz-header-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin: 0 0 24px;
+}
+.viz-head { margin: 0; }
+.viz-title {
+  margin: 0 0 6px;
+  font-family: var(--display);
+  font-size: 16.5px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  line-height: 1.45;
+  color: var(--ink);
+}
+.viz-sub {
+  margin: 0;
+  font-size: 13px;
+  color: var(--ink-3);
+  line-height: 1.65;
+}
+.viz-note {
+  margin: 22px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--line-2);
+  font-size: 12px;
+  line-height: 1.78;
+  color: var(--ink-3);
+}
+.viz-note b { color: var(--ink-2); font-weight: 600; }
+
+/* 交互筛选胶囊栏 */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.filter-pill {
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--ink-2);
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.filter-pill:hover {
+  border-color: var(--accent-border);
+  color: var(--accent);
+}
+.filter-pill.active {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #FFFFFF;
+}
+
+/* ==========================================================================
+   01. 交互式技术发展时间轴
+   ========================================================================== */
+.tl-phase {
+  margin-bottom: 8px;
+  transition: opacity 0.25s ease;
+}
+.tl-phase.hidden { display: none; }
+.tl-phase-head {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin: 44px 0 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+.tl-phase:first-child .tl-phase-head { margin-top: 4px; }
+.tl-phase-idx {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  font-weight: 600;
+}
+.tl-phase-name {
+  font-size: 17px;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+.tl-phase-years {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink-3);
+  letter-spacing: 0.04em;
+}
+.tl-list {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.tl-item {
+  display: grid;
+  grid-template-columns: 108px 28px 1fr;
+  align-items: start;
+  padding-bottom: 26px;
+  position: relative;
+}
+.tl-item::before {
+  content: "";
+  position: absolute;
+  left: 121px;
+  top: 22px;
+  bottom: -2px;
+  width: 1px;
+  background: var(--line);
+}
+.tl-item:last-child::before { display: none; }
+.tl-date {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.02em;
+  color: var(--ink-3);
+  text-align: right;
+  padding-top: 4px;
+  line-height: 1.5;
+}
+.tl-dot {
+  justify-self: center;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-top: 6px;
+  background: var(--surface);
+  border: 2px solid var(--accent);
+  position: relative;
+  z-index: 1;
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+.tl-item:hover .tl-dot {
+  background: var(--accent);
+  transform: scale(1.25);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+.tl-content {
+  padding: 0 0 0 4px;
+}
+.tl-content h3 {
+  margin: 0 0 6px;
+  font-size: 15.5px;
+  font-weight: 650;
+  letter-spacing: -0.012em;
+  line-height: 1.52;
+  color: var(--ink);
+}
+.tl-content p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--ink-2);
+}
+.tl-src {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: var(--ink-3);
+  text-decoration: none;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 1px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.tl-src:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* ==========================================================================
+   02. 四层技术架构 (交互联动)
+   ========================================================================== */
+.arch-svg-box {
+  margin-bottom: clamp(24px, 3.5vw, 36px);
+}
+.arch-ring {
+  cursor: pointer;
+  transition: opacity 0.25s ease, stroke 0.25s ease;
+}
+.layers {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.layer {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: clamp(14px, 2.4vw, 26px);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: clamp(16px, 2.4vw, 24px);
+  align-items: start;
+  cursor: pointer;
+  transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+}
+.layer:hover, .layer.is-active {
+  border-color: var(--accent);
+  background: #FAFBFD;
+  box-shadow: 0 4px 16px rgba(30, 68, 217, 0.06);
+}
+.layer-idx {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  font-weight: 700;
+  padding-top: 3px;
+}
+.layer h4 {
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+.layer h4 .en {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-weight: 600;
+  margin-left: 8px;
+}
+.layer p {
+  margin: 0 0 10px;
+  font-size: 14px;
+  line-height: 1.74;
+  color: var(--ink-2);
+}
+.layer-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 22px;
+  font-size: 12.5px;
+  color: var(--ink-3);
+  line-height: 1.7;
+}
+.layer-meta b { color: var(--ink-2); font-weight: 600; }
+
+/* ==========================================================================
+   03. 数据表格
+   ========================================================================== */
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 -4px;
+  padding: 0 4px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  line-height: 1.65;
+  min-width: 700px;
+}
+th {
+  text-align: left;
+  font-weight: 650;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  padding: 0 16px 14px 0;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+th:last-child, td:last-child { padding-right: 0; }
+td {
+  padding: 16px 16px 16px 0;
+  border-bottom: 1px solid var(--line-2);
+  vertical-align: top;
+  color: var(--ink-2);
+}
+td:first-child {
+  color: var(--ink);
+  font-weight: 650;
+  white-space: nowrap;
+}
+tr:last-child td { border-bottom: none; }
+tbody tr { transition: background 0.2s; }
+tbody tr:hover { background: #FAFBFD; }
+.mono { font-family: var(--mono); font-size: 12px; letter-spacing: -0.01em; }
+
+/* ==========================================================================
+   04. AI 工具能力定位矩阵 (可点击详情卡片)
+   ========================================================================== */
+.matrix-wrap {
+  position: relative;
+}
+.matrix {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.matrix-cell {
+  background: var(--surface);
+  padding: clamp(20px, 2.8vw, 30px);
+  min-height: 184px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: background 0.25s ease;
+}
+.matrix-cell:hover { background: #FAFBFD; }
+.matrix-cell h4 {
+  margin: 0;
+  font-size: 14.5px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.matrix-cell .axis-note {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-3);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: auto;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 13px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  font-family: var(--sans);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ink-2);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.chip:hover, .chip.active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.chip .d {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex: none;
+}
+.axis-bar {
+  display: flex;
+  justify-content: space-between;
+  margin: 14px 2px 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.matrix-inspector {
+  margin-top: 16px;
+  padding: 16px 20px;
+  border-radius: var(--radius-md);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  font-size: 13.5px;
+  line-height: 1.72;
+  color: var(--ink-2);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.matrix-inspector strong { color: var(--ink); }
+
+/* ==========================================================================
+   05. 公开评测图表与交互 Tooltip
+   ========================================================================== */
+.bar-panels {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: clamp(24px, 4vw, 48px);
+}
+.bar-panel-title {
+  margin: 0 0 3px;
+  font-size: 14.5px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.bar-panel-sub {
+  margin: 0 0 20px;
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.bar-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.bar-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+.bar-label {
+  font-size: 13px;
+  color: var(--ink-2);
+  line-height: 1.5;
+}
+.bar-val {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 650;
+  color: var(--ink);
+}
+.bar-track {
+  height: 9px;
+  background: var(--line-2);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  width: 0;
+  border-radius: 99px;
+  background: var(--accent);
+  transition: width 1.1s cubic-bezier(0.22, 0.75, 0.25, 1);
+}
+.bar-fill.alt { background: #8FA3F2; }
+.bar-fill.dim { background: #C5C9D8; }
+.bar-axis {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--ink-3);
+}
+
+.chart-stage {
+  position: relative;
+}
+.chart-tooltip {
+  position: absolute;
+  pointer-events: none;
+  z-index: 20;
+  background: rgba(15, 16, 21, 0.94);
+  color: #FFFFFF;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.6;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.16s ease, transform 0.16s ease;
+  max-width: 260px;
+}
+.chart-tooltip.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.chart-tooltip .tt-title {
+  font-weight: 650;
+  font-size: 12.5px;
+  margin-bottom: 3px;
+  color: #FFFFFF;
+}
+.chart-tooltip .tt-meta {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: #B4B8C8;
+}
+
+/* ==========================================================================
+   06. 北辰实验室组织架构图
+   ========================================================================== */
+.org-wrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.orgchart {
+  width: 100%;
+  min-width: 720px;
+  height: auto;
+}
+.org-node {
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+.org-node:hover rect {
+  stroke: var(--accent);
+  stroke-width: 1.8;
+}
+
+/* ==========================================================================
+   07. KeyGuard 真实代码审查案例
+   ========================================================================== */
+.case-grid {
+  display: grid;
+  grid-template-columns: 1.06fr 0.94fr;
+  gap: clamp(18px, 3vw, 32px);
+}
+@media (max-width: 900px) { .case-grid { grid-template-columns: 1fr; } }
+.code-panel {
+  background: #101218;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid #1E212D;
+  display: flex;
+  flex-direction: column;
+}
+.code-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid #1E212D;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: #828699;
+}
+.code-head-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.code-head .dots {
+  display: flex;
+  gap: 6px;
+}
+.code-head .dots i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #2C3040;
+  display: block;
+}
+.code-body {
+  margin: 0;
+  padding: 18px 18px 22px;
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1.95;
+  color: #C7CBD9;
+}
+.code-body .ln {
+  display: block;
+  white-space: pre;
+  border-radius: 4px;
+  padding: 0 6px;
+  transition: background 0.2s ease;
+}
+.code-body .cm { color: #60657A; }
+.code-body .kw { color: #8FA0F5; }
+.code-body .st { color: #74C7A6; }
+.code-body .fn { color: #E6B668; }
+.code-body .bad {
+  background: rgba(214, 86, 64, 0.14);
+  border-left: 2.5px solid #D65640;
+  padding-left: 8px;
+  margin-left: -4px;
+}
+.code-body .bad.is-highlighted {
+  background: rgba(214, 86, 64, 0.28);
+}
+.code-body .mk {
+  color: #E86F5A;
+  font-weight: 700;
+}
+.review-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+.review-item {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px 16px;
+  font-size: 13.5px;
+  line-height: 1.72;
+  color: var(--ink-2);
+  cursor: pointer;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.review-item:hover, .review-item.is-active {
+  border-color: #D65640;
+  transform: translateX(3px);
+  box-shadow: 0 4px 14px rgba(178, 80, 58, 0.08);
+}
+.review-item b {
+  display: block;
+  color: var(--ink);
+  font-size: 13px;
+  margin-bottom: 4px;
+  font-weight: 650;
+}
+.review-item .sev {
+  display: inline-block;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+  margin-right: 8px;
+  vertical-align: 1px;
+}
+.sev-high { background: var(--tag-infer-bg); color: var(--tag-infer-fg); }
+.sev-mid { background: var(--tag-official-bg); color: var(--tag-official-fg); }
+
+/* ==========================================================================
+   08. 人工协作 vs Agent 协作 (深色沉浸章节)
+   ========================================================================== */
+.dark-section {
+  background: var(--dark-bg);
+  color: var(--dark-ink);
+  padding: clamp(68px, 10vh, 118px) 0;
+  margin: clamp(56px, 8vh, 96px) 0;
+}
+.dark-section .chapter-num { color: #8FA0F5; }
+.dark-section .chapter-num::after { background: var(--dark-border); }
+.dark-section h2 { color: #FFFFFF; }
+.dark-section .chapter-kicker { color: var(--dark-ink-2); }
+.dark-section .prose p { color: #B8BBC9; }
+.dark-section .prose strong { color: #FFFFFF; }
+
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(24px, 4vw, 52px);
+  margin: clamp(38px, 5.5vh, 56px) 0 0;
+}
+@media (max-width: 820px) { .compare-grid { grid-template-columns: 1fr; } }
+.flow-col {
+  background: var(--dark-surface);
+  border: 1px solid var(--dark-border);
+  border-radius: var(--radius-lg);
+  padding: clamp(22px, 3vw, 32px);
+}
+.flow-col h4 {
+  margin: 0 0 6px;
+  font-size: 15px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #FFFFFF;
+}
+.flow-col h4 .badge {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+.badge-human { background: #232636; color: #9DA3C4; }
+.badge-agent { background: #1B2B54; color: #8FA0F5; }
+.flow-col > p {
+  font-size: 13px;
+  color: var(--dark-ink-3);
+  margin: 0 0 24px;
+  line-height: 1.7;
+}
+.flow {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+.flow li {
+  position: relative;
+  padding: 0 0 22px 34px;
+  font-size: 14px;
+  line-height: 1.65;
+  color: #C9CCD9;
+}
+.flow li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 6px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: 1.5px solid #3D4154;
+  background: var(--dark-surface);
+  z-index: 1;
+}
+.flow li::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 19px;
+  bottom: -2px;
+  width: 1px;
+  background: #282B3A;
+}
+.flow li:last-child { padding-bottom: 0; }
+.flow li:last-child::after { display: none; }
+.flow li.hl::before {
+  border-color: #8FA0F5;
+  background: #8FA0F5;
+  box-shadow: 0 0 0 4px rgba(143, 160, 245, 0.16);
+}
+.flow li.hl {
+  color: #FFFFFF;
+  font-weight: 600;
+}
+.flow li span {
+  display: block;
+  font-size: 12px;
+  color: #777B8E;
+  font-weight: 400;
+  margin-top: 3px;
+  line-height: 1.62;
+}
+.dark-note {
+  margin-top: clamp(32px, 4.5vh, 48px);
+  padding: 22px 26px;
+  border-radius: var(--radius-md);
+  background: var(--dark-surface);
+  border: 1px solid var(--dark-border);
+  font-size: 14px;
+  line-height: 1.82;
+  color: #B0B3C2;
+}
+.dark-note b { color: #FFFFFF; }
+
+/* ==========================================================================
+   悬浮侧边目录 & 移动端抽屉目录
+   ========================================================================== */
+.sidetoc {
+  position: fixed;
+  right: 28px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 184px;
+  z-index: 80;
+  display: none;
+  font-size: 12px;
+}
+@media (min-width: 1420px) { .sidetoc { display: block; } }
+.sidetoc-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+}
+.sidetoc-head span:first-child {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-weight: 700;
+}
+.sidetoc-pct {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--accent);
+  font-weight: 600;
+}
+.sidetoc ol { list-style: none; margin: 0; padding: 0; }
+.sidetoc a {
+  display: block;
+  padding: 6px 0 6px 14px;
+  position: relative;
+  color: var(--ink-3);
+  text-decoration: none;
+  line-height: 1.45;
+  transition: color 0.2s ease;
+  font-size: 11.5px;
+}
+.sidetoc a::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--line);
+  transition: all 0.2s ease;
+}
+.sidetoc a:hover { color: var(--ink-2); }
+.sidetoc a.active { color: var(--ink); font-weight: 600; }
+.sidetoc a.active::before {
+  background: var(--accent);
+  width: 6px;
+  height: 6px;
+}
+
+.toc-btn {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 120;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: #FFFFFF;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 26px rgba(15, 16, 21, 0.22);
+  transition: transform 0.2s ease;
+}
+.toc-btn:active { transform: scale(0.94); }
+@media (min-width: 1420px) { .toc-btn { display: none; } }
+
+.toc-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 250;
+  background: rgba(250, 250, 252, 0.97);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 32px clamp(24px, 8vw, 80px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s;
+}
+.toc-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+.toc-overlay h5 {
+  margin: 0 0 22px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-weight: 700;
+}
+.toc-overlay ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  max-width: 540px;
+}
+.toc-overlay a {
+  display: block;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line-2);
+  font-size: 16px;
+  color: var(--ink-2);
+  text-decoration: none;
+  letter-spacing: -0.01em;
+}
+.toc-overlay a:hover { color: var(--accent); }
+.toc-overlay a .n {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--accent);
+  margin-right: 14px;
+  letter-spacing: 0.08em;
+}
+.toc-close {
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  font-size: 20px;
+  color: var(--ink-2);
+  cursor: pointer;
+  line-height: 1;
+}
+
+/* ==========================================================================
+   09. 参考文献与页脚
+   ========================================================================== */
+.refs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: ref;
+}
+.refs li {
+  position: relative;
+  padding: 13px 0 13px 44px;
+  border-bottom: 1px solid var(--line-2);
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--ink-2);
+  counter-increment: ref;
+}
+.refs li:last-child { border-bottom: none; }
+.refs li::before {
+  content: "[" counter(ref) "]";
+  position: absolute;
+  left: 0;
+  top: 13px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-3);
+}
+.refs li a {
+  color: var(--ink-2);
+  text-decoration: none;
+  border-bottom: 1px solid var(--line);
+  word-break: break-all;
+}
+.refs li a:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+.refs li .ref-title {
+  color: var(--ink);
+  font-weight: 600;
+}
+.footer-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 32px;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: clamp(48px, 6.5vh, 72px);
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--ink-3);
+  line-height: 1.7;
+}
+
+/* ==========================================================================
+   适度入场动效与无障碍降级
+   ========================================================================== */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.75s cubic-bezier(0.2, 0.7, 0.3, 1), transform 0.75s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+[data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] { opacity: 1; transform: none; transition: none; }
+  .orbit-nodes, .orbit-nodes-rev { animation: none; }
+  .scroll-hint .bar::after { animation: none; }
+  html { scroll-behavior: auto; }
+  .bar-fill { transition: none; }
+}
+
+/* ==========================================================================
+   移动端响应式微调
+   ========================================================================== */
+@media (max-width: 760px) {
+  body { font-size: 16px; line-height: 1.8; }
+  .hero { padding-left: 24px; padding-right: 24px; }
+  .scroll-hint { left: 24px; }
+  .matrix { grid-template-columns: 1fr; }
+  .matrix-cell { min-height: auto; }
+  .layer { grid-template-columns: 1fr; gap: 6px; }
+  .layer-idx { padding-top: 0; }
+  .tl-item { grid-template-columns: 24px 1fr; gap: 0 14px; }
+  .tl-item::before { left: 11px; top: 20px; }
+  .tl-date {
+    grid-column: 2;
+    grid-row: 1;
+    text-align: left;
+    padding-top: 0;
+    margin-bottom: 2px;
+    font-size: 11px;
+  }
+  .tl-dot {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    margin-top: 4px;
+  }
+  .tl-content { grid-column: 2; grid-row: 2; }
+  .tl-phase-years { margin-left: 0; width: 100%; }
+  .pullquote { font-size: 18px; }
+}
+
+/* 本次专题增补：首屏阅读导语、能力矩阵、只读审查与文章结尾 */
+.workflow-review { margin: 30px 0; padding: 24px; border: 1px solid var(--line); border-radius: 14px; background: #F7F8FA; }
+.workflow-review-head > span,.workflow-insights article > span { color: var(--accent); font: 700 10px/1.5 var(--mono); letter-spacing: .12em; }
+.workflow-review-head h3 { margin: 7px 0; color: #293F5E; font: 650 19px/1.4 var(--display); }
+.workflow-review-head p { margin: 0; color: var(--ink-3); font-size: 11px; }
+.workflow-bars { display: grid; gap: 13px; margin: 22px 0 16px; }
+.workflow-bar-row { display: grid; grid-template-columns: minmax(180px,1fr) auto; gap: 6px 14px; align-items: center; color: var(--ink-2); font-size: 11px; }
+.workflow-bar-row > span { color: #53647A; font-variant-numeric: tabular-nums; }
+.workflow-bar-row > i { grid-column: 1 / -1; display: block; height: 6px; overflow: hidden; border-radius: 9px; background: #E6EAF0; }
+.workflow-bar-row > i > b { display: block; height: 100%; border-radius: inherit; background: #5275A5; }.workflow-bar-row > i > b.range { background: linear-gradient(90deg,#B4C1D4 87.5%,#5275A5 87.5%); }
+.workflow-total { display: flex; flex-wrap: wrap; align-items: baseline; gap: 7px 14px; padding: 13px 15px; border-radius: 9px; background: #EAF0F6; color: #344D6A; }.workflow-total strong { font-size: 13px; }.workflow-total span { color: #5E6E82; font-size: 10px; line-height: 1.6; }
+.workflow-insights { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; margin-top: 16px; }.workflow-insights article { padding: 14px; border: 1px solid var(--line); border-radius: 10px; background: #fff; }.workflow-insights p { margin: 7px 0 0; color: var(--ink-2); font-size: 11px; line-height: 1.75; }
+@media (max-width:760px) { .workflow-review { padding: 17px; }.workflow-insights { grid-template-columns: 1fr; }.workflow-bar-row { grid-template-columns: 1fr auto; } }
+
+.hero-lead { max-width: 790px; font-size: clamp(15.5px, 1.25vw, 17px); line-height: 1.72; margin-top: clamp(24px, 3.5vh, 38px); }
+.hero-lead p { margin: 0 0 9px; }
+.hero-lead p:last-child { margin-bottom: 0; }
+.hero-meta { margin-top: clamp(22px, 3vh, 34px); }
+.reading-guide { position: relative; z-index: 3; padding: 26px clamp(24px, 7vw, 120px); background: #F4F6FA; border-bottom: 1px solid var(--line); }
+.reading-guide-inner { max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: 190px 1fr; gap: 28px; align-items: center; }
+.reading-guide-heading span,.credits-heading span { color: var(--accent); font: 700 10px/1.4 var(--mono); letter-spacing: .16em; }
+.reading-guide-heading h2 { margin: 6px 0 0; font: 650 19px/1.3 var(--display); }
+.reading-guide ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 12px; }
+.reading-guide li { display: flex; align-items: flex-start; gap: 10px; color: var(--ink-2); font-size: 12px; line-height: 1.65; }
+.reading-guide li span { color: var(--accent); font: 700 10px/1.6 var(--mono); }
+.reading-guide li p { margin: 0; }
+.capability-scroll { width: 100%; max-width: 100%; overflow-x: auto; overscroll-behavior-inline: contain; border: 1px solid var(--line); border-radius: 12px; }
+.capability-table { width: 100%; min-width: 690px; border-collapse: collapse; background: #fff; text-align: center; }
+.capability-table th,.capability-table td { padding: 12px 14px; border-bottom: 1px solid #E8ECF2; }
+.capability-table thead th { background: #F4F6F9; color: #56677F; font-size: 12px; font-weight: 650; }
+.capability-table tbody tr:last-child th,.capability-table tbody tr:last-child td { border-bottom: 0; }
+.capability-table tbody th { width: 142px; text-align: left; background: #F8FAFC; }
+.capability-name { border: 0; background: transparent; color: #314763; font: 650 13px/1.4 var(--sans); cursor: pointer; }
+.capability-name:hover,.capability-name:focus-visible { color: var(--accent); text-decoration: underline; }
+.capability-dot { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border: 1px solid transparent; border-radius: 50%; background: transparent; font: 17px/1 var(--sans); cursor: pointer; transition: background .18s, transform .18s; }
+.capability-dot:hover,.capability-dot:focus-visible { background: #F4F7FB; transform: scale(1.12); outline: 2px solid #B4C1D4; outline-offset: 1px; }
+.capability-dot.level-3,.capability-legend .level-3 { color: #5275A5; }
+.capability-dot.level-2,.capability-legend .level-2 { color: #B4C1D4; }
+.capability-dot.level-1,.capability-legend .level-1 { color: #E1E6EE; }
+.capability-dot.level-0,.capability-legend .level-0 { color: #F0F0F0; }
+.capability-legend { display: flex; flex-wrap: wrap; gap: 10px 22px; margin: 15px 0 20px; color: var(--ink-3); font-size: 11px; }
+.capability-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.capability-legend i { font-style: normal; font-size: 17px; }
+.capability-detail { min-height: 84px; padding: 16px 18px; border-left: 3px solid var(--accent); border-radius: 0 9px 9px 0; background: #F4F6FA; color: var(--ink-2); }
+.capability-detail-label { display: block; color: var(--ink-3); font: 10px/1.5 var(--mono); letter-spacing: .1em; }
+.capability-detail strong { display: block; margin-top: 3px; color: #314763; font-size: 14px; }
+.capability-detail p { margin: 3px 0 0; font-size: 12px; line-height: 1.65; }
+.verification-note { margin-top: 22px; padding: 15px 18px; border: 1px solid #D9E2EF; border-radius: 10px; background: #F5F8FC; color: #53647A; font-size: 12px; line-height: 1.75; }
+.verification-note strong { color: #314763; }
+.audit-stats { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 12px; margin: 26px 0 20px; }
+.audit-stats > div { min-width: 0; padding: 16px; border: 1px solid var(--line); border-radius: 12px; background: white; }
+.audit-stats strong { display: block; color: #243B5A; font: 700 27px/1 var(--display); }
+.audit-stats span { display: block; min-height: 34px; margin-top: 8px; color: var(--ink-3); font-size: 11px; line-height: 1.5; }
+.audit-bar { display: block; height: 5px; width: var(--bar); margin-top: 12px; border-radius: 9px; background: #5275A5; }
+.audit-bar.risk-high { background: #B94B4B; }.audit-bar.risk-medium { background: #C58A39; }.audit-bar.risk-low { background: #7C9AB7; }.audit-bar.risk-none { background: #D9DEE7; }
+.audit-layout { display: grid; grid-template-columns: minmax(0,1.1fr) minmax(250px,.9fr); gap: 16px; align-items: stretch; }
+.audit-list { display: grid; gap: 8px; }
+.audit-finding { display: grid; grid-template-columns: 100px 1fr; gap: 3px 12px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; background: white; color: var(--ink-2); text-align: left; cursor: pointer; transition: border-color .18s,background .18s; }
+.audit-finding:hover,.audit-finding[aria-pressed="true"] { border-color: #9BB0CB; background: #F7F9FC; }
+.audit-finding-meta { grid-row: span 2; display: flex; flex-direction: column; gap: 5px; font-size: 10px; }
+.audit-finding-meta i { color: var(--ink-4); font: 11px var(--mono); font-style: normal; }
+.audit-finding-meta b { color: #A45151; font-weight: 600; }.audit-finding[data-level="medium"] .audit-finding-meta b { color: #A47833; }.audit-finding[data-level="low"] .audit-finding-meta b { color: #627E9B; }
+.audit-finding strong { font-size: 12px; line-height: 1.5; }
+.audit-finding > span:last-child { color: var(--ink-3); font-size: 11px; line-height: 1.55; }
+.audit-detail { padding: 20px; border-radius: 12px; background: #F4F6FA; }
+.audit-detail-kicker { color: var(--ink-3); font: 10px/1.5 var(--mono); letter-spacing: .1em; }
+.audit-risk-tag { display: inline-block; margin-top: 10px; padding: 3px 8px; border-radius: 999px; background: #FAEAEA; color: #9B4141; font-size: 10px; }
+.audit-risk-tag.medium { background: #FBF1DF; color: #8D682D; }.audit-risk-tag.low { background: #EAF0F6; color: #5A718A; }
+.audit-detail h3 { margin: 10px 0 6px; color: #293F5E; font-size: 17px; line-height: 1.4; }
+.audit-detail p { margin: 0; color: var(--ink-2); font-size: 12px; line-height: 1.75; }
+.audit-origin { margin-top: 20px; padding-top: 12px; border-top: 1px solid #DCE2EB; color: var(--ink-3); font-size: 10px; line-height: 1.7; }
+.audit-schematic { margin-top: 18px; overflow: hidden; border: 1px solid var(--line); border-radius: 12px; background: #FAFBFC; }
+.audit-schematic .code-head { display:flex; justify-content:space-between; padding:10px 14px; background:#F1F3F7; color:var(--ink-3); font-size:10px; }
+.audit-schematic .code-head-left { display:flex; align-items:center; gap:10px; }.audit-schematic .dots { display:flex; gap:4px; }.audit-schematic .dots i { width:7px;height:7px;border-radius:50%;background:#C4CBD6; }
+.audit-schematic pre { overflow-x:auto; margin:0; padding:17px; color:#39485C; font:12px/1.8 var(--mono); }
+.audit-schematic > p { margin:0; padding:0 17px 14px; color:var(--ink-3); font-size:10px; }
+.closing-wrap { max-width: 920px; }.closing-copy { margin: 0 auto 28px; }.credits-card { padding: 24px; border: 1px solid var(--line); border-radius: 14px; background: #F7F8FA; }
+.credits-heading h3 { margin: 6px 0 18px; font: 650 20px/1.4 var(--display); }
+.credits-card ul { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 0 28px; list-style: none; margin: 0; padding: 0; }
+.credits-card li { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); font-size: 12px; }
+.credits-card li strong { color: #314763; }.credits-card li span { color: var(--ink-3); text-align: right; }
+@media (max-width:760px) {
+  .hero { min-height: auto; padding-top: 90px; padding-bottom: 84px; }
+  .hero-lead { max-width: 100%; font-size: 15px; }
+  .hero-meta { gap: 8px 16px; }
+  .reading-guide-inner { grid-template-columns: 1fr; gap: 14px; }.reading-guide ol { grid-template-columns: 1fr 1fr; gap: 12px 14px; }
+  .audit-stats { grid-template-columns: repeat(2,minmax(0,1fr)); }.audit-layout { grid-template-columns: 1fr; }
+  .audit-finding { grid-template-columns: 74px 1fr; padding: 10px; }.audit-detail { min-height: 190px; }
+  .credits-card ul { grid-template-columns: 1fr; }.credits-card li { align-items: flex-start; }.credits-card li span { max-width: 70%; }
+}
+
+</style>
+</head>
+<body>
+
+<div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
+
+<!-- 滚动后浮现的顶部阅读栏 -->
+<div class="topbar" id="topbar" aria-label="阅读导航栏">
+  <a class="topbar-brand" href="#top"><span class="dot"></span>北辰实验室</a>
+  <span class="topbar-current" id="topbarCurrent">序 · 一个人的研发部门</span>
+  <div class="topbar-right">
+    <span id="topbarPct">0%</span>
+    <button class="topbar-toc-btn" id="topbarTocBtn" type="button">目录</button>
+  </div>
+</div>
+
+<!-- ================= HERO 首屏 ================= -->
+<header class="hero" id="top">
+  <div class="hero-grid" aria-hidden="true"></div>
+  <svg class="hero-orbit" viewBox="0 0 800 800" aria-hidden="true">
+    <defs>
+      <radialGradient id="og" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#1E44D9" stop-opacity="0.08"/>
+        <stop offset="100%" stop-color="#1E44D9" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <circle cx="400" cy="400" r="380" fill="url(#og)"/>
+    <!-- 同心系统层：权重 -> Harness -> Agent 协作 -> 独立编排 -->
+    <g fill="none" stroke="#D9DEEE" stroke-width="1">
+      <circle cx="400" cy="400" r="108"/>
+      <circle cx="400" cy="400" r="192" stroke-dasharray="3 8"/>
+      <circle cx="400" cy="400" r="282" stroke-dasharray="4 8"/>
+      <circle cx="400" cy="400" r="356" stroke-dasharray="1 12"/>
+    </g>
+    <circle cx="400" cy="400" r="42" fill="#FFFFFF" stroke="#C7D3FA" stroke-width="1.2"/>
+    <circle cx="400" cy="400" r="6" fill="#1E44D9"/>
+    <g class="orbit-nodes" fill="#1E44D9">
+      <circle cx="400" cy="292" r="4.5"/>
+      <circle cx="592" cy="400" r="3.5" opacity="0.68"/>
+      <circle cx="400" cy="592" r="4" opacity="0.5"/>
+      <circle cx="208" cy="400" r="3.5" opacity="0.68"/>
+    </g>
+    <g class="orbit-nodes-rev" fill="#1E44D9">
+      <circle cx="600" cy="200" r="3" opacity="0.45"/>
+      <circle cx="200" cy="600" r="3" opacity="0.4"/>
+      <circle cx="652" cy="545" r="2.5" opacity="0.35"/>
+      <circle cx="148" cy="255" r="2.5" opacity="0.35"/>
+    </g>
+  </svg>
+
+  <div class="hero-inner">
+    <div class="hero-kicker-row">
+      <p class="eyebrow">北辰实验室 · 技术研究 · 交互专题</p>
+      <span class="issue-pill">SPECIAL REPORT · 2026</span>
+    </div>
+    <h1>一个人的研发部门</h1>
+    <p class="hero-sub">当 AI 成为我的同事</p>
+    <div class="hero-lead">
+      <p>从独立开发到多智能体协作，一次关于个人生产力与研发方式的探索。</p>
+      <p>在开发 KeyGuard 的过程中，我逐渐开始使用不同的 AI 工具：有人负责产品策划，有人负责视觉设计，有人编写代码，还有人负责独立审查。</p>
+      <p>但随着工具越来越多，一个新的问题出现了：面对如此众多的 AI 产品，我们究竟应该如何选择？它们之间有什么区别？为什么有些任务适合交给 Gemini，有些任务却更适合交给 Codex？</p>
+      <p>这篇文章将从大语言模型（LLM，即 Large Language Model，大语言模型）的技术演进出发，结合主流 AI 工具的能力定位、公开评测数据，以及我在北辰实验室的真实开发经历，尝试回答这些问题。</p>
+      <p>我想探索的，不是哪一个 AI 最强，而是一个普通人如何将不同的 AI 组织起来，构建属于自己的研发体系。</p>
+    </div>
+    <div class="hero-meta">
+      <span>资料核对截至 2026-11-25（北京时间）</span>
+      <span>约 28 分钟阅读</span>
+      <span>标注来源性质与待核实项</span>
+    </div>
+  </div>
+
+  <a class="scroll-hint" href="#intro" aria-label="向下滚动开始阅读">
+    <span>Scroll</span>
+    <span class="bar"></span>
+  </a>
+</header>
+
+<section class="reading-guide" aria-labelledby="reading-guide-title">
+  <div class="reading-guide-inner">
+    <div class="reading-guide-heading"><span>READING GUIDE</span><h2 id="reading-guide-title">阅读指引</h2></div>
+    <ol>
+      <li><span>01</span><p>认识 AI：理解模型、应用、Agent（可用工具执行多步任务的智能体）与 Harness（智能体运行框架）。</p></li>
+      <li><span>02</span><p>选择 AI：了解不同工具的定位及适用任务。</p></li>
+      <li><span>03</span><p>组织 AI：建立合理的多 AI 协作分工。</p></li>
+      <li><span>04</span><p>实践 AI：通过 KeyGuard 真实案例理解工程协作。</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= 桌面端侧边目录 ================= -->
+<nav class="sidetoc" id="sidetoc" aria-label="文章目录">
+  <div class="sidetoc-head">
+    <span>目录</span>
+    <span class="sidetoc-pct" id="tocPercent">0%</span>
+  </div>
+  <ol>
+    <li><a href="#intro">序 · 一个人的研发部门</a></li>
+    <li><a href="#ch01">01 时间轴</a></li>
+    <li><a href="#ch02">02 概念分层</a></li>
+    <li><a href="#ch03">03 模型家族</a></li>
+    <li><a href="#ch04">04 AI 工具能力矩阵</a></li>
+    <li><a href="#ch05">05 公开评测</a></li>
+    <li><a href="#ch06">06 团队架构</a></li>
+    <li><a href="#ch07">07 KeyGuard 独立只读审查</a></li>
+    <li><a href="#ch08">08 协作对比</a></li>
+    <li><a href="#closing">09 总结与制作名单</a></li>
+    <li><a href="#refs">10 参考文献</a></li>
+  </ol>
+</nav>
+
+<!-- 移动端悬浮目录按钮 -->
+<button class="toc-btn" id="tocBtn" type="button" aria-label="打开目录">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+    <path d="M4 7h16M4 12h16M4 17h10"/>
+  </svg>
+</button>
+
+<!-- 全屏目录抽屉 -->
+<div class="toc-overlay" id="tocOverlay" role="dialog" aria-modal="true" aria-label="文章目录">
+  <button class="toc-close" id="tocClose" type="button" aria-label="关闭目录">×</button>
+  <h5>目录 · TABLE OF CONTENTS</h5>
+  <ol>
+    <li><a href="#intro"><span class="n">序</span>一个人的研发部门</a></li>
+    <li><a href="#ch01"><span class="n">01</span>从 Transformer 到 AI Agent</a></li>
+    <li><a href="#ch02"><span class="n">02</span>模型、应用、Agent 与 Harness</a></li>
+    <li><a href="#ch03"><span class="n">03</span>四个模型家族</a></li>
+    <li><a href="#ch04"><span class="n">04</span>AI 工具能力定位矩阵</a></li>
+    <li><a href="#ch05"><span class="n">05</span>公开评测数据</a></li>
+    <li><a href="#ch06"><span class="n">06</span>一个人的团队</a></li>
+    <li><a href="#ch07"><span class="n">07</span>KeyGuard 独立只读审查</a></li>
+    <li><a href="#ch08"><span class="n">08</span>人工协作 vs Agent 协作</a></li>
+    <li><a href="#closing"><span class="n">09</span>总结与制作名单</a></li>
+    <li><a href="#refs"><span class="n">10</span>参考文献与声明</a></li>
+  </ol>
+</div>
+
+<main>
+
+<!-- ================= 序 ================= -->
+<section class="chapter" id="intro" style="border-top:none">
+  <div class="wrap">
+    <header class="chapter-head" data-reveal>
+      <div class="chapter-num">00 / PROLOGUE</div>
+      <h2>一个人的研发部门</h2>
+      <p class="chapter-kicker">本文所有事实、评测与推断均按来源性质标注，阅读时请注意区分。</p>
+    </header>
+
+    <div class="prose" data-reveal>
+      <p class="lead">
+        2026 年，各家发布稿里出现频率最高的词，不再是「参数量」。它变成了 Harness（支持智能体调用工具、管理上下文并执行流程的软件框架）、子智能体（负责子任务的智能体）、上下文（当前任务的对话与资料）压缩。
+      </p>
+      <p>
+        过去九年，大模型的能力叙事有三次转向：先是规模（2017—2021），再是对齐与对话（2022—2023），
+        然后是推理与软件工程（2023—2025）。进入 2026 年，部分行业叙事开始更多关注「模型外围的系统」：工具、上下文、多智能体与 Harness。这是一种观察视角，不代表整个行业已完成统一转向。
+      </p>
+
+      <blockquote class="pullquote">
+        能力的增长点从「模型本身」（规模、对齐、推理）逐步转到「模型外围的系统」（工具、上下文、多智能体、Harness）。
+        2026 年各家发布稿里，「Harness」「子智能体」「上下文压缩」出现的频率明显高于前几年。
+        <cite>—— 本资料包对 2026 年发布语料的归纳 <span class="tag tag-infer">推断</span></cite>
+      </blockquote>
+
+      <p>
+        这条主线解释了为什么「一个人的研发部门」在今天成为可能：当一个模型被放进不同的 Harness 里，
+        它的实际表现可以差出三倍；而当多个 Harness 被一个人编排起来，一个人就可以覆盖过去需要一个小团队才能覆盖的环节。
+      </p>
+
+      <h3>数据使用三条规则</h3>
+      <p>本文严格遵循以下规则，读者也可以用它们来校验文中每一个数字：</p>
+      <ol class="rules">
+        <li><strong>不同评测版本不能混用。</strong>Terminal-Bench 2.0、2.1、4.0、4.1 是不同题集；HLE、HLE-Diamond、HLE（纯文本子集）、HLE（带工具）也不是同一个口径。</li>
+        <li><strong>同一评测，Harness 不同也不能直接对比。</strong>同一模型在不同 Agent 框架里的分数可能差好几倍。</li>
+        <li><strong>推理档位要标出来。</strong>2026 年的模型普遍有 low / medium / high / xhigh / max 等档位，同一模型不同档位分数和成本差异很大。</li>
+      </ol>
+
+      <h3>可信度标签</h3>
+      <p>正文与图表中出现的每一个数据点，都会带上其中一种标签：</p>
+    </div>
+
+    <div class="legend-grid" data-reveal>
+      <div class="legend-cell">
+        <span class="tag tag-fact">事实</span>
+        <p>可在论文、官方文档、更新日志中直接核实的发布日期、参数、价格和功能。</p>
+      </div>
+      <div class="legend-cell">
+        <span class="tag tag-official">官方评测</span>
+        <p>厂商在自家发布稿里给出的分数，通常由厂商自己跑分、自己选对比对象。</p>
+      </div>
+      <div class="legend-cell">
+        <span class="tag tag-third">第三方</span>
+        <p>独立机构维护的排行榜：LMArena、Snorkel / Terminal-Bench、Artificial Analysis 等。</p>
+      </div>
+      <div class="legend-cell">
+        <span class="tag tag-second">二手汇总</span>
+        <p>聚合网站转录的榜单或媒体报道，仅作参考，发表前需回原榜复核。</p>
+      </div>
+      <div class="legend-cell">
+        <span class="tag tag-infer">推断</span>
+        <p>基于上述事实做出的分析判断。写成观点，不写成事实。</p>
+      </div>
+    </div>
+
+    <div class="prose" data-reveal>
+      <div class="callout">
+        <span class="callout-title">工具使用与实践边界</span>
+        <p>KeyGuard 与本文实践中实际使用 ChatGPT、Gemini、DeepSeek、Codex 和 Qwen Code 进行人工协作；Cursor、CodeRabbit 是本文比较的备选工具。资料研究参考了 Perplexity 提供的研究资料包，文章中的事实仍以可追溯的原始来源为准。本文讨论的多 Agent 自动编排流程是分析模型，不代表北辰实验室已实现自动化研发系统。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 01 时间轴 ================= -->
+<section class="chapter" id="ch01">
+  <div class="wrap">
+    <header class="chapter-head" data-reveal>
+      <div class="chapter-num">01 / TIMELINE</div>
+      <h2>从 Transformer 到 AI Agent</h2>
+      <p class="chapter-kicker">Transformer（注意力机制模型架构）如何走向 AI Agent（可调用工具并执行多步任务的智能体）</p>
+      <p class="chapter-kicker">四个阶段 · 27 个节点 · 每个节点附原始来源</p>
+    </header>
+
+    <div class="prose" data-reveal>
+      <p>
+        这条时间轴值得横向读完。它记录的不是「模型越来越强」这么简单，而是一条重心迁移的轨迹：
+        从架构创新，到对齐方法，到评测体系，最后落到工程系统。
+      </p>
+    </div>
+
+    <div class="viz" data-reveal>
+      <div class="viz-frame">
+        <div class="viz-header-row">
+          <div class="viz-head">
+            <p class="viz-title">AI 技术发展时间轴 · 2017—2026</p>
+            <p class="viz-sub">按四个阶段划分，支持按演进阶段筛选浏览。节点日期与来源均可点击复核。</p>
+          </div>
+          <div class="filter-bar" id="tlFilterBar" role="tablist" aria-label="按阶段筛选时间轴">
+            <button class="filter-pill active" type="button" data-phase="all">全部阶段 (27)</button>
+            <button class="filter-pill" type="button" data-phase="0">01 架构与规模</button>
+            <button class="filter-pill" type="button" data-phase="1">02 对齐与对话</button>
+            <button class="filter-pill" type="button" data-phase="2">03 推理与软件工程</button>
+            <button class="filter-pill" type="button" data-phase="3">04 Harness 主角</button>
+          </div>
+        </div>
+        <div id="timelineMount"></div>
+        <p class="viz-note">
+          <b>来源性质：</b><span class="tag tag-fact">事实</span> 全部节点为论文、官方博客或更新日志中的可核实事件。
+          悬停节点可高亮，点击阶段胶囊可聚焦阅读，来源链接指向原始出处。
+        </p>
+      </div>
+    </div>
+
+    <div class="prose" data-reveal>
+      <p>
+        如果只看一条线索：Transformer（注意力机制模型架构）开启了现代大语言模型的主流路线；2024 年 5 月的 SWE-agent 论文提出「Agent–计算机接口」（ACI，即 Agent-Computer Interface）概念，
+        证明了工具界面的设计会直接影响 Agent 的表现——这正是 Harness 思想最早的正式表达。
+        两年后，Harness 成为各家发布稿的一等公民。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 02 概念分层 ================= -->
+<section class="chapter" id="ch02">
+  <div class="wrap">
+    <header class="chapter-head" data-reveal>
+      <div class="chapter-num">02 / DEFINITIONS</div>
+      <h2>模型、应用、Agent 与 Harness</h2>
+      <p class="chapter-kicker">四个层级 · 一组可引用的权威定义</p>
+    </header>
+
+    <div class="prose" data-reveal>
+      <p class="lead">
+        在讨论「一个人能不能干一个部门的活」之前，先要把四个常被混用的词分开：大语言模型（LLM，即 Large Language Model）、AI 应用、编程 Agent（能调用工具并多步执行任务的智能体）、Agent Harness（支撑智能体运行的软件框架，也称“脚手架”）。
+      </p>
+      <p>
+        英国 AI 安全研究所在 2023 年把 AI Agent 描述为「模型 + 脚手架」（Harness，负责工具调用、上下文和执行流程的软件层）。LangChain 的说法更直接：
+        「Agent = Model + Harness……不是模型的部分，就是 Harness。」
+      </p>
+    </div>
+
+    <div class="viz" data-reveal>
+      <div class="viz-frame">
+        <div class="viz-head">
+          <p class="viz-title">四层技术分层</p>
+          <p class="viz-sub">从最内层的神经网络权重，到最外层面向用户的产品界面。悬停或点击任意层级查看对应说明。</p>
+        </div>
+
+        <div class="arch-svg-box">
+          <svg id="archSvg" viewBox="0 0 900 384" style="width:100%;height:auto" role="img" aria-label="四层技术分层示意图：模型被 Harness 包裹，再被产品界面包裹">
+            <defs>
+              <linearGradient id="layerGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#F6F8FE"/>
+                <stop offset="100%" stop-color="#FFFFFF"/>
+              </linearGradient>
+            </defs>
+            <!-- 04 外层产品界面 -->
+            <g class="arch-ring" data-layer="L2">
+              <rect x="60" y="28" width="780" height="324" rx="16" fill="url(#layerGrad)" stroke="#D4DCF5" stroke-width="1.3"/>
+              <text x="84" y="58" font-size="12" fill="#1E44D9" font-family="monospace" letter-spacing="1.6" font-weight="700">04 · 产品界面 / AI 应用（L2 / L3）</text>
+              <text x="84" y="80" font-size="12.5" fill="#7A7D8C">ChatGPT · Gemini App · Codex · Cursor · Qwen Code · Perplexity Computer</text>
+            </g>
+            <!-- 03 Harness -->
+            <g class="arch-ring" data-layer="L4">
+              <rect x="120" y="102" width="660" height="198" rx="12" fill="#FFFFFF" stroke="#B8C7F7" stroke-width="1.4" stroke-dasharray="5 4"/>
+              <text x="144" y="130" font-size="12" fill="#1E44D9" font-family="monospace" letter-spacing="1.6" font-weight="700">03 · Agent Harness（脚手架 · L4）</text>
+              <text x="144" y="151" font-size="12.5" fill="#7A7D8C">循环 · 工具 · 沙箱 · 上下文 · 权限 · 子智能体 · 状态持久化</text>
+            </g>
+            <!-- 02 模型权重 -->
+            <g class="arch-ring" data-layer="L1">
+              <rect x="200" y="176" width="500" height="98" rx="10" fill="#0F1015" stroke="#2D3246" stroke-width="1.2"/>
+              <text x="224" y="206" font-size="12" fill="#8FA0F5" font-family="monospace" letter-spacing="1.6" font-weight="700">02 · 大语言模型（权重 · L1）</text>
+              <text x="224" y="230" font-size="12.5" fill="#C4C7D4">GPT-6.2 Astra · Gemini 4 Carbon · DeepSeek-V4-Pro · Qwen4-Max</text>
+              <text x="224" y="252" font-size="11.5" fill="#7A7E91">输入 token → 输出 token。本身不执行代码，也不记住上一次对话。</text>
+            </g>
+            <!-- 01 基础设施底座 -->
+            <text x="450" y="332" text-anchor="middle" font-size="11" fill="#7A7D8C" font-family="monospace" letter-spacing="1.4">01 · 训练与推理基础设施</text>
+            <!-- 侧标 -->
+            <text x="698" y="294" text-anchor="middle" font-size="10.5" fill="#7A7D8C" font-family="monospace" letter-spacing="1.1">编程 Agent ≈</text>
+            <text x="698" y="310" text-anchor="middle" font-size="10.5" fill="#7A7D8C" font-family="monospace" letter-spacing="1.1">Harness + 模型 + 界面</text>
+          </svg>
+        </div>
+
+        <div class="layers" id="archLayers">
+          <article class="layer" data-layer-card="L1">
+            <div class="layer-idx">L1</div>
+            <div>
+              <h4>大语言模型 <span class="en">LLM</span></h4>
+              <p>训练好的神经网络权重，输入 token、输出 token。</p>
+              <div class="layer-meta">
+                <span><b>代表：</b>GPT-6.2 Astra、Gemini 4 Carbon、DeepSeek-V4-Pro、Qwen4-Max</span>
+                <span><b>接触方式：</b>API</span>
+                <span><b>边界：</b>本身不会执行代码，也不会记住上一次对话</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="layer" data-layer-card="L2">
+            <div class="layer-idx">L2</div>
+            <div>
+              <h4>AI 应用 <span class="en">Application</span></h4>
+              <p>面向终端用户的产品，把模型包装成对话、搜索或办公工具。</p>
+              <div class="layer-meta">
+                <span><b>代表：</b>ChatGPT、Gemini App、DeepSeek App、Qwen App</span>
+                <span><b>接触方式：</b>网页 / App</span>
+                <span><b>边界：</b>重点在交互体验、记忆、联网和文件处理</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="layer" data-layer-card="L3">
+            <div class="layer-idx">L3</div>
+            <div>
+              <h4>编程 Agent <span class="en">Coding Agent</span></h4>
+              <p>专门面向软件开发、能读写代码库并执行命令的 Agent 产品。</p>
+              <div class="layer-meta">
+                <span><b>代表：</b>Codex、Cursor Agent、Qwen Code、Google Antigravity</span>
+                <span><b>接触方式：</b>IDE / CLI / 云端</span>
+                <span><b>边界：</b>能自主完成多步编程任务，并产出 PR</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="layer" data-layer-card="L4">
+            <div class="layer-idx">L4</div>
+            <div>
+              <h4>Agent Harness <span class="en">Scaffolding</span></h4>
+              <p>让模型变成 Agent 的那层工程系统：循环、工具、沙箱、上下文、权限、子智能体。</p>
+              <div class="layer-meta">
+                <span><b>代表：</b>DeepSeek Harness、Qwen Code 1.0、Codex CLI、Claude Code、CodeRabbit 的审查 Harness</span>
+                <span><b>接触方式：</b>开发者配置</span>
+                <span><b>边界：</b>决定同一个模型能发挥出多少能力</span>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <p class="viz-note">
+          <b>来源性质：</b><span class="tag tag-fact">事实</span> 定义引自 Wikipedia、LangChain、Nielsen Norman Group、Google Cloud、DeepSeek Harness 首页与 Qwen Code 文档。
+          <span class="tag tag-infer">推断</span> 「编程 Agent ≈ Harness + 模型 + 界面」为本资料对上述定义的整合。很多产品同时处在两层，比如 Qwen Code 1.0 官方把自己称为「开源 Harness」，同时它也是一个编程 Agent 产品。
+        </p>
+      </div>
+    </div>
+
+    <div class="prose" data-reveal>
+      <p>
+        这四层的关系不是并列，而是嵌套。同一个模型换一层 Harness，表现可以差出数倍——
+        这正是第 05 节「Harness 效应」要展示的东西。
+      </p>
+      <blockquote class="pullquote">
+        Agent = Model + Harness。不是模型的部分，就是 Harness。
+        <cite>—— LangChain 对 Agent 的定义 <span class="tag tag-fact">事实</span></cite>
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 03 模型家族 ================= -->
+<section class="chapter" id="ch03">
+  <div class="wrap">
+    <header class="chapter-head" data-reveal>
+      <div class="chapter-num">03 / MODEL FAMILIES</div>
+      <h2>四个模型家族</h2>
+      <p class="chapter-kicker">截至 2026-11-25 的旗舰型号、开放性与价格</p>
+    </header>
+
+    <div class="prose" data-reveal>
+      <p>
+        2026 年 11 月是一个密集发布期：16 日 Qwen4-Max、17 日 GPT-6.2 Astra / Sol、18 日 Gemini 4 Neon，
+        三家的旗舰在三天内全部更新。下表只记录可核实的参数与价格。
+      </p>
+    </div>
+
+    <div class="viz" data-reveal>
+      <div class="viz-frame">
+        <div class="viz-head">
+          <p class="viz-title">四大家族总览（2026-11-25）</p>
+          <p class="viz-sub">价格为每百万 token 的输入 / 输出价格，美元。</p>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>家族</th><th>当前旗舰 / 代表</th><th>发布日期</th><th>开放权重</th><th>上下文</th><th>API 价格</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>OpenAI GPT</td>
+                <td>GPT-6.2 Astra（前沿）<br>GPT-6.2 Sol（日常主力）</td>
+                <td class="mono">2026-11-17</td>
+                <td>否</td>
+                <td>官方未写明</td>
+                <td class="mono">Astra $8 / $40<br>Sol $2 / $10</td>
+              </tr>
+              <tr>
+                <td>Google Gemini</td>
+                <td>Gemini 4 Carbon（最强）<br>Gemini 4 Neon（性价比）</td>
+                <td class="mono">Carbon 2026-10-28<br>（11-10 全面开放）<br>Neon 2026-11-18</td>
+                <td>否</td>
+                <td>1M</td>
+                <td class="mono">Carbon $2 / $10（优惠价，12-01 起 $4 / $20）<br>Neon $3 / $15</td>
+              </tr>
+              <tr>
+                <td>DeepSeek</td>
+                <td>DeepSeek-V4-Pro（正式版 0813）<br>DeepSeek-V4.1-Flash-1017</td>
+                <td class="mono">V4 预览 2026-04-24<br>Pro 正式版 2026-08-13<br>V4.1-Flash 2026-09-10</td>
+                <td>是（MIT）</td>
+                <td>1M</td>
+                <td class="mono">峰谷定价<br>谷时为峰时半价</td>
+              </tr>
+              <tr>
+                <td>阿里 Qwen</td>
+                <td>Qwen4-Max</td>
+                <td class="mono">2026-11-16</td>
+                <td>Max 未开源<br>官方称小尺寸将陆续开源</td>
+                <td>1M</td>
+                <td class="mono">见 QwenCloud</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="viz-note">
+          <b>来源性质：</b><span class="tag tag-fact">事实</span> 引自各厂商发布稿、开发指南与 HuggingFace README。
+          缓存输入价格：Astra $0.40、Sol $0.10（每百万 token）。
+        </p>
+      </div>
+    </div>
+
+    <div class="prose" data-reveal>
+      <h3>OpenAI GPT-6.2 Astra / Sol</h3>
+      <p>
+        产品分层很清楚：Astra 面向「最难项目」，Sol 面向「日常工作」。两者都在 ChatGPT Work、Codex 和 API 中提供。
+        Astra 的输入输出单价比 GPT-6 Astra 低 20%，缓存输入低 60%；Sol 沿用 GPT-6.1 Sol 的价格。
+      </p>
+      <p>
+        官方建议保持提示词前缀不变、把新指令追加在后面，以提高缓存命中率——这是上下文管理直接影响成本的最直观例子。
+      </p>
+      <p>
+        <span class="tag tag-fact">事实</span> 官方同时披露了局限：在两项对齐测试中，这两个模型更容易「不提及阻碍工作的障碍」，
+        比如文件缺失或搜索工具不可用。OpenAI 已在 Codex 中加入指令来减少这种情况。
+      </p>
+
+      <h3>Google Gemini 4 Carbon / Neon</h3>
+      <p>
+        Carbon 被 Google 称为「最强模型」，主打网络安全和长周期 Agent 能力，先通过 Fairwind 计划提供给网络安全防御者，
+        之后才全面开放。Neon 主打「前沿智能 + 快速端到端完成任务」，有四档思考级别，可在 Antigravity 中作为编排者调度并行的
+        Hydrogen 子智能体。
+      </p>
+      <p>
+        <span class="tag tag-infer">推断</span> Carbon 是「能力上限」，Neon 是「速度与成本平衡」。
+        但要注意：Neon 在 Artificial Analysis 智能指数上反而比 Carbon 略高（61 对 60），写作时不要简单地说「Carbon 全面强于 Neon」。
+      </p>
+
+      <h3>DeepSeek-V4 系列</h3>
+      <p>
+        技术报告显示，V4-Pro 总参数 1.6T、激活 49B；V4-Flash 总参数 284B、激活 13B，均为 MoE 架构，支持 1M 上下文。
+        架构上是混合注意力（压缩稀疏注意力 CSA + 重度压缩注意力 HCA）：在 1M 上下文下，V4-Pro 的单 token 推理 FLOPs
+        只有 V3.2 的 27%，KV Cache 只有 10%。
+      </p>
+      <p>
+        精度上，MoE 专家参数用 FP4，其余大部分参数用 FP8；权重采用 MIT 许可证。推理档位为 low / high / max 三档。
+        产品化方面，V4-Pro 正式版原生支持 OpenAI Responses API 并专门适配 Codex。
+      </p>
+
+      <h3>阿里 Qwen4-Max</h3>
+      <p>
+        2.4T 主干参数，每 token 激活 71B，另有 328B 的 N-gram Embedding 参数；原生视觉能力；1M 上下文。
+        官方称 2.4T 规模的训练「全程没有 loss spike」。
+      </p>
+      <p>
+        <span class="tag tag-official">官方评测</span> 自建 Work360 基准（26 个一级领域、721 个三级专业领域）得分 52.69，
+        上一代 Qwen3.8-Max 为 47.74；每任务平均成本从 $4.43 降到 $1.67（降低 62%）。
+        <span class="tag tag-second">二手汇总</span> 第三方解读文章指出，Qwen4-Max 发布表中的 16 项评测有 10 项是阿里自己跑的。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 04 AI 工具能力矩阵 ================= -->
+<section class="chapter" id="ch04">
+  <div class="wrap">
+    <header class="chapter-head" data-reveal>
+      <div class="chapter-num">04 / TOOL MATRIX</div>
+      <h2>AI 工具能力定位矩阵</h2>
+      <p class="chapter-kicker">按任务场景理解工具分工，不做单一总分排名</p>
+    </header>
+    <div class="prose" data-reveal><p class="lead">不同产品的强项与工作环境不同。下面的矩阵是基于产品定位与任务适用性的定性分析，帮助理解可以把什么任务交给谁。</p></div>
+    <div class="viz" data-reveal><div class="viz-frame">
+      <div class="viz-head"><p class="viz-title">内容 · 推理 · 设计 · 开发 · 审查 · 搜索</p><p class="viz-sub">点击工具名称或任一单元格，查看建议岗位与适用任务。颜色和圆点表示用途类别，不代表实测性能高低。</p></div>
+      <div class="capability-scroll" role="region" aria-label="AI 工具能力矩阵，可横向滚动查看" tabindex="0"><table class="capability-table"><thead><tr><th scope="col">工具</th><th scope="col">内容</th><th scope="col">推理</th><th scope="col">设计</th><th scope="col">开发</th><th scope="col">审查</th><th scope="col">搜索</th></tr></thead><tbody><tr><th scope="row"><button type="button" class="capability-name" data-tool="chatgpt">ChatGPT</button></th><td><button type="button" class="capability-dot level-3" data-tool="chatgpt" data-capability="内容" aria-label="ChatGPT：内容，核心用途" title="点击查看 ChatGPT 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-3" data-tool="chatgpt" data-capability="推理" aria-label="ChatGPT：推理，核心用途" title="点击查看 ChatGPT 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-2" data-tool="chatgpt" data-capability="设计" aria-label="ChatGPT：设计，适用" title="点击查看 ChatGPT 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-2" data-tool="chatgpt" data-capability="开发" aria-label="ChatGPT：开发，适用" title="点击查看 ChatGPT 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-2" data-tool="chatgpt" data-capability="审查" aria-label="ChatGPT：审查，适用" title="点击查看 ChatGPT 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-3" data-tool="chatgpt" data-capability="搜索" aria-label="ChatGPT：搜索，核心用途" title="点击查看 ChatGPT 的岗位与适用任务">●</button></td></tr><tr><th scope="row"><button type="button" class="capability-name" data-tool="gemini">Gemini</button></th><td><button type="button" class="capability-dot level-3" data-tool="gemini" data-capability="内容" aria-label="Gemini：内容，核心用途" title="点击查看 Gemini 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-3" data-tool="gemini" data-capability="推理" aria-label="Gemini：推理，核心用途" title="点击查看 Gemini 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-3" data-tool="gemini" data-capability="设计" aria-label="Gemini：设计，核心用途" title="点击查看 Gemini 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-2" data-tool="gemini" data-capability="开发" aria-label="Gemini：开发，适用" title="点击查看 Gemini 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-2" data-tool="gemini" data-capability="审查" aria-label="Gemini：审查，适用" title="点击查看 Gemini 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-3" data-tool="gemini" data-capability="搜索" aria-label="Gemini：搜索，核心用途" title="点击查看 Gemini 的岗位与适用任务">●</button></td></tr><tr><th scope="row"><button type="button" class="capability-name" data-tool="deepseek">DeepSeek</button></th><td><button type="button" class="capability-dot level-3" data-tool="deepseek" data-capability="内容" aria-label="DeepSeek：内容，核心用途" title="点击查看 DeepSeek 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-3" data-tool="deepseek" data-capability="推理" aria-label="DeepSeek：推理，核心用途" title="点击查看 DeepSeek 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-1" data-tool="deepseek" data-capability="设计" aria-label="DeepSeek：设计，辅助用途" title="点击查看 DeepSeek 的岗位与适用任务">○</button></td><td><button type="button" class="capability-dot level-2" data-tool="deepseek" data-capability="开发" aria-label="DeepSeek：开发，适用" title="点击查看 DeepSeek 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-2" data-tool="deepseek" data-capability="审查" aria-label="DeepSeek：审查，适用" title="点击查看 DeepSeek 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-1" data-tool="deepseek" data-capability="搜索" aria-label="DeepSeek：搜索，辅助用途" title="点击查看 DeepSeek 的岗位与适用任务">○</button></td></tr><tr><th scope="row"><button type="button" class="capability-name" data-tool="codex">Codex</button></th><td><button type="button" class="capability-dot level-1" data-tool="codex" data-capability="内容" aria-label="Codex：内容，辅助用途" title="点击查看 Codex 的岗位与适用任务">○</button></td><td><button type="button" class="capability-dot level-2" data-tool="codex" data-capability="推理" aria-label="Codex：推理，适用" title="点击查看 Codex 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-1" data-tool="codex" data-capability="设计" aria-label="Codex：设计，辅助用途" title="点击查看 Codex 的岗位与适用任务">○</button></td><td><button type="button" class="capability-dot level-3" data-tool="codex" data-capability="开发" aria-label="Codex：开发，核心用途" title="点击查看 Codex 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-3" data-tool="codex" data-capability="审查" aria-label="Codex：审查，核心用途" title="点击查看 Codex 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-1" data-tool="codex" data-capability="搜索" aria-label="Codex：搜索，辅助用途" title="点击查看 Codex 的岗位与适用任务">○</button></td></tr><tr><th scope="row"><button type="button" class="capability-name" data-tool="qwen-code">Qwen Code</button></th><td><button type="button" class="capability-dot level-1" data-tool="qwen-code" data-capability="内容" aria-label="Qwen Code：内容，辅助用途" title="点击查看 Qwen Code 的岗位与适用任务">○</button></td><td><button type="button" class="capability-dot level-2" data-tool="qwen-code" data-capability="推理" aria-label="Qwen Code：推理，适用" title="点击查看 Qwen Code 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-1" data-tool="qwen-code" data-capability="设计" aria-label="Qwen Code：设计，辅助用途" title="点击查看 Qwen Code 的岗位与适用任务">○</button></td><td><button type="button" class="capability-dot level-3" data-tool="qwen-code" data-capability="开发" aria-label="Qwen Code：开发，核心用途" title="点击查看 Qwen Code 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-3" data-tool="qwen-code" data-capability="审查" aria-label="Qwen Code：审查，核心用途" title="点击查看 Qwen Code 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-1" data-tool="qwen-code" data-capability="搜索" aria-label="Qwen Code：搜索，辅助用途" title="点击查看 Qwen Code 的岗位与适用任务">○</button></td></tr><tr><th scope="row"><button type="button" class="capability-name" data-tool="cursor">Cursor</button></th><td><button type="button" class="capability-dot level-1" data-tool="cursor" data-capability="内容" aria-label="Cursor：内容，辅助用途" title="点击查看 Cursor 的岗位与适用任务">○</button></td><td><button type="button" class="capability-dot level-2" data-tool="cursor" data-capability="推理" aria-label="Cursor：推理，适用" title="点击查看 Cursor 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-1" data-tool="cursor" data-capability="设计" aria-label="Cursor：设计，辅助用途" title="点击查看 Cursor 的岗位与适用任务">○</button></td><td><button type="button" class="capability-dot level-3" data-tool="cursor" data-capability="开发" aria-label="Cursor：开发，核心用途" title="点击查看 Cursor 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-2" data-tool="cursor" data-capability="审查" aria-label="Cursor：审查，适用" title="点击查看 Cursor 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-1" data-tool="cursor" data-capability="搜索" aria-label="Cursor：搜索，辅助用途" title="点击查看 Cursor 的岗位与适用任务">○</button></td></tr><tr><th scope="row"><button type="button" class="capability-name" data-tool="coderabbit">CodeRabbit</button></th><td><button type="button" class="capability-dot level-0" data-tool="coderabbit" data-capability="内容" aria-label="CodeRabbit：内容，非主要用途" title="点击查看 CodeRabbit 的岗位与适用任务">—</button></td><td><button type="button" class="capability-dot level-1" data-tool="coderabbit" data-capability="推理" aria-label="CodeRabbit：推理，辅助用途" title="点击查看 CodeRabbit 的岗位与适用任务">○</button></td><td><button type="button" class="capability-dot level-0" data-tool="coderabbit" data-capability="设计" aria-label="CodeRabbit：设计，非主要用途" title="点击查看 CodeRabbit 的岗位与适用任务">—</button></td><td><button type="button" class="capability-dot level-1" data-tool="coderabbit" data-capability="开发" aria-label="CodeRabbit：开发，辅助用途" title="点击查看 CodeRabbit 的岗位与适用任务">○</button></td><td><button type="button" class="capability-dot level-3" data-tool="coderabbit" data-capability="审查" aria-label="CodeRabbit：审查，核心用途" title="点击查看 CodeRabbit 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-0" data-tool="coderabbit" data-capability="搜索" aria-label="CodeRabbit：搜索，非主要用途" title="点击查看 CodeRabbit 的岗位与适用任务">—</button></td></tr><tr><th scope="row"><button type="button" class="capability-name" data-tool="perplexity">Perplexity</button></th><td><button type="button" class="capability-dot level-2" data-tool="perplexity" data-capability="内容" aria-label="Perplexity：内容，适用" title="点击查看 Perplexity 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-2" data-tool="perplexity" data-capability="推理" aria-label="Perplexity：推理，适用" title="点击查看 Perplexity 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-1" data-tool="perplexity" data-capability="设计" aria-label="Perplexity：设计，辅助用途" title="点击查看 Perplexity 的岗位与适用任务">○</button></td><td><button type="button" class="capability-dot level-1" data-tool="perplexity" data-capability="开发" aria-label="Perplexity：开发，辅助用途" title="点击查看 Perplexity 的岗位与适用任务">○</button></td><td><button type="button" class="capability-dot level-1" data-tool="perplexity" data-capability="审查" aria-label="Perplexity：审查，辅助用途" title="点击查看 Perplexity 的岗位与适用任务">○</button></td><td><button type="button" class="capability-dot level-3" data-tool="perplexity" data-capability="搜索" aria-label="Perplexity：搜索，核心用途" title="点击查看 Perplexity 的岗位与适用任务">●</button></td></tr></tbody></table></div>
+      <div class="capability-legend" aria-label="矩阵图例"><span><i class="level-3">●</i>核心用途</span><span><i class="level-2">◐</i>适用</span><span><i class="level-1">○</i>辅助用途</span><span><i class="level-0">—</i>非主要用途</span></div>
+      <div class="capability-detail" id="capabilityDetail" aria-live="polite"><span class="capability-detail-label">推荐岗位</span><strong>ChatGPT · 项目总监</strong><p>策划、分析与内容整合。</p></div>
+      <p class="viz-note">基于产品定位与任务适用性的定性分析，非实测性能排名。各产品功能随版本变化，实际选择还应考虑工具环境、任务类型、上下文管理及交付方式。</p>
+    </div></div>
+  </div>
+</section>
+
+<!-- ================= 05 公开评测 ================= -->
+<section class="chapter" id="ch05">
+  <div class="wrap">
+    <header class="chapter-head" data-reveal>
+      <div class="chapter-num">05 / BENCHMARKS</div>
+      <h2>公开评测数据</h2>
+      <p class="chapter-kicker">按评测分组，不跨组混用。每张图单独标注口径。</p>
+      <p class="verification-note"><strong>复核说明：</strong>OpenAI、Google、Qwen、DeepSeek 的相关型号和发布信息均保留对应官方出处；Terminal-Bench 4.1 榜单数据已与 Snorkel 页面核对。LMArena 2026-11-23 快照的票数及部分条目在来源抓取中存在差异，图中该组数据暂标为“待核实”，不作为已确认的当前排名。</p>
+    </header>
+
+    <div class="prose" data-reveal>
+      <p class="lead">
+        先看一个最容易误读的现象：同一个模型，换一个 Harness，分数可以从 12.8% 跳到 39.0%。
+      </p>
+    </div>
+
+    <!-- Harness 效应 -->
+    <div class="viz" data-reveal>
+      <div class="viz-frame">
+        <div class="viz-head">
+          <p class="viz-title">Harness 效应：同一个模型，不同的脚手架</p>
+          <p class="viz-sub">Gemini 4 Neon · 左右两栏为不同评测口径，不可横向直接比较</p>
+        </div>
+        <div class="bar-panels">
+          <div class="bar-panel">
+            <p class="bar-panel-title">SWE-sweep</p>
+            <p class="bar-panel-sub">同一模型、同一评测，仅 Harness 不同</p>
+            <div class="bar-row">
+              <div class="bar-top"><span class="bar-label">mini-SWE</span><span class="bar-val">12.8%</span></div>
+              <div class="bar-track"><div class="bar-fill dim" data-w="25.6"></div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-top"><span class="bar-label">Google Antigravity</span><span class="bar-val">39.0%</span></div>
+              <div class="bar-track"><div class="bar-fill" data-w="78"></div></div>
+            </div>
+            <div class="bar-axis"><span>0</span><span>50%</span></div>
+          </div>
+
+          <div class="bar-panel">
+            <p class="bar-panel-title">Terminal-Bench 4.1</p>
+            <p class="bar-panel-sub">同一模型，官方自报 vs 第三方榜</p>
+            <div class="bar-row">
+              <div class="bar-top"><span class="bar-label">Google 自报</span><span class="bar-val">65.2%</span></div>
+              <div class="bar-track"><div class="bar-fill" data-w="93.1"></div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-top"><span class="bar-label">Antigravity CLI（第三方榜）</span><span class="bar-val">61.2%</span></div>
+              <div class="bar-track"><div class="bar-fill alt" data-w="87.4"></div></div>
+            </div>
+            <div class="bar-axis"><span>0</span><span>70%</span></div>
+          </div>
+        </div>
+        <p class="viz-note">
+          <b>来源性质：</b><span class="tag tag-official">官方评测</span> 12.8% / 39.0% / 65.2% 来自 Google 发布稿；
+          <span class="tag tag-third">第三方</span> 61.2% 来自 Snorkel 维护的 Terminal-Bench 排行榜（2026-11-23）。
+          <b>注意：</b>左栏与右栏是不同评测，两栏的百分比不可互相比较；即使同在右栏，官方自报与第三方榜的口径也相差 4 个百分点。
+        </p>
+      </div>
+    </div>
+
+    <div class="prose" data-reveal>
+      <p>
+        这张图比任何一段文字都更能说明为什么 2026 年的关键词是 Harness。同样的权重，换一套循环、工具与上下文管理，
+        解决率相差三倍以上。
+      </p>
+    </div>
+
+    <!-- WebDev Arena 散点图 -->
+    <div class="viz" data-reveal>
+      <div class="viz-frame">
+        <div class="viz-head">
+          <p class="viz-title">网页生成：分数与成本，谁更划算</p>
+          <p class="viz-sub">LMArena Code Arena | WebDev · 研究资料所载快照：2026-11-23（票数与模型数待核实；悬停查看图中记录）</p>
+        </div>
+        <div class="chart-stage" id="webdevStage">
+          <div class="chart-tooltip" id="webdevTooltip"></div>
+          <svg id="chart-webdev" viewBox="0 0 900 520" style="width:100%;height:auto" role="img" aria-label="WebDev Arena 分数与每任务成本散点图"></svg>
+        </div>
+        <p class="viz-note">
+          <b>来源性质：</b><span class="tag tag-third">第三方</span> LMArena 人类盲测投票；本图历史快照的精确数值待核实，当前页面为动态榜单。
+          横轴为每任务成本中位数（美元，对数轴），纵轴为 Elo 评分。括号内为推理档位。
+          <b>读法：</b>前 10 名之间的分差很小（第 4 到第 9 名只差 17 分），而成本相差数倍——这也是本图用散点而不是柱状图的原因。
+          另外，GPT-6.2 Astra（1,761）在这个榜上比 GPT-6 Astra（1,764）略低，说明「新版本并不在所有榜单上都更强」。
+        </p>
+      </div>
+    </div>
+
+    <!-- Terminal-Bench 4.1 置信区间点图 -->
+    <div class="viz" data-reveal>
+      <div class="viz-frame">
+        <div class="viz-head">
+          <p class="viz-title">终端编程 Agent：Terminal-Bench 4.1</p>
+          <p class="viz-sub">Snorkel 维护的排行榜 · 数据日期 2026-11-23 · 注意每一行的 Agent（Harness）都不一样</p>
+        </div>
+        <div class="chart-stage" id="tbStage">
+          <div class="chart-tooltip" id="tbTooltip"></div>
+          <svg id="chart-terminal" viewBox="0 0 900 620" style="width:100%;height:auto" role="img" aria-label="Terminal-Bench 4.1 解决率点图，含置信区间"></svg>
+        </div>
+        <p class="viz-note">
+          <b>来源性质：</b><span class="tag tag-third">第三方</span> Snorkel Terminal-Bench 排行榜。
+          点为解决率，横线为 ±95% 置信区间；横轴自 55% 起，非零点起始，已在轴上标明。
+          <b>成本栏</b>为该行配置的评测总成本，不是单任务成本。
+        </p>
+      </div>
+    </div>
+
+    <div class="prose" data-reveal>
+      <p>
+        注意第 2 名与第 3 名：两者解决率几乎相同，但总成本相差三倍以上（$4.7k 对 $16.5k）。
+        而第 7 名的 GPT-6.2 Sol + Codex，以 $0.3k 拿到 61.5%——这是这张表里性价比最突出的一个点。
+      </p>
+      <div class="callout">
+        <span class="callout-title">一个必须提醒的坑</span>
+        <p>2026 年 2 月 23 日，OpenAI 宣布停止报告 SWE-bench Verified 分数，理由是数据污染和测试用例缺陷；7 月 8 日，OpenAI 审计发现 SWE-Bench Pro 约 30% 的题目有问题，撤回此前推荐。<span class="tag tag-fact">事实</span></p>
+        <p>这意味着：任何以 SWE-bench 家族为主证据的对比，都需要额外确认题目有效性。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 06 组织架构 ================= -->
+<section class="chapter" id="ch06">
+  <div class="wrap">
+    <header class="chapter-head" data-reveal>
+      <div class="chapter-num">06 / ONE-PERSON ORG</div>
+      <h2>一个人的团队</h2>
+      <p class="chapter-kicker">编排者—工作者模式在「一个人的研发部门」里的映射</p>
+    </header>
+
+    <div class="prose" data-reveal>
+      <p class="lead">
+        2025 年 6 月 13 日，Anthropic 公开了多智能体研究系统的工程经验，核心是编排者—工作者（orchestrator-worker）模式。
+        把它映射到一个人的研发部门，组织结构会变成这样：
+      </p>
+    </div>
+
+    <div class="viz" data-reveal>
+      <div class="viz-frame">
+        <div class="viz-head">
+          <p class="viz-title">「一个人的研发部门」组织架构示意</p>
+          <p class="viz-sub">人是唯一的编排者与验收人，其余节点均为 Agent 角色（点击节点查看职责边界）</p>
+        </div>
+
+        <div class="org-wrap">
+          <svg class="orgchart" id="orgSvg" viewBox="0 0 900 610" role="img" aria-label="组织架构示意图：人作为编排者，向下调度主 Agent，再调度五个子智能体，共用模型池">
+            <!-- 连接线 -->
+            <g stroke="#D5DCF5" stroke-width="1.4" fill="none">
+              <path d="M450,86 V150"/>
+              <path d="M450,212 V250"/>
+              <path d="M100,250 H800"/>
+              <path d="M100,250 V290"/>
+              <path d="M275,250 V290"/>
+              <path d="M450,250 V290"/>
+              <path d="M625,250 V290"/>
+              <path d="M800,250 V290"/>
+            </g>
+            <g stroke="#DCE0EE" stroke-width="1.2" stroke-dasharray="3 5" fill="none">
+              <path d="M100,352 V440"/>
+              <path d="M275,352 V440"/>
+              <path d="M450,352 V440"/>
+              <path d="M625,352 V440"/>
+              <path d="M800,352 V440"/>
+            </g>
+
+            <!-- L0 人 -->
+            <g class="org-node" data-role="lead">
+              <rect x="315" y="24" width="270" height="62" rx="10" fill="#0F1015"/>
+              <text x="450" y="50" text-anchor="middle" font-size="14.5" font-weight="650" fill="#FFFFFF">你 · 技术负责人</text>
+              <text x="450" y="70" text-anchor="middle" font-size="11" fill="#8E92A4" letter-spacing=".4">目标设定 · 验收标准 · 最终决策</text>
+            </g>
+
+            <!-- L1 主 Agent -->
+            <g class="org-node" data-role="orch">
+              <rect x="295" y="150" width="310" height="62" rx="10" fill="#FFFFFF" stroke="#B8C7F7" stroke-width="1.5"/>
+              <text x="450" y="176" text-anchor="middle" font-size="14" font-weight="650" fill="#0F1015">主 Agent（编排者）</text>
+              <text x="450" y="196" text-anchor="middle" font-size="11" fill="#7A7D8C" letter-spacing=".4">任务拆解 · 调度 · 上下文压缩 · 汇总</text>
+            </g>
+
+            <!-- L2 子智能体 -->
+            <g class="org-node" data-role="code">
+              <rect x="25" y="290" width="150" height="62" rx="9" fill="#F6F8FE" stroke="#D5DCF5" stroke-width="1.2"/>
+              <text x="100" y="315" text-anchor="middle" font-size="12.5" font-weight="600" fill="#0F1015">代码 Agent</text>
+              <text x="100" y="333" text-anchor="middle" font-size="10.5" fill="#7A7D8C">写实现 · 产出 PR</text>
+            </g>
+
+            <g class="org-node" data-role="review">
+              <rect x="200" y="290" width="150" height="62" rx="9" fill="#F6F8FE" stroke="#D5DCF5" stroke-width="1.2"/>
+              <text x="275" y="315" text-anchor="middle" font-size="12.5" font-weight="600" fill="#0F1015">审查 Agent</text>
+              <text x="275" y="333" text-anchor="middle" font-size="10.5" fill="#7A7D8C">独立判定 · 不写代码</text>
+            </g>
+
+            <g class="org-node" data-role="test">
+              <rect x="375" y="290" width="150" height="62" rx="9" fill="#F6F8FE" stroke="#D5DCF5" stroke-width="1.2"/>
+              <text x="450" y="315" text-anchor="middle" font-size="12.5" font-weight="600" fill="#0F1015">测试 Agent</text>
+              <text x="450" y="333" text-anchor="middle" font-size="10.5" fill="#7A7D8C">复现 · 沙箱执行</text>
+            </g>
+
+            <g class="org-node" data-role="search">
+              <rect x="550" y="290" width="150" height="62" rx="9" fill="#F6F8FE" stroke="#D5DCF5" stroke-width="1.2"/>
+              <text x="625" y="315" text-anchor="middle" font-size="12.5" font-weight="600" fill="#0F1015">检索 Agent</text>
+              <text x="625" y="333" text-anchor="middle" font-size="10.5" fill="#7A7D8C">文档 · 历史 · 依赖</text>
+            </g>
+
+            <g class="org-node" data-role="docs">
+              <rect x="725" y="290" width="150" height="62" rx="9" fill="#F6F8FE" stroke="#D5DCF5" stroke-width="1.2"/>
+              <text x="800" y="315" text-anchor="middle" font-size="12.5" font-weight="600" fill="#0F1015">文档 Agent</text>
+              <text x="800" y="333" text-anchor="middle" font-size="10.5" fill="#7A7D8C">变更说明 · 记录</text>
+            </g>
+
+            <!-- 模型池 -->
+            <g class="org-node" data-role="pool">
+              <rect x="25" y="440" width="850" height="96" rx="12" fill="#FFFFFF" stroke="#DFE2EE" stroke-width="1.2" stroke-dasharray="5 5"/>
+              <text x="45" y="468" font-size="11" fill="#1E44D9" font-family="monospace" letter-spacing="1.4" font-weight="700">模型池 · 按子任务选择</text>
+              <text x="45" y="494" font-size="12.5" fill="#3F414D">GPT-6.2 Astra / Sol　·　Gemini 4 Carbon / Neon　·　DeepSeek-V4-Pro　·　Qwen4-Max　·　第三方模型</text>
+              <text x="45" y="516" font-size="11.5" fill="#7A7D8C">同一任务的不同子环节可以使用不同模型；Harness 负责协议、沙箱、权限与结果汇总。</text>
+            </g>
+
+            <!-- 底部说明 -->
+            <text x="450" y="582" text-anchor="middle" font-size="11.5" fill="#7A7D8C" letter-spacing=".4">
+              人的位置没有被移除，只是从「执行」移到了「定义与验收」
+            </text>
+          </svg>
+        </div>
+
+        <div class="matrix-inspector" id="orgInspector">
+          <div>
+            <strong>你 · 技术负责人</strong> — 定义目标、设定验收标准、把关合并与上线。这是整个系统里唯一不可外包的责任节点。
+          </div>
+          <span class="tag tag-infer">推断 · 示意</span>
+        </div>
+
+        <p class="viz-note">
+          <b>来源性质：</b><span class="tag tag-infer">推断 · 示意</span> 本图为基于 Anthropic 编排者—工作者模式的概念示意，
+          用于说明「一个人 + 一组 Agent」的分工结构，<b>不代表任何实际团队的人员编制或真实组织数据</b>。
+          <span class="tag tag-fact">事实</span> 编排者—工作者模式的生产环境实证来自 Anthropic Engineering（2025-06-13）；
+          子智能体、上下文压缩等能力描述引自各产品官方文档。
+        </p>
+      </div>
+    </div>
+
+    <div class="prose" data-reveal>
+      <p>
+        这里最容易被忽略的一层是「模型池」。同一任务里，编排者可以给不同的子智能体分配不同的模型：
+        检索用便宜的、代码用最强的、审查用另一家的——这本身就是一种交叉验证。
+      </p>
+      <blockquote class="pullquote">
+        Agent Harness 是包裹在大语言模型外层、让它可以以 AI Agent 身份运行的软件基础设施，负责工具使用、提示词、记忆、状态持久化、权限、错误处理、执行环境和反馈循环。
+        <cite>—— Wikipedia「Agent Harness」条目 <span class="tag tag-fact">事实</span></cite>
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 07 KeyGuard 独立只读审查 ================= -->
+<section class="chapter" id="ch07">
+  <div class="wrap">
+    <header class="chapter-head" data-reveal>
+      <div class="chapter-num">07 / INDEPENDENT REVIEW</div>
+      <h2>KeyGuard：一次独立只读审查</h2>
+      <p class="chapter-kicker">列出发现与风险级别，不把问题描述成已修复</p>
+    </header>
+    <div class="prose" data-reveal><p class="lead">以下内容来自 Qwen Code 首次独立只读审查报告。审查阶段没有修改文件；这份记录只呈现发现，不代表问题已经修复。</p></div>
+    <div class="audit-stats" data-reveal aria-label="审查统计">
+      <div><strong>6</strong><span>审查发现</span><i class="audit-bar" style="--bar:100%"></i></div>
+      <div><strong>1</strong><span>高风险</span><i class="audit-bar risk-high" style="--bar:33.333%"></i></div>
+      <div><strong>2</strong><span>中风险</span><i class="audit-bar risk-medium" style="--bar:66.666%"></i></div>
+      <div><strong>3</strong><span>低风险</span><i class="audit-bar risk-low" style="--bar:100%"></i></div>
+      <div><strong>0</strong><span>审查阶段修改文件</span><i class="audit-bar risk-none" style="--bar:0%"></i></div>
+    </div>
+    <div class="audit-layout" data-reveal>
+      <div class="audit-list" id="auditFindings"><button type="button" class="audit-finding" data-finding="1" data-level="high" aria-pressed="false"><span class="audit-finding-meta"><i>01</i><b>高风险</b></span><strong>商业发行状态表述矛盾</strong><span>KeyGuard 商业发行状态表述存在冲突，容易让用户误解产品当前的发布阶段。</span></button><button type="button" class="audit-finding" data-finding="2" data-level="medium" aria-pressed="false"><span class="audit-finding-meta"><i>02</i><b>中风险</b></span><strong>浏览器返回历史异常</strong><span>浏览器返回操作后的历史记录行为异常，需核对页面状态与导航历史同步。</span></button><button type="button" class="audit-finding" data-finding="3" data-level="medium" aria-pressed="false"><span class="audit-finding-meta"><i>03</i><b>中风险</b></span><strong>粒子实验画布初始化为 0×0</strong><span>画布在布局尺寸尚未就绪时初始化，可能得到 0×0 尺寸，导致粒子效果不可见。</span></button><button type="button" class="audit-finding" data-finding="4" data-level="low" aria-pressed="false"><span class="audit-finding-meta"><i>04</i><b>低风险</b></span><strong>重复 DOM ID</strong><span>页面存在重复 ID，可能使选择器、锚点或辅助技术定位到错误节点。</span></button><button type="button" class="audit-finding" data-finding="5" data-level="low" aria-pressed="false"><span class="audit-finding-meta"><i>05</i><b>低风险</b></span><strong>CSS 选择器拼写错误</strong><span>一处 CSS 选择器拼写错误会令预期规则无法匹配目标元素。</span></button><button type="button" class="audit-finding" data-finding="6" data-level="low" aria-pressed="false"><span class="audit-finding-meta"><i>06</i><b>低风险</b></span><strong>未使用组件与重复配置</strong><span>存在未使用组件及重复配置，可增加维护负担。</span></button></div>
+      <aside class="audit-detail" id="auditDetail" aria-live="polite"><div class="audit-detail-kicker">审查发现 01</div><span class="audit-risk-tag high">高风险</span><h3>商业发行状态表述矛盾</h3><p>KeyGuard 商业发行状态表述存在冲突，容易让用户误解产品当前的发布阶段。</p><div class="audit-origin">来源：Qwen Code 首次独立只读审查报告。审查阶段修改文件：0。</div></aside>
+    </div>
+    <div class="audit-schematic" data-reveal><div class="code-head"><div class="code-head-left"><span class="dots"><i></i><i></i><i></i></span><span>只读审查流程</span></div><span>原理示意</span></div><pre><code>// 原理示意：与上列六项发现不一一对应
+for (const finding of findings) {
+  inspect_context(finding);
+  verify_against_source(finding);
+  report_without_writing(finding);
+}</code></pre><p>以上代码只用于说明“检查、核实、报告”的只读审查思路，不是 KeyGuard 项目源代码。</p></div>
+  </div>
+</section>
+
+<!-- ================= 08 协作对比 ================= -->
+<section class="chapter dark-section" id="ch08">
+  <div class="wrap">
+    <header class="chapter-head" data-reveal style="max-width:var(--measure);margin-left:auto;margin-right:auto">
+      <div class="chapter-num">08 / COLLABORATION</div>
+      <h2>人工协作 vs Agent 协作</h2>
+      <p class="chapter-kicker">流程变了，但责任没有消失，只是换了位置</p>
+    </header>
+
+    <div class="prose" data-reveal style="max-width:var(--measure);margin-left:auto;margin-right:auto">
+      <p class="lead" style="color:#FFFFFF">
+        把两条流程并排放，差异不在于「谁更快」，而在于「谁在什么位置上」。
+      </p>
+      <p style="color:#A6A9B8">右侧 Agent 协作流程是概念示意。北辰实验室目前仍由人分配任务、传递资料并验收结果，尚未实现统一的自动调度系统。</p>
+    </div>
+
+    <div class="wrap" style="max-width:var(--container);padding:0">
+      <div class="compare-grid" data-reveal>
+        <div class="flow-col">
+          <h4><span class="badge badge-human">人类协作</span>串行，上下文在人与人之间丢失</h4>
+          <p>每一环都是一个人。切换成本高，审查常常是瓶颈。</p>
+          <ul class="flow">
+            <li>阅读代码库<span>理解现有结构、依赖与约定</span></li>
+            <li>编写实现<span>单线程，边写边查</span></li>
+            <li>自测<span>作者自测，视角单一</span></li>
+            <li>提交 PR<span>等待排期</span></li>
+            <li class="hl">同事审查<span>审查者需要重新建立上下文——这是最贵的一步</span></li>
+            <li>返工与合并<span>来回沟通，上下文再次丢失</span></li>
+          </ul>
+        </div>
+
+        <div class="flow-col">
+          <h4><span class="badge badge-agent">Agent 协作 · 概念示意</span>满足依赖条件后并行</h4>
+          <p>在具备可靠编排、权限边界与质量关卡的系统中，部分中间任务可交由子智能体并行；人仍需定义目标、处理例外并验收结果。</p>
+          <ul class="flow">
+            <li class="hl">定义目标与验收标准<span>人。这是唯一不可外包的环节</span></li>
+            <li>主 Agent 拆解任务<span>生成子任务与依赖关系</span></li>
+            <li>并行：代码 / 审查 / 测试 / 检索<span>不同子智能体，可分配不同模型</span></li>
+            <li>上下文压缩与汇总<span>长会话中由 Harness 负责状态持久化</span></li>
+            <li>冲突消解与交叉验证<span>审查 Agent 不写代码，保证独立性</span></li>
+            <li class="hl">人验收<span>回到人的位置，但这次是判断而不是执行</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="dark-note" data-reveal>
+        <b>必须写进来的反例。</b>
+        2025 年 7 月 10 日，METR 公布了一份随机对照试验：资深开发者使用 AI 后，完成任务反而慢了 19%
+        <span class="tag tag-fact" style="vertical-align:1px">事实</span>。
+        这是第一份严格的反直觉证据，提醒读者不要高估 AI 带来的提效。
+        <br><br>
+        所以「一个人 + 一组 Agent」成立的前提，不是 AI 一定更快，而是
+        <b>任务被切分到了 Agent 擅长的粒度上</b>——可验证、可并行、上下文边界清晰。
+        切分错了，编排成本会吃掉全部收益。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 09 总结与制作名单 ================= -->
+<section class="chapter" id="closing">
+  <div class="wrap closing-wrap">
+    <header class="chapter-head" data-reveal><div class="chapter-num">09 / REFLECTION</div><h2>不是找最强的 AI，而是组织合适的协作</h2></header>
+    <div class="prose closing-copy" data-reveal><p class="lead">选择 AI 不仅取决于模型能力，也取决于工具环境、任务类型、上下文管理及交付方式。</p><p>在 KeyGuard 和这篇专题的实践中，我逐渐体会到：工具的价值来自它是否适合当前任务，也来自人能否提供清晰目标、检查过程并承担最终判断。把 AI 放在合适的位置，比追逐一个总排名更重要。</p><p>目前的协作仍由人明确目标、分配工作并审阅结果。文章中关于多个 Agent 自动编排的流程是概念说明，并非北辰实验室已经实现的自动化研发系统。</p></div>
+<section class="workflow-review" aria-labelledby="workflow-review-title" data-reveal>
+      <div class="workflow-review-head"><span>WORKFLOW REVIEW · OBSERVED</span><h3 id="workflow-review-title">一次专题制作的等待时间与信息损耗</h3><p>以下是这次专题协作中的个人记录，不是不同 AI 工具的性能对比。</p></div>
+      <div class="workflow-bars" role="img" aria-label="Perplexity 任务耗时 5 分 57 秒，DeepSeek 约 7 至 8 分钟，Gemini 约 7 至 8 分钟">
+        <div class="workflow-bar-row"><strong>Perplexity · 资料研究</strong><span>5 分 57 秒</span><i><b style="width:74.4%"></b></i></div>
+        <div class="workflow-bar-row"><strong>DeepSeek · 内容优化</strong><span>约 7–8 分钟</span><i><b class="range" style="width:100%"></b></i></div>
+        <div class="workflow-bar-row"><strong>Gemini · 网页设计</strong><span>约 7–8 分钟</span><i><b class="range" style="width:100%"></b></i></div>
+      </div>
+      <div class="workflow-total"><strong>顺序等待约 20–22 分钟</strong><span>不含个人浏览、整理、纠偏、上传等时间；Codex 与 Qwen Code 阶段耗时未记录。</span></div>
+      <div class="workflow-insights">
+        <article><span>01 · 等待时间</span><p>资料调查与初稿优化若都依据同一份原始目标，可以评估并行开展；网页终稿仍依赖已确认的文章内容。并行只能缩短彼此独立部分的等待，不能消除人工检查与交接时间。</p></article>
+        <article><span>02 · 信息漂移</span><p>多次转述就像“可乐图标”在 A、B、C、D 之间传递，越到后面越可能偏离原意。可行的控制方式是保留不可覆盖的原始需求、事实来源和已批准决策；每个执行者同时读取这些基准，GPT 做差异审查而非每轮重写全文，偏离时再退回修正。</p></article>
+        <article><span>03 · 自动化边界</span><p>后续可用任务依赖图（DAG，即描述任务先后关系的有向图）编排独立任务，记录状态、开始与结束时间、交付物和失败原因，并在人需要决策时暂停等待。这里是下一步探索方向，不代表已经实现或验证。</p></article>
+      </div>
+    </section>
+        <div class="credits-card" data-reveal><div class="credits-heading"><span>BEHIND THE ARTICLE</span><h3>专题制作名单</h3></div><ul>
+      <li><strong>一川工</strong><span>创意、组织与决策</span></li><li><strong>ChatGPT</strong><span>专题策划与编辑</span></li><li><strong>Perplexity</strong><span>资料研究（研究资料包提供参考线索，来源仍按原始出处复核）</span></li><li><strong>DeepSeek</strong><span>内容优化</span></li><li><strong>Gemini</strong><span>网页视觉设计</span></li><li><strong>Codex</strong><span>工程实现</span></li><li><strong>Qwen Code</strong><span>独立质量审查</span></li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- ================= 10 参考文献 ================= -->
+<section class="chapter" id="refs">
+  <div class="wrap">
+    <header class="chapter-head" data-reveal>
+      <div class="chapter-num">10 / REFERENCES</div>
+      <h2>参考文献与声明</h2>
+      <p class="chapter-kicker">全部来源按出现顺序列出，可逐条复核</p>
+    </header>
+
+    <div class="prose" data-reveal>
+      <p>
+        本文事实性陈述尽量回溯到以下原始来源；保留待核实标签的数据不作为已确认事实。若有出入，以原始出处为准。
+      </p>
+    </div>
+
+    <div class="viz" data-reveal>
+      <div class="viz-frame">
+        <ol class="refs">
+          <li><span class="ref-title">Vaswani et al., Attention Is All You Need</span> — <a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener">arXiv:1706.03762</a></li>
+          <li><span class="ref-title">GPT-3: Language Models are Few-Shot Learners</span> — <a href="https://arxiv.org/abs/2005.14165" target="_blank" rel="noopener">arXiv:2005.14165</a></li>
+          <li><span class="ref-title">Chain-of-Thought Prompting</span> — <a href="https://ar5iv.labs.arxiv.org/html/2201.11903" target="_blank" rel="noopener">arXiv:2201.11903</a></li>
+          <li><span class="ref-title">InstructGPT（RLHF）</span> — <a href="https://arxiv.org/html/2203.02155" target="_blank" rel="noopener">arXiv:2203.02155</a></li>
+          <li><span class="ref-title">ReAct: Synergizing Reasoning and Acting</span> — <a href="https://iclr.cc/virtual/2023/poster/11003" target="_blank" rel="noopener">ICLR 2023</a></li>
+          <li><span class="ref-title">ChatGPT 发布</span> — <a href="https://openai.com/blog/chatgpt" target="_blank" rel="noopener">OpenAI</a></li>
+          <li><span class="ref-title">Toolformer</span> — <a href="https://arxiv.org/pdf/2302.04761" target="_blank" rel="noopener">arXiv:2302.04761</a></li>
+          <li><span class="ref-title">SWE-bench</span> — <a href="https://arxiv.org/html/2310.06770" target="_blank" rel="noopener">arXiv:2310.06770</a></li>
+          <li><span class="ref-title">SWE-agent（Agent–计算机接口）</span> — <a href="https://arxiv.org/html/2405.15793" target="_blank" rel="noopener">arXiv:2405.15793</a></li>
+          <li><span class="ref-title">OpenAI o1 推理模型</span> — <a href="https://openai.com/index/learning-to-reason-with-LLMs/" target="_blank" rel="noopener">OpenAI</a></li>
+          <li><span class="ref-title">Model Context Protocol 开源</span> — <a href="https://www.anthropic.com/news/model-context-protocol" target="_blank" rel="noopener">Anthropic</a></li>
+          <li><span class="ref-title">DeepSeek-R1</span> — <a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">arXiv:2501.12948</a></li>
+          <li><span class="ref-title">Anthropic 多智能体研究系统（编排者—工作者）</span> — <a href="https://www.anthropic.com/engineering/multi-agent-research-system" target="_blank" rel="noopener">Anthropic Engineering</a></li>
+          <li><span class="ref-title">METR 随机对照试验（AI 让任务用时增加 19%）</span> — <a href="https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/" target="_blank" rel="noopener">METR</a></li>
+          <li><span class="ref-title">上下文工程（context engineering）</span> — <a href="https://www.anthropic.com/research/effective-context-engineering-for-ai-agents" target="_blank" rel="noopener">Anthropic</a></li>
+          <li><span class="ref-title">MCP 捐赠给 Agentic AI Foundation</span> — <a href="https://www.anthropic.com/news/donating-the-model-context-protocol-and-establishing-of-the-agentic-ai-foundation" target="_blank" rel="noopener">Anthropic</a></li>
+          <li><span class="ref-title">OpenAI 停止报告 SWE-bench Verified</span> — <a href="https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/" target="_blank" rel="noopener">OpenAI</a></li>
+          <li><span class="ref-title">Perplexity Computer 发布</span> — <a href="https://www.perplexity.ai/hub/blog/introducing-perplexity-computer" target="_blank" rel="noopener">Perplexity</a></li>
+          <li><span class="ref-title">DeepSeek-V4 预览版 / V4-Pro 正式版</span> — <a href="https://api-docs.deepseek.com/updates" target="_blank" rel="noopener">DeepSeek 更新日志</a></li>
+          <li><span class="ref-title">Cursor Composer 2.5</span> — <a href="https://cursor.com/blog/composer-2-5" target="_blank" rel="noopener">Cursor</a></li>
+          <li><span class="ref-title">DeepSeek Harness 开发者预览版</span> — <a href="https://www.deepseek.com/harness/en/" target="_blank" rel="noopener">DeepSeek</a></li>
+          <li><span class="ref-title">OpenAI DevDay 2026（Codex 云端与 CLI）</span> — <a href="https://openai.com/blog/devday-2026-recap" target="_blank" rel="noopener">OpenAI</a></li>
+          <li><span class="ref-title">Gemini 4 Carbon 发布</span> — <a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-carbon/" target="_blank" rel="noopener">Google</a></li>
+          <li><span class="ref-title">Qwen4-Max 发布</span> — <a href="https://qwen.ai/blog?id=qwen4-max" target="_blank" rel="noopener">Qwen</a></li>
+          <li><span class="ref-title">GPT-6.2 Astra / Sol 发布</span> — <a href="https://openai.com/index/introducing-gpt-6-2-astra-sol/" target="_blank" rel="noopener">OpenAI</a></li>
+          <li><span class="ref-title">Gemini 4 Neon 发布</span> — <a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-neon/" target="_blank" rel="noopener">Google</a></li>
+          <li><span class="ref-title">LMArena Code Arena | WebDev 排行榜（2026-11-23，快照待核实）</span> — <a href="https://lmarena.ai/" target="_blank" rel="noopener">LMArena</a></li>
+          <li><span class="ref-title">Terminal-Bench 4.1 排行榜（2026-11-23）</span> — <a href="https://snorkel.ai/leaderboard/terminal-bench/" target="_blank" rel="noopener">Snorkel</a></li>
+          <li><span class="ref-title">DeepSeek-V4 技术报告 / 模型卡</span> — <a href="https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro" target="_blank" rel="noopener">HuggingFace</a></li>
+          <li><span class="ref-title">CodeRabbit 官方文档与 FAQ</span> — <a href="https://www.coderabbit.ai/" target="_blank" rel="noopener">CodeRabbit</a></li>
+        </ol>
+        <p class="viz-note">
+          <b>声明：</b>本页为交互式专题演示稿，资料截止 2026-11-25（北京时间）。
+          资料研究参考了 Perplexity 整理的研究资料包；发布信息优先链接原始来源，无法由原始页面或存档确认的数值已标注待核实。Perplexity 本身也是本文讨论的工具之一。
+          文中所有 <span class="tag tag-infer">推断</span> 与 <span class="tag tag-second">二手汇总</span> 内容不构成事实陈述。
+        </p>
+      </div>
+    </div>
+
+    <div class="footer-bottom" data-reveal>
+      <span>北辰实验室 · 技术研究 · 《一个人的研发部门：当 AI 成为我的同事》</span>
+      <span>资料核对截至 2026-11-25 · 北辰实验室专题文章</span>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script>
+(function(){
+  'use strict';
+
+  function esc(s){
+    return String(s).replace(/[&<>"]/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];
+    });
+  }
+
+  /* ============================================================
+     1. 阅读进度与顶部浮现导航栏
+     ============================================================ */
+  var fill = document.getElementById('progressFill');
+  var tocPercent = document.getElementById('tocPercent');
+  var topbar = document.getElementById('topbar');
+  var topbarPct = document.getElementById('topbarPct');
+  var topbarCurrent = document.getElementById('topbarCurrent');
+  var heroEl = document.getElementById('top');
+  var ticking = false;
+
+  var SECTION_NAMES = {
+    'intro': '序 · 一个人的研发部门',
+    'ch01': '01 · 从 Transformer 到 AI Agent',
+    'ch02': '02 · 模型、应用、Agent 与 Harness',
+    'ch03': '03 · 四个模型家族',
+    'ch04': '04 · AI 工具能力定位矩阵',
+    'ch05': '05 · 公开评测数据',
+    'ch06': '06 · 一个人的团队',
+    'ch07': '07 · KeyGuard 独立只读审查',
+    'ch08': '08 · 人工协作 vs Agent 协作',
+    'closing': '09 · 总结与制作名单',
+    'refs': '10 · 参考文献与声明'
+  };
+
+  function updateProgress(){
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var top = window.pageYOffset || doc.scrollTop || 0;
+    var p = max > 0 ? Math.min(1, Math.max(0, top / max)) : 0;
+    var pctText = Math.round(p * 100) + '%';
+    if (fill) fill.style.width = (p * 100).toFixed(2) + '%';
+    if (tocPercent) tocPercent.textContent = pctText;
+    if (topbarPct) topbarPct.textContent = pctText;
+
+    if (topbar && heroEl){
+      var showBar = top > (heroEl.offsetHeight * 0.72);
+      topbar.classList.toggle('visible', showBar);
+    }
+    ticking = false;
+  }
+
+  var sections = Array.prototype.slice.call(document.querySelectorAll('section.chapter[id]'));
+  var tocLinks = Array.prototype.slice.call(document.querySelectorAll('.sidetoc a'));
+
+  function updateActiveSection(){
+    var mark = window.pageYOffset + window.innerHeight * 0.28;
+    var current = sections[0];
+    for (var i = 0; i < sections.length; i++){
+      if (sections[i].offsetTop <= mark) current = sections[i];
+    }
+    if (!current) return;
+    var id = current.id;
+    if (topbarCurrent && SECTION_NAMES[id]) {
+      topbarCurrent.textContent = SECTION_NAMES[id];
+    }
+    tocLinks.forEach(function(a){
+      a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+    });
+  }
+
+  function onScroll(){
+    if (!ticking){
+      ticking = true;
+      window.requestAnimationFrame(updateProgress);
+    }
+    updateActiveSection();
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', updateProgress);
+  updateProgress();
+  updateActiveSection();
+
+  /* ============================================================
+     2. 滚动入场动画
+     ============================================================ */
+  var revealEls = Array.prototype.slice.call(document.querySelectorAll('[data-reveal]'));
+  if ('IntersectionObserver' in window){
+    var revealIO = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){
+          e.target.classList.add('is-in');
+          revealIO.unobserve(e.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -6% 0px', threshold: 0.04 });
+    revealEls.forEach(function(el){ revealIO.observe(el); });
+  } else {
+    revealEls.forEach(function(el){ el.classList.add('is-in'); });
+  }
+
+  /* ============================================================
+     3. 全屏目录抽屉
+     ============================================================ */
+  var tocBtn = document.getElementById('tocBtn');
+  var topbarTocBtn = document.getElementById('topbarTocBtn');
+  var tocOverlay = document.getElementById('tocOverlay');
+  var tocClose = document.getElementById('tocClose');
+
+  function openToc(){
+    tocOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeToc(){
+    tocOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  if (tocBtn) tocBtn.addEventListener('click', openToc);
+  if (topbarTocBtn) topbarTocBtn.addEventListener('click', openToc);
+  if (tocClose) tocClose.addEventListener('click', closeToc);
+  if (tocOverlay){
+    tocOverlay.addEventListener('click', function(e){
+      if (e.target.tagName === 'A' || e.target.closest('a')) closeToc();
+    });
+  }
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') closeToc();
+  });
+
+  /* ============================================================
+     4. AI 技术发展时间轴（支持阶段筛选）
+     ============================================================ */
+  var TIMELINE = [
+    {
+      phase: '架构与规模', years: '2017 — 2021', idx: 'PHASE 01',
+      items: [
+        { date:'2017-06-12', title:'Transformer 论文《Attention Is All You Need》', desc:'完全基于注意力机制，取代 RNN，成为后来所有大模型的基础架构。', src:'arXiv:1706.03762', url:'https://arxiv.org/abs/1706.03762' },
+        { date:'2020-05-28', title:'GPT-3 论文《Language Models are Few-Shot Learners》', desc:'证明扩大规模可以带来少样本学习（in-context learning）能力。', src:'arXiv:2005.14165', url:'https://arxiv.org/abs/2005.14165' }
+      ]
+    },
+    {
+      phase: '对齐与对话', years: '2022 — 2023', idx: 'PHASE 02',
+      items: [
+        { date:'2022-01', title:'思维链（Chain-of-Thought）提示论文', desc:'让模型先写出中间推理步骤，推理题表现明显提升。', src:'arXiv:2201.11903', url:'https://ar5iv.labs.arxiv.org/html/2201.11903' },
+        { date:'2022-03-04', title:'InstructGPT 论文（RLHF）', desc:'用人类反馈强化学习让模型能听懂并执行指令，这是 ChatGPT 的直接技术前身。', src:'arXiv:2203.02155', url:'https://arxiv.org/html/2203.02155' },
+        { date:'2022-10', title:'ReAct 论文（推理与行动交替进行）', desc:'后来 Agent「思考 → 调用工具 → 观察结果」循环的原型。', src:'ICLR 2023', url:'https://iclr.cc/virtual/2023/poster/11003' },
+        { date:'2022-11-30', title:'ChatGPT 发布', desc:'大语言模型第一次以对话产品的形式大规模普及。', src:'OpenAI', url:'https://openai.com/blog/chatgpt' },
+        { date:'2023-02-09', title:'Toolformer 论文', desc:'模型可以自己学会何时调用 API 和工具。', src:'arXiv:2302.04761', url:'https://arxiv.org/pdf/2302.04761' }
+      ]
+    },
+    {
+      phase: '推理与软件工程', years: '2023 — 2025', idx: 'PHASE 03',
+      items: [
+        { date:'2023-10', title:'SWE-bench 发布', desc:'第一次用真实 GitHub Issue 评测模型解决软件工程问题的能力。', src:'arXiv:2310.06770', url:'https://arxiv.org/html/2310.06770' },
+        { date:'2024-05', title:'SWE-agent 论文', desc:'提出「Agent–计算机接口」（ACI）概念，证明工具界面设计会直接影响 Agent 的表现，是 Harness 思想的早期代表。', src:'arXiv:2405.15793', url:'https://arxiv.org/html/2405.15793' },
+        { date:'2024-09-12', title:'OpenAI o1 发布', desc:'用强化学习训练「先思考再回答」，开启推理模型时代。', src:'OpenAI', url:'https://openai.com/index/learning-to-reason-with-LLMs/' },
+        { date:'2024-11-25', title:'Anthropic 开源 Model Context Protocol (MCP)', desc:'为模型连接外部工具和数据提供统一协议。', src:'Anthropic', url:'https://www.anthropic.com/news/model-context-protocol' },
+        { date:'2025-01', title:'DeepSeek-R1 论文', desc:'用强化学习（GRPO）激发推理能力，并开放权重。', src:'arXiv:2501.12948', url:'https://arxiv.org/abs/2501.12948' },
+        { date:'2025-06-13', title:'Anthropic 公开多智能体研究系统的工程经验', desc:'编排者—工作者（orchestrator-worker）模式在生产环境的实证。', src:'Anthropic Engineering', url:'https://www.anthropic.com/engineering/multi-agent-research-system' },
+        { date:'2025-07-10', title:'METR 随机对照试验：资深开发者使用 AI 后完成任务反而慢了 19%', desc:'第一份严格的反直觉证据，提醒读者不要高估 AI 带来的提效。', src:'METR', url:'https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/' },
+        { date:'2025-09-29', title:'Anthropic 提出「上下文工程」', desc:'从「写好提示词」转向「管理模型能看到的全部 token」。', src:'Anthropic', url:'https://www.anthropic.com/research/effective-context-engineering-for-ai-agents' },
+        { date:'2025-12-09', title:'MCP 捐赠给 Linux 基金会旗下的 Agentic AI Foundation', desc:'工具协议走向行业中立治理。', src:'Anthropic', url:'https://www.anthropic.com/news/donating-the-model-context-protocol-and-establishing-of-the-agentic-ai-foundation' }
+      ]
+    },
+    {
+      phase: 'Agent 与 Harness 成为主角', years: '2026', idx: 'PHASE 04',
+      items: [
+        { date:'2026-02-23', title:'OpenAI 停止报告 SWE-bench Verified 分数', desc:'理由是数据污染和测试用例缺陷。', src:'OpenAI', url:'https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/' },
+        { date:'2026-02-25', title:'Perplexity Computer 发布', desc:'多模型、多智能体的通用数字员工。', src:'Perplexity', url:'https://www.perplexity.ai/hub/blog/introducing-perplexity-computer' },
+        { date:'2026-04-24', title:'DeepSeek-V4 预览版上线 API', desc:'V4-Pro / V4-Flash 两个规格同时开放。', src:'DeepSeek 更新日志', url:'https://api-docs.deepseek.com/updates' },
+        { date:'2026-05-18', title:'Cursor Composer 2.5 发布', desc:'AI 原生 IDE 的自研编程模型更新。', src:'Cursor', url:'https://cursor.com/blog/composer-2-5' },
+        { date:'2026-08-13', title:'DeepSeek-V4-Pro 正式版发布', desc:'原生支持 Responses API 并适配 Codex。', src:'DeepSeek 更新日志', url:'https://api-docs.deepseek.com/updates' },
+        { date:'2026-09-22', title:'DeepSeek Harness 开发者预览版发布', desc:'开源，「一切皆插件」。', src:'DeepSeek', url:'https://www.deepseek.com/harness/en/' },
+        { date:'2026-09-29', title:'OpenAI DevDay 2026', desc:'Codex 云环境、CLI 改版（/agents）、Code Review、Security Cloud。', src:'OpenAI', url:'https://openai.com/blog/devday-2026-recap' },
+        { date:'2026-10-28', title:'Gemini 4 Carbon 发布', desc:'11 月 10 日全面开放。', src:'Google', url:'https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-carbon/' },
+        { date:'2026-11-16', title:'Qwen4-Max 发布', desc:'2.4T 主干参数，原生视觉，1M 上下文。', src:'Qwen', url:'https://qwen.ai/blog?id=qwen4-max' },
+        { date:'2026-11-17', title:'GPT-6.2 Astra / Sol 发布', desc:'前沿模型与日常主力模型同代更新。', src:'OpenAI', url:'https://openai.com/index/introducing-gpt-6-2-astra-sol/' },
+        { date:'2026-11-18', title:'Gemini 4 Neon 发布', desc:'前沿智能 + 快速端到端完成任务。', src:'Google', url:'https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-neon/' }
+      ]
+    }
+  ];
+
+  (function renderTimeline(){
+    var mount = document.getElementById('timelineMount');
+    if (!mount) return;
+    var html = '';
+    TIMELINE.forEach(function(group, gIdx){
+      html += '<div class="tl-phase" data-phase-group="' + gIdx + '">';
+      html += '<div class="tl-phase-head">' +
+                '<span class="tl-phase-idx">' + group.idx + '</span>' +
+                '<span class="tl-phase-name">' + esc(group.phase) + '</span>' +
+                '<span class="tl-phase-years">' + esc(group.years) + '</span>' +
+              '</div>';
+      html += '<ol class="tl-list">';
+      group.items.forEach(function(it){
+        html += '<li class="tl-item">' +
+                  '<div class="tl-date">' + esc(it.date) + '</div>' +
+                  '<div class="tl-dot"></div>' +
+                  '<div class="tl-content">' +
+                    '<h3>' + esc(it.title) + '</h3>' +
+                    '<p>' + esc(it.desc) + '</p>' +
+                    '<a class="tl-src" href="' + it.url + '" target="_blank" rel="noopener">' + esc(it.src) + ' ↗</a>' +
+                  '</div>' +
+                '</li>';
+      });
+      html += '</ol></div>';
+    });
+    mount.innerHTML = html;
+
+    var filterBar = document.getElementById('tlFilterBar');
+    if (filterBar){
+      filterBar.addEventListener('click', function(e){
+        var btn = e.target.closest('.filter-pill');
+        if (!btn) return;
+        var phase = btn.getAttribute('data-phase');
+        filterBar.querySelectorAll('.filter-pill').forEach(function(p){
+          p.classList.toggle('active', p === btn);
+        });
+        mount.querySelectorAll('.tl-phase').forEach(function(sec){
+          var show = (phase === 'all' || sec.getAttribute('data-phase-group') === phase);
+          sec.classList.toggle('hidden', !show);
+        });
+      });
+    }
+  })();
+
+  /* ============================================================
+     5. 四层技术架构 SVG 与卡片联动
+     ============================================================ */
+  (function bindArchInteraction(){
+    var rings = document.querySelectorAll('#archSvg .arch-ring');
+    var cards = document.querySelectorAll('#archLayers .layer');
+    function setActive(layerId){
+      cards.forEach(function(c){
+        c.classList.toggle('is-active', c.getAttribute('data-layer-card') === layerId);
+      });
+    }
+    rings.forEach(function(r){
+      r.addEventListener('mouseenter', function(){ setActive(r.getAttribute('data-layer')); });
+      r.addEventListener('click', function(){
+        var id = r.getAttribute('data-layer');
+        setActive(id);
+        var card = document.querySelector('[data-layer-card="' + id + '"]');
+        if (card) card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      });
+    });
+    cards.forEach(function(c){
+      c.addEventListener('mouseenter', function(){ setActive(c.getAttribute('data-layer-card')); });
+      c.addEventListener('mouseleave', function(){ setActive(''); });
+    });
+  })();
+
+  /* ============================================================
+     6. 产品矩阵点击交互
+     ============================================================ */
+  var TOOL_ROLES = {"chatgpt": ["项目总监", "策划、分析与内容整合。"], "gemini": ["艺术总监", "网页设计与视觉原型。"], "deepseek": ["技术顾问", "逻辑分析与内容优化。"], "codex": ["研发工程师", "代码实现、调试与测试。"], "qwen-code": ["独立审查员", "代码审查与问题定位。"], "cursor": ["备选研发工具", "适合作为代码编辑与 AI 辅助开发的备选环境。"], "coderabbit": ["代码变更审查员", "围绕代码变更提供审查辅助。"], "perplexity": ["技术研究员", "资料搜索与来源收集。"]};
+
+  (function bindCapabilityMatrix(){
+    var matrix=document.getElementById("productMatrix"), detail=document.getElementById("capabilityDetail");
+    if(!matrix||!detail)return;
+    matrix.addEventListener("click",function(event){
+      var button=event.target.closest("[data-tool]"); if(!button)return;
+      var role=TOOL_ROLES[button.getAttribute("data-tool")]; if(!role)return;
+      matrix.querySelectorAll("[data-tool]").forEach(function(item){item.setAttribute("aria-pressed","false");});
+      button.setAttribute("aria-pressed","true");
+      var tool=button.getAttribute("data-tool"), name=Array.prototype.find.call(matrix.querySelectorAll('.capability-name'),function(item){return item.getAttribute('data-tool')===tool;});
+      var label=button.getAttribute("data-capability");
+      detail.innerHTML='<span class="capability-detail-label">推荐岗位'+(label?' · '+esc(label)+'任务':'')+'</span><strong>'+esc(name?name.textContent:tool)+' · '+esc(role[0])+'</strong><p>'+esc(role[1])+'</p>';
+    });
+  })();
+
+  /* ============================================================
+     7. WebDev Arena 散点图（带交互 Tooltip）
+     ============================================================ */
+  var WEBDEV = [
+    { m:'Claude Fable 5.2',    e:'xHigh', s:1822, c:11.72, v:'Anthropic', lx:0,   ly:-16, la:'middle' },
+    { m:'Claude Opus 5.5',     e:'Max',   s:1820, c:8.98,  v:'Anthropic', lx:-14, ly:5,   la:'end' },
+    { m:'Claude Sonnet 5.5',   e:'xHigh', s:1773, c:3.03,  v:'Anthropic', lx:0,   ly:22,  la:'middle' },
+    { m:'Gemini 4 Carbon',     e:'High',  s:1769, c:1.61,  v:'Google',    lx:0,   ly:-16, la:'middle' },
+    { m:'Gemini 4 Neon',       e:'xHigh', s:1765, c:2.59,  v:'Google',    lx:0,   ly:22,  la:'middle' },
+    { m:'GPT-6 Astra',         e:'Max',   s:1764, c:9.52,  v:'OpenAI',    lx:0,   ly:-16, la:'middle' },
+    { m:'GPT-6.2 Astra',       e:'Max',   s:1761, c:5.55,  v:'OpenAI',    lx:0,   ly:22,  la:'middle' },
+    { m:'GPT-6.2 Sol',         e:'Max',   s:1755, c:1.50,  v:'OpenAI',    lx:0,   ly:-16, la:'middle' },
+    { m:'Qwen4-Max',           e:'xHigh', s:1752, c:4.17,  v:'Alibaba',   lx:0,   ly:22,  la:'middle' },
+    { m:'GPT-6.1 Sol',         e:'Max',   s:1745, c:1.83,  v:'OpenAI',    lx:-14, ly:22,  la:'end' },
+    { m:'DeepSeek-V4.1-Flash', e:'Max',   s:1659, c:0.11,  v:'DeepSeek',  lx:14,  ly:5,   la:'start' }
+  ];
+  var VENDOR_COLOR = {
+    Anthropic:'#C4703C', Google:'#1E44D9', OpenAI:'#2E2E38',
+    Alibaba:'#7A5AB8', DeepSeek:'#168E7C'
+  };
+
+  (function renderWebDev(){
+    var svg = document.getElementById('chart-webdev');
+    var stage = document.getElementById('webdevStage');
+    var tip = document.getElementById('webdevTooltip');
+    if (!svg) return;
+
+    var W = 900, H = 520;
+    var P = { t: 46, r: 44, b: 76, l: 76 };
+    var iw = W - P.l - P.r, ih = H - P.t - P.b;
+
+    var X_MIN = 0.1, X_MAX = 20;
+    var lx0 = Math.log10(X_MIN), lx1 = Math.log10(X_MAX);
+    var Y_MIN = 1640, Y_MAX = 1840;
+
+    function px(c){ return P.l + (Math.log10(c) - lx0) / (lx1 - lx0) * iw; }
+    function py(s){ return P.t + (1 - (s - Y_MIN) / (Y_MAX - Y_MIN)) * ih; }
+
+    var out = '<g font-family="-apple-system,BlinkMacSystemFont,SF Pro Text,PingFang SC,sans-serif">';
+
+    /* 网格 y */
+    [1640, 1680, 1720, 1760, 1800, 1840].forEach(function(v){
+      var y = py(v);
+      out += '<line x1="' + P.l + '" y1="' + y + '" x2="' + (W - P.r) + '" y2="' + y + '" stroke="#F0F1F6" stroke-width="1"/>';
+      out += '<text x="' + (P.l - 14) + '" y="' + (y + 4) + '" text-anchor="end" font-size="11" fill="#7A7D8C" font-family="monospace">' + v + '</text>';
+    });
+
+    /* 网格 x */
+    [0.1, 0.3, 1, 3, 10, 20].forEach(function(v){
+      var x = px(v);
+      out += '<line x1="' + x + '" y1="' + P.t + '" x2="' + x + '" y2="' + (H - P.b) + '" stroke="#F0F1F6" stroke-width="1"/>';
+      out += '<text x="' + x + '" y="' + (H - P.b + 24) + '" text-anchor="middle" font-size="11" fill="#7A7D8C" font-family="monospace">$' + v + '</text>';
+    });
+
+    /* 轴标签 */
+    out += '<text x="' + (P.l + iw / 2) + '" y="' + (H - 22) + '" text-anchor="middle" font-size="11.5" fill="#7A7D8C" letter-spacing="0.5">每任务成本中位数（美元 · 对数轴）</text>';
+    out += '<text x="16" y="' + (P.t + ih / 2) + '" text-anchor="middle" font-size="11.5" fill="#7A7D8C" letter-spacing="0.5" transform="rotate(-90 16 ' + (P.t + ih / 2) + ')">WebDev Arena Elo</text>';
+
+    /* 数据点 */
+    WEBDEV.forEach(function(d, idx){
+      var x = px(d.c), y = py(d.s);
+      var col = VENDOR_COLOR[d.v] || '#888';
+      out += '<g class="wd-pt" data-idx="' + idx + '" style="cursor:pointer">';
+      out += '<circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="14" fill="transparent"/>';
+      out += '<circle class="dot-vis" cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="6.5" fill="' + col + '" fill-opacity="0.94" stroke="#FFFFFF" stroke-width="1.8"/>';
+      out += '<text x="' + (x + d.lx).toFixed(1) + '" y="' + (y + d.ly).toFixed(1) + '" text-anchor="' + d.la + '" font-size="10.5" fill="#3F414D" letter-spacing="-0.1">' + esc(d.m) + '</text>';
+      out += '</g>';
+    });
+
+    /* 图例 */
+    var legend = [
+      { k:'Anthropic', c:'#C4703C' },
+      { k:'Google', c:'#1E44D9' },
+      { k:'OpenAI', c:'#2E2E38' },
+      { k:'Alibaba', c:'#7A5AB8' },
+      { k:'DeepSeek', c:'#168E7C' }
+    ];
+    legend.forEach(function(g, i){
+      var x = P.l + i * 98;
+      out += '<circle cx="' + x + '" cy="' + (P.t - 22) + '" r="4.5" fill="' + g.c + '"/>';
+      out += '<text x="' + (x + 11) + '" y="' + (P.t - 18) + '" font-size="11" fill="#7A7D8C">' + g.k + '</text>';
+    });
+
+    out += '</g>';
+    svg.innerHTML = out;
+
+    if (stage && tip){
+      svg.querySelectorAll('.wd-pt').forEach(function(pt){
+        pt.addEventListener('mouseenter', function(ev){
+          var d = WEBDEV[Number(pt.getAttribute('data-idx'))];
+          var vis = pt.querySelector('.dot-vis');
+          if (vis) vis.setAttribute('r', '9');
+          tip.innerHTML =
+            '<div class="tt-title">' + esc(d.m) + '（' + esc(d.e) + '）</div>' +
+            '<div class="tt-meta">厂商：' + esc(d.v) + '<br>Elo 评分：' + d.s + ' · 中位成本：$' + d.c.toFixed(2) + '</div>';
+          tip.classList.add('visible');
+        });
+        pt.addEventListener('mousemove', function(ev){
+          var rect = stage.getBoundingClientRect();
+          var left = Math.min(rect.width - 230, Math.max(8, ev.clientX - rect.left + 14));
+          var top = Math.max(8, ev.clientY - rect.top - 58);
+          tip.style.left = left + 'px';
+          tip.style.top = top + 'px';
+        });
+        pt.addEventListener('mouseleave', function(){
+          var vis = pt.querySelector('.dot-vis');
+          if (vis) vis.setAttribute('r', '6.5');
+          tip.classList.remove('visible');
+        });
+      });
+    }
+  })();
+
+  /* ============================================================
+     8. Terminal-Bench 4.1 置信区间点图（带交互 Tooltip）
+     ============================================================ */
+  var TB = [
+    { m:'Copilot Fusion（系统）', h:'GitHub Copilot',  v:71.2, ci:2.9, cost:'$2.0k' },
+    { m:'Claude Opus 5.5',       h:'Claude Code',      v:65.8, ci:3.1, cost:'$4.7k' },
+    { m:'Claude Fable 5.2',      h:'Claude Code',      v:65.8, ci:2.8, cost:'$16.5k' },
+    { m:'Gemini 4 Carbon',       h:'Antigravity CLI',  v:64.5, ci:3.2, cost:'$1.4k' },
+    { m:'Claude Sonnet 5.5',     h:'Claude Code',      v:63.9, ci:3.0, cost:'$7.3k' },
+    { m:'GPT-6.2 Astra',         h:'Codex',            v:62.1, ci:2.3, cost:'$1.4k' },
+    { m:'GPT-6.2 Sol',           h:'Codex',            v:61.5, ci:2.8, cost:'$0.3k' },
+    { m:'Gemini 4 Neon',         h:'Antigravity CLI',  v:61.2, ci:2.8, cost:'$1.9k' },
+    { m:'GPT-6.1 Sol',           h:'Codex',            v:60.9, ci:3.0, cost:'$0.6k' },
+    { m:'GPT-6 Astra',           h:'Codex',            v:60.3, ci:2.8, cost:'$3.3k' },
+    { m:'Kimi K3.1 Pro',         h:'Claude Code',      v:59.7, ci:4.2, cost:'$1.1k' }
+  ];
+
+  (function renderTerminal(){
+    var svg = document.getElementById('chart-terminal');
+    var stage = document.getElementById('tbStage');
+    var tip = document.getElementById('tbTooltip');
+    if (!svg) return;
+
+    var W = 900, H = 620;
+    var P = { t: 62, r: 20, b: 52, l: 0 };
+    var CH_X0 = 330, CH_X1 = 680;
+    var X_MIN = 55, X_MAX = 75;
+    var ROW_H = 44;
+    var ROW_TOP = 92;
+
+    function px(v){ return CH_X0 + (v - X_MIN) / (X_MAX - X_MIN) * (CH_X1 - CH_X0); }
+
+    var out = '<g font-family="-apple-system,BlinkMacSystemFont,SF Pro Text,PingFang SC,sans-serif">';
+
+    /* 表头 */
+    out += '<text x="0" y="' + (P.t - 12) + '" font-size="10.5" fill="#7A7D8C" letter-spacing="1.2" font-family="monospace">模型 / HARNESS</text>';
+    out += '<text x="' + (CH_X0 + (CH_X1 - CH_X0) / 2) + '" y="' + (P.t - 12) + '" text-anchor="middle" font-size="10.5" fill="#7A7D8C" letter-spacing="1.2" font-family="monospace">解决率 %（±95% CI）</text>';
+    out += '<text x="' + (W - P.r) + '" y="' + (P.t - 12) + '" text-anchor="end" font-size="10.5" fill="#7A7D8C" letter-spacing="1.2" font-family="monospace">总成本</text>';
+
+    /* 纵向网格 */
+    [55, 60, 65, 70, 75].forEach(function(v){
+      var x = px(v);
+      out += '<line x1="' + x + '" y1="' + (ROW_TOP - 18) + '" x2="' + x + '" y2="' + (ROW_TOP + TB.length * ROW_H - 10) + '" stroke="#F0F1F6" stroke-width="1"/>';
+      out += '<text x="' + x + '" y="' + (ROW_TOP + TB.length * ROW_H + 16) + '" text-anchor="middle" font-size="10.5" fill="#7A7D8C" font-family="monospace">' + v + '%</text>';
+    });
+
+    /* 轴说明 */
+    out += '<text x="' + CH_X0 + '" y="' + (ROW_TOP + TB.length * ROW_H + 38) + '" font-size="10.5" fill="#A2A5B3" font-family="monospace">↑ 横轴自 55% 起，非零点起始</text>';
+
+    /* 行 */
+    TB.forEach(function(d, i){
+      var y = ROW_TOP + i * ROW_H;
+      var cy = y + ROW_H / 2 - 6;
+      var x = px(d.v);
+      var x1 = px(d.v - d.ci), x2 = px(d.v + d.ci);
+
+      if (i > 0){
+        out += '<line x1="0" y1="' + (y - 6) + '" x2="' + (W - P.r) + '" y2="' + (y - 6) + '" stroke="#F5F6FA" stroke-width="1"/>';
+      }
+
+      out += '<g class="tb-row" data-idx="' + i + '" style="cursor:pointer">';
+      out += '<rect x="0" y="' + (y - 5) + '" width="' + (W - P.r) + '" height="' + (ROW_H - 2) + '" fill="transparent"/>';
+      out += '<text x="0" y="' + (cy - 2) + '" font-size="12.5" fill="#0F1015" font-weight="600">' + esc(d.m) + '</text>';
+      out += '<text x="0" y="' + (cy + 14) + '" font-size="10.5" fill="#7A7D8C" font-family="monospace" letter-spacing="0.2">' + esc(d.h) + '</text>';
+
+      out += '<line x1="' + x1.toFixed(1) + '" y1="' + cy + '" x2="' + x2.toFixed(1) + '" y2="' + cy + '" stroke="#C7D3FA" stroke-width="3.5" stroke-linecap="round"/>';
+      out += '<circle cx="' + x.toFixed(1) + '" cy="' + cy + '" r="5.5" fill="#1E44D9"/>';
+      out += '<circle cx="' + x.toFixed(1) + '" cy="' + cy + '" r="9" fill="transparent" stroke="#1E44D9" stroke-width="1" stroke-opacity="0.22"/>';
+
+      out += '<text x="' + (CH_X1 + 46) + '" y="' + (cy + 4) + '" text-anchor="end" font-size="12" fill="#0F1015" font-weight="650" font-family="monospace">' + d.v.toFixed(1) + '%</text>';
+      out += '<text x="' + (W - P.r) + '" y="' + (cy + 4) + '" text-anchor="end" font-size="12" fill="#3F414D" font-family="monospace">' + esc(d.cost) + '</text>';
+      out += '</g>';
+    });
+
+    out += '</g>';
+    svg.innerHTML = out;
+
+    if (stage && tip){
+      svg.querySelectorAll('.tb-row').forEach(function(row){
+        row.addEventListener('mouseenter', function(){
+          var d = TB[Number(row.getAttribute('data-idx'))];
+          tip.innerHTML =
+            '<div class="tt-title">' + esc(d.m) + '</div>' +
+            '<div class="tt-meta">Harness：' + esc(d.h) + '<br>解决率：' + d.v.toFixed(1) + '%（±' + d.ci.toFixed(1) + '%） · 评测总成本：' + esc(d.cost) + '</div>';
+          tip.classList.add('visible');
+        });
+        row.addEventListener('mousemove', function(ev){
+          var rect = stage.getBoundingClientRect();
+          var left = Math.min(rect.width - 250, Math.max(8, ev.clientX - rect.left + 14));
+          var top = Math.max(8, ev.clientY - rect.top - 58);
+          tip.style.left = left + 'px';
+          tip.style.top = top + 'px';
+        });
+        row.addEventListener('mouseleave', function(){
+          tip.classList.remove('visible');
+        });
+      });
+    }
+  })();
+
+  /* ============================================================
+     9. 组织架构图节点点击说明
+     ============================================================ */
+  var ORG_ROLES = {
+    'lead': {
+      title: '你 · 技术负责人',
+      desc: '定义目标、设定验收标准、把关合并与上线。这是整个系统里唯一不可外包的责任节点。',
+      tag: '推断 · 示意', cls: 'tag-infer'
+    },
+    'orch': {
+      title: '主 Agent（编排者）',
+      desc: '依据 Anthropic 编排者—工作者模式，将复杂需求拆解为子任务与依赖图，调度下游子智能体并执行上下文压缩与结果汇总。',
+      tag: '事实 + 推断', cls: 'tag-fact'
+    },
+    'code': {
+      title: '代码 Agent',
+      desc: '在受控工作区中读写仓库、编写实现并生成 Pull Request，专注功能交付，不兼任最终上线裁决。',
+      tag: '推断 · 示意', cls: 'tag-infer'
+    },
+    'review': {
+      title: '审查 Agent',
+      desc: '独立判定变更质量与安全边界，不直接编写业务代码，通过跨模型与验证 Agent 避免「既当运动员又当裁判」。',
+      tag: '事实 + 推断', cls: 'tag-fact'
+    },
+    'test': {
+      title: '测试 Agent',
+      desc: '在隔离沙箱中运行测试套件、构造边界用例并复现缺陷，为验收提供可验证的客观信号。',
+      tag: '推断 · 示意', cls: 'tag-infer'
+    },
+    'search': {
+      title: '检索 Agent',
+      desc: '检索技术文档、变更历史与依赖关系，把精准上下文按需注入主流程，减少无关 token 噪音。',
+      tag: '推断 · 示意', cls: 'tag-infer'
+    },
+    'docs': {
+      title: '文档 Agent',
+      desc: '同步更新变更说明、接口文档与架构记录，确保每次代码演进都留下可追溯的工程文档。',
+      tag: '推断 · 示意', cls: 'tag-infer'
+    },
+    'pool': {
+      title: '模型池（按子任务按需路由）',
+      desc: '不同子任务可路由至不同模型（如检索用低成本高吞吐模型、复杂编码用旗舰模型、审查用异构模型），由 Harness 统一管理协议、沙箱与权限。',
+      tag: '事实 + 推断', cls: 'tag-fact'
+    }
+  };
+
+  (function bindOrgChart(){
+    var svg = document.getElementById('orgSvg');
+    var box = document.getElementById('orgInspector');
+    if (!svg || !box) return;
+    svg.querySelectorAll('.org-node').forEach(function(node){
+      node.addEventListener('click', function(){
+        var role = node.getAttribute('data-role');
+        var info = ORG_ROLES[role];
+        if (!info) return;
+        box.innerHTML =
+          '<div><strong>' + esc(info.title) + '</strong> — ' + esc(info.desc) + '</div>' +
+          '<span class="tag ' + info.cls + '">' + esc(info.tag) + '</span>';
+      });
+    });
+  })();
+
+  /* ============================================================
+     10. KeyGuard 只读审查发现交互
+     ============================================================ */
+  (function bindAuditFindings(){
+    var list=document.getElementById('auditFindings'), detail=document.getElementById('auditDetail');
+    if(!list||!detail)return;
+    list.addEventListener('click',function(event){
+      var item=event.target.closest('.audit-finding'); if(!item)return;
+      list.querySelectorAll('.audit-finding').forEach(function(button){button.setAttribute('aria-pressed','false');});
+      item.setAttribute('aria-pressed','true');
+      var tag=item.querySelector('.audit-finding-meta b').textContent;
+      var level=item.getAttribute('data-level');
+      var title=item.querySelector('strong').textContent;
+      var desc=item.querySelector('span:last-child').textContent;
+      detail.innerHTML='<div class="audit-detail-kicker">审查发现 '+item.querySelector('.audit-finding-meta i').textContent+'</div><span class="audit-risk-tag '+level+'">'+esc(tag)+'</span><h3>'+esc(title)+'</h3><p>'+esc(desc)+'</p><div class="audit-origin">来源：Qwen Code 首次独立只读审查报告。审查阶段修改文件：0。</div>';
+    });
+  })();
+
+  /* ============================================================
+     11. 条形图入场动画
+     ============================================================ */
+  (function animateBars(){
+    var bars = Array.prototype.slice.call(document.querySelectorAll('.bar-fill[data-w]'));
+    if (!bars.length) return;
+
+    function fire(){
+      bars.forEach(function(b){
+        b.style.width = b.getAttribute('data-w') + '%';
+      });
+    }
+
+    if ('IntersectionObserver' in window){
+      var seen = false;
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if (e.isIntersecting && !seen){
+            seen = true;
+            fire();
+            io.disconnect();
+          }
+        });
+      }, { threshold: 0.2 });
+      bars.forEach(function(b){ io.observe(b); });
+    } else {
+      fire();
+    }
+  })();
+
+  /* ============================================================
+     12. 平滑锚点跳转（补偿顶部导航栏高度）
+     ============================================================ */
+  document.addEventListener('click', function(e){
+    var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
+    if (!a) return;
+    var id = a.getAttribute('href');
+    if (id === '#' || id.length < 2) return;
+    var target = document.querySelector(id);
+    if (!target) return;
+    e.preventDefault();
+    var y = target.getBoundingClientRect().top + window.pageYOffset - 64;
+    window.scrollTo({ top: y, behavior: 'smooth' });
+    history.replaceState(null, '', id);
+  });
+
+})();
+</script>
+</body>
+</html>

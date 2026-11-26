@@ -1637,19 +1637,21 @@ tbody tr:hover { background: #FAFBFD; }
 .reading-guide li span { color: var(--accent); font: 700 10px/1.6 var(--mono); }
 .reading-guide li p { margin: 0; }
 .capability-scroll { width: 100%; max-width: 100%; overflow-x: auto; overscroll-behavior-inline: contain; border: 1px solid var(--line); border-radius: 12px; }
-.capability-table { width: 100%; min-width: 690px; border-collapse: collapse; background: #fff; text-align: center; }
+.capability-table { width: 100%; min-width: 720px; border-collapse: separate; border-spacing: 0; background: #fff; text-align: center; }
 .capability-table th,.capability-table td { padding: 12px 14px; border-bottom: 1px solid #E8ECF2; }
 .capability-table thead th { background: #F4F6F9; color: #56677F; font-size: 12px; font-weight: 650; }
+.capability-table thead th:first-child { position: sticky; left: 0; z-index: 3; background: #EEF2F7; }
 .capability-table tbody tr:last-child th,.capability-table tbody tr:last-child td { border-bottom: 0; }
-.capability-table tbody th { width: 142px; text-align: left; background: #F8FAFC; }
+.capability-table tbody th { position: sticky; left: 0; z-index: 2; width: 142px; text-align: left; background: #F1F4F8; box-shadow: 1px 0 0 #DCE3EC; }
 .capability-name { border: 0; background: transparent; color: #314763; font: 650 13px/1.4 var(--sans); cursor: pointer; }
 .capability-name:hover,.capability-name:focus-visible { color: var(--accent); text-decoration: underline; }
-.capability-dot { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border: 1px solid transparent; border-radius: 50%; background: transparent; font: 17px/1 var(--sans); cursor: pointer; transition: background .18s, transform .18s; }
+.capability-dot { display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; border: 1px solid transparent; border-radius: 50%; background: transparent; font: 700 20px/1 var(--sans); cursor: pointer; transition: background .18s, transform .18s; touch-action: manipulation; }
 .capability-dot:hover,.capability-dot:focus-visible { background: #F4F7FB; transform: scale(1.12); outline: 2px solid #B4C1D4; outline-offset: 1px; }
-.capability-dot.level-3,.capability-legend .level-3 { color: #5275A5; }
-.capability-dot.level-2,.capability-legend .level-2 { color: #B4C1D4; }
-.capability-dot.level-1,.capability-legend .level-1 { color: #E1E6EE; }
-.capability-dot.level-0,.capability-legend .level-0 { color: #F0F0F0; }
+.capability-dot.level-3,.capability-legend .level-3 { color: #365F91; }
+.capability-dot.level-2,.capability-legend .level-2 { color: #6C88AA; }
+.capability-dot.level-1,.capability-legend .level-1 { color: #8291A5; }
+.capability-dot.level-0,.capability-legend .level-0 { color: #A3ADBA; }
+.capability-dot[aria-pressed="true"] { background: #EAF0F7; border-color: #829BB9; box-shadow: 0 0 0 2px #EAF0F7; }
 .capability-legend { display: flex; flex-wrap: wrap; gap: 10px 22px; margin: 15px 0 20px; color: var(--ink-3); font-size: 11px; }
 .capability-legend span { display: inline-flex; align-items: center; gap: 6px; }
 .capability-legend i { font-style: normal; font-size: 17px; }
@@ -1659,12 +1661,15 @@ tbody tr:hover { background: #FAFBFD; }
 .capability-detail p { margin: 3px 0 0; font-size: 12px; line-height: 1.65; }
 .verification-note { margin-top: 22px; padding: 15px 18px; border: 1px solid #D9E2EF; border-radius: 10px; background: #F5F8FC; color: #53647A; font-size: 12px; line-height: 1.75; }
 .verification-note strong { color: #314763; }
-.audit-stats { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 12px; margin: 26px 0 20px; }
+.audit-stats { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 12px; margin: 26px 0 10px; }
 .audit-stats > div { min-width: 0; padding: 16px; border: 1px solid var(--line); border-radius: 12px; background: white; }
 .audit-stats strong { display: block; color: #243B5A; font: 700 27px/1 var(--display); }
 .audit-stats span { display: block; min-height: 34px; margin-top: 8px; color: var(--ink-3); font-size: 11px; line-height: 1.5; }
 .audit-bar { display: block; height: 5px; width: var(--bar); margin-top: 12px; border-radius: 9px; background: #5275A5; }
 .audit-bar.risk-high { background: #B94B4B; }.audit-bar.risk-medium { background: #C58A39; }.audit-bar.risk-low { background: #7C9AB7; }.audit-bar.risk-none { background: #D9DEE7; }
+.audit-stats-note { margin: 0 0 20px; color: var(--ink-3); font-size: 11px; line-height: 1.6; }
+.audit-file-count { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 20px; padding: 9px 13px; border: 1px solid var(--line); border-radius: 9px; background: #fff; color: var(--ink-2); font-size: 11px; }
+.audit-file-count strong { color: #243B5A; font-size: 15px; }
 .audit-layout { display: grid; grid-template-columns: minmax(0,1.1fr) minmax(250px,.9fr); gap: 16px; align-items: stretch; }
 .audit-list { display: grid; gap: 8px; }
 .audit-finding { display: grid; grid-template-columns: 100px 1fr; gap: 3px 12px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; background: white; color: var(--ink-2); text-align: left; cursor: pointer; transition: border-color .18s,background .18s; }
@@ -1865,7 +1870,7 @@ tbody tr:hover { background: #FAFBFD; }
 
       <p>
         这条主线解释了为什么「一个人的研发部门」在今天成为可能：当一个模型被放进不同的 Harness 里，
-        它的实际表现可以差出三倍；而当多个 Harness 被一个人编排起来，一个人就可以覆盖过去需要一个小团队才能覆盖的环节。
+        它的实际表现可能因任务、工具与配置而不同；而当多个 Harness 被一个人编排起来，一个人可以覆盖过去需要一个小团队协作的不同环节。
       </p>
 
       <h3>数据使用三条规则</h3>
@@ -1919,7 +1924,7 @@ tbody tr:hover { background: #FAFBFD; }
       <div class="chapter-num">01 / TIMELINE</div>
       <h2>从 Transformer 到 AI Agent</h2>
       <p class="chapter-kicker">Transformer（注意力机制模型架构）如何走向 AI Agent（可调用工具并执行多步任务的智能体）</p>
-      <p class="chapter-kicker">四个阶段 · 27 个节点 · 每个节点附原始来源</p>
+      <p class="chapter-kicker">四个阶段 · 30 个节点 · 每个节点附原始来源</p>
     </header>
 
     <div class="prose" data-reveal>
@@ -1937,7 +1942,7 @@ tbody tr:hover { background: #FAFBFD; }
             <p class="viz-sub">按四个阶段划分，支持按演进阶段筛选浏览。节点日期与来源均可点击复核。</p>
           </div>
           <div class="filter-bar" id="tlFilterBar" role="tablist" aria-label="按阶段筛选时间轴">
-            <button class="filter-pill active" type="button" data-phase="all">全部阶段 (27)</button>
+            <button class="filter-pill active" type="button" data-phase="all">全部阶段 (30)</button>
             <button class="filter-pill" type="button" data-phase="0">01 架构与规模</button>
             <button class="filter-pill" type="button" data-phase="1">02 对齐与对话</button>
             <button class="filter-pill" type="button" data-phase="2">03 推理与软件工程</button>
@@ -2086,7 +2091,7 @@ tbody tr:hover { background: #FAFBFD; }
 
     <div class="prose" data-reveal>
       <p>
-        这四层的关系不是并列，而是嵌套。同一个模型换一层 Harness，表现可以差出数倍——
+        这四层的关系不是并列，而是嵌套。同一个模型放入不同 Harness 后，表现会受到工具、上下文和流程配置影响——
         这正是第 05 节「Harness 效应」要展示的东西。
       </p>
       <blockquote class="pullquote">
@@ -2137,7 +2142,7 @@ tbody tr:hover { background: #FAFBFD; }
               </tr>
               <tr>
                 <td>Google Gemini</td>
-                <td>Gemini 4 Carbon（最强）<br>Gemini 4 Neon（性价比）</td>
+                <td>Gemini 4 Carbon<br>Gemini 4 Neon</td>
                 <td class="mono">Carbon 2026-10-28<br>（11-10 全面开放）<br>Neon 2026-11-18</td>
                 <td>否</td>
                 <td>1M</td>
@@ -2146,7 +2151,7 @@ tbody tr:hover { background: #FAFBFD; }
               <tr>
                 <td>DeepSeek</td>
                 <td>DeepSeek-V4-Pro（正式版 0813）<br>DeepSeek-V4.1-Flash-1017</td>
-                <td class="mono">V4 预览 2026-04-24<br>Pro 正式版 2026-08-13<br>V4.1-Flash 2026-09-10</td>
+                <td class="mono">V4 预览 2026-04-24<br>V4-Flash 公测 2026-07-31<br>V4-Pro 正式版 2026-08-13<br>V4.1-Flash 2026-09-10<br>1017 更新 2026-10-17</td>
                 <td>是（MIT）</td>
                 <td>1M</td>
                 <td class="mono">峰谷定价<br>谷时为峰时半价</td>
@@ -2190,12 +2195,12 @@ tbody tr:hover { background: #FAFBFD; }
         Hydrogen 子智能体。
       </p>
       <p>
-        <span class="tag tag-infer">推断</span> Carbon 是「能力上限」，Neon 是「速度与成本平衡」。
-        但要注意：Neon 在 Artificial Analysis 智能指数上反而比 Carbon 略高（61 对 60），写作时不要简单地说「Carbon 全面强于 Neon」。
+        不同型号面向的工作流和公开信息口径各异；本文不据此给出整体强弱排名。
       </p>
 
       <h3>DeepSeek-V4 系列</h3>
       <p>
+        版本日期按官方更新记录区分：V4 预览版于 2026-04-24 发布；V4-Flash 于 2026-07-31 开放公测；V4-Pro 于 2026-08-13 正式发布；V4.1-Flash 于 2026-09-10 发布，后于 2026-10-17 更新为 V4.1-Flash-1017。
         技术报告显示，V4-Pro 总参数 1.6T、激活 49B；V4-Flash 总参数 284B、激活 13B，均为 MoE 架构，支持 1M 上下文。
         架构上是混合注意力（压缩稀疏注意力 CSA + 重度压缩注意力 HCA）：在 1M 上下文下，V4-Pro 的单 token 推理 FLOPs
         只有 V3.2 的 27%，KV Cache 只有 10%。
@@ -2211,9 +2216,9 @@ tbody tr:hover { background: #FAFBFD; }
         官方称 2.4T 规模的训练「全程没有 loss spike」。
       </p>
       <p>
-        <span class="tag tag-official">官方评测</span> 自建 Work360 基准（26 个一级领域、721 个三级专业领域）得分 52.69，
-        上一代 Qwen3.8-Max 为 47.74；每任务平均成本从 $4.43 降到 $1.67（降低 62%）。
-        <span class="tag tag-second">二手汇总</span> 第三方解读文章指出，Qwen4-Max 发布表中的 16 项评测有 10 项是阿里自己跑的。
+        <span class="tag tag-official">官方评测</span> Qwen 团队的 Work360 行业任务评测覆盖 26 个一级领域、182 个二级领域和 721 个细分领域。
+        Qwen4-Max 得分 52.69，上一代 Qwen3.8-Max 为 47.74；单任务平均成本由人民币 26.58 元降至 11.16 元，下降 58%。
+        这是厂商报告的内部评测结果，不代表其他任务或用户的实际成本。
       </p>
     </div>
   </div>
@@ -2230,7 +2235,7 @@ tbody tr:hover { background: #FAFBFD; }
     <div class="prose" data-reveal><p class="lead">不同产品的强项与工作环境不同。下面的矩阵是基于产品定位与任务适用性的定性分析，帮助理解可以把什么任务交给谁。</p></div>
     <div class="viz" data-reveal><div class="viz-frame">
       <div class="viz-head"><p class="viz-title">内容 · 推理 · 设计 · 开发 · 审查 · 搜索</p><p class="viz-sub">点击工具名称或任一单元格，查看建议岗位与适用任务。颜色和圆点表示用途类别，不代表实测性能高低。</p></div>
-      <div class="capability-scroll" role="region" aria-label="AI 工具能力矩阵，可横向滚动查看" tabindex="0"><table class="capability-table"><thead><tr><th scope="col">工具</th><th scope="col">内容</th><th scope="col">推理</th><th scope="col">设计</th><th scope="col">开发</th><th scope="col">审查</th><th scope="col">搜索</th></tr></thead><tbody><tr><th scope="row"><button type="button" class="capability-name" data-tool="chatgpt">ChatGPT</button></th><td><button type="button" class="capability-dot level-3" data-tool="chatgpt" data-capability="内容" aria-label="ChatGPT：内容，核心用途" title="点击查看 ChatGPT 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-3" data-tool="chatgpt" data-capability="推理" aria-label="ChatGPT：推理，核心用途" title="点击查看 ChatGPT 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-2" data-tool="chatgpt" data-capability="设计" aria-label="ChatGPT：设计，适用" title="点击查看 ChatGPT 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-2" data-tool="chatgpt" data-capability="开发" aria-label="ChatGPT：开发，适用" title="点击查看 ChatGPT 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-2" data-tool="chatgpt" data-capability="审查" aria-label="ChatGPT：审查，适用" title="点击查看 ChatGPT 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-3" data-tool="chatgpt" data-capability="搜索" aria-label="ChatGPT：搜索，核心用途" title="点击查看 ChatGPT 的岗位与适用任务">●</button></td></tr><tr><th scope="row"><button type="button" class="capability-name" data-tool="gemini">Gemini</button></th><td><button type="button" class="capability-dot level-3" data-tool="gemini" data-capability="内容" aria-label="Gemini：内容，核心用途" title="点击查看 Gemini 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-3" data-tool="gemini" data-capability="推理" aria-label="Gemini：推理，核心用途" title="点击查看 Gemini 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-3" data-tool="gemini" data-capability="设计" aria-label="Gemini：设计，核心用途" title="点击查看 Gemini 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-2" data-tool="gemini" data-capability="开发" aria-label="Gemini：开发，适用" title="点击查看 Gemini 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-2" data-tool="gemini" data-capability="审查" aria-label="Gemini：审查，适用" title="点击查看 Gemini 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-3" data-tool="gemini" data-capability="搜索" aria-label="Gemini：搜索，核心用途" title="点击查看 Gemini 的岗位与适用任务">●</button></td></tr><tr><th scope="row"><button type="button" class="capability-name" data-tool="deepseek">DeepSeek</button></th><td><button type="button" class="capability-dot level-3" data-tool="deepseek" data-capability="内容" aria-label="DeepSeek：内容，核心用途" title="点击查看 DeepSeek 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-3" data-tool="deepseek" data-capability="推理" aria-label="DeepSeek：推理，核心用途" title="点击查看 DeepSeek 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-1" data-tool="deepseek" data-capability="设计" aria-label="DeepSeek：设计，辅助用途" title="点击查看 DeepSeek 的岗位与适用任务">○</button></td><td><button type="button" class="capability-dot level-2" data-tool="deepseek" data-capability="开发" aria-label="DeepSeek：开发，适用" title="点击查看 DeepSeek 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-2" data-tool="deepseek" data-capability="审查" aria-label="DeepSeek：审查，适用" title="点击查看 DeepSeek 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-1" data-tool="deepseek" data-capability="搜索" aria-label="DeepSeek：搜索，辅助用途" title="点击查看 DeepSeek 的岗位与适用任务">○</button></td></tr><tr><th scope="row"><button type="button" class="capability-name" data-tool="codex">Codex</button></th><td><button type="button" class="capability-dot level-1" data-tool="codex" data-capability="内容" aria-label="Codex：内容，辅助用途" title="点击查看 Codex 的岗位与适用任务">○</button></td><td><button type="button" class="capability-dot level-2" data-tool="codex" data-capability="推理" aria-label="Codex：推理，适用" title="点击查看 Codex 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-1" data-tool="codex" data-capability="设计" aria-label="Codex：设计，辅助用途" title="点击查看 Codex 的岗位与适用任务">○</button></td><td><button type="button" class="capability-dot level-3" data-tool="codex" data-capability="开发" aria-label="Codex：开发，核心用途" title="点击查看 Codex 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-3" data-tool="codex" data-capability="审查" aria-label="Codex：审查，核心用途" title="点击查看 Codex 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-1" data-tool="codex" data-capability="搜索" aria-label="Codex：搜索，辅助用途" title="点击查看 Codex 的岗位与适用任务">○</button></td></tr><tr><th scope="row"><button type="button" class="capability-name" data-tool="qwen-code">Qwen Code</button></th><td><button type="button" class="capability-dot level-1" data-tool="qwen-code" data-capability="内容" aria-label="Qwen Code：内容，辅助用途" title="点击查看 Qwen Code 的岗位与适用任务">○</button></td><td><button type="button" class="capability-dot level-2" data-tool="qwen-code" data-capability="推理" aria-label="Qwen Code：推理，适用" title="点击查看 Qwen Code 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-1" data-tool="qwen-code" data-capability="设计" aria-label="Qwen Code：设计，辅助用途" title="点击查看 Qwen Code 的岗位与适用任务">○</button></td><td><button type="button" class="capability-dot level-3" data-tool="qwen-code" data-capability="开发" aria-label="Qwen Code：开发，核心用途" title="点击查看 Qwen Code 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-3" data-tool="qwen-code" data-capability="审查" aria-label="Qwen Code：审查，核心用途" title="点击查看 Qwen Code 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-1" data-tool="qwen-code" data-capability="搜索" aria-label="Qwen Code：搜索，辅助用途" title="点击查看 Qwen Code 的岗位与适用任务">○</button></td></tr><tr><th scope="row"><button type="button" class="capability-name" data-tool="cursor">Cursor</button></th><td><button type="button" class="capability-dot level-1" data-tool="cursor" data-capability="内容" aria-label="Cursor：内容，辅助用途" title="点击查看 Cursor 的岗位与适用任务">○</button></td><td><button type="button" class="capability-dot level-2" data-tool="cursor" data-capability="推理" aria-label="Cursor：推理，适用" title="点击查看 Cursor 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-1" data-tool="cursor" data-capability="设计" aria-label="Cursor：设计，辅助用途" title="点击查看 Cursor 的岗位与适用任务">○</button></td><td><button type="button" class="capability-dot level-3" data-tool="cursor" data-capability="开发" aria-label="Cursor：开发，核心用途" title="点击查看 Cursor 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-2" data-tool="cursor" data-capability="审查" aria-label="Cursor：审查，适用" title="点击查看 Cursor 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-1" data-tool="cursor" data-capability="搜索" aria-label="Cursor：搜索，辅助用途" title="点击查看 Cursor 的岗位与适用任务">○</button></td></tr><tr><th scope="row"><button type="button" class="capability-name" data-tool="coderabbit">CodeRabbit</button></th><td><button type="button" class="capability-dot level-0" data-tool="coderabbit" data-capability="内容" aria-label="CodeRabbit：内容，非主要用途" title="点击查看 CodeRabbit 的岗位与适用任务">—</button></td><td><button type="button" class="capability-dot level-1" data-tool="coderabbit" data-capability="推理" aria-label="CodeRabbit：推理，辅助用途" title="点击查看 CodeRabbit 的岗位与适用任务">○</button></td><td><button type="button" class="capability-dot level-0" data-tool="coderabbit" data-capability="设计" aria-label="CodeRabbit：设计，非主要用途" title="点击查看 CodeRabbit 的岗位与适用任务">—</button></td><td><button type="button" class="capability-dot level-1" data-tool="coderabbit" data-capability="开发" aria-label="CodeRabbit：开发，辅助用途" title="点击查看 CodeRabbit 的岗位与适用任务">○</button></td><td><button type="button" class="capability-dot level-3" data-tool="coderabbit" data-capability="审查" aria-label="CodeRabbit：审查，核心用途" title="点击查看 CodeRabbit 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-0" data-tool="coderabbit" data-capability="搜索" aria-label="CodeRabbit：搜索，非主要用途" title="点击查看 CodeRabbit 的岗位与适用任务">—</button></td></tr><tr><th scope="row"><button type="button" class="capability-name" data-tool="perplexity">Perplexity</button></th><td><button type="button" class="capability-dot level-2" data-tool="perplexity" data-capability="内容" aria-label="Perplexity：内容，适用" title="点击查看 Perplexity 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-2" data-tool="perplexity" data-capability="推理" aria-label="Perplexity：推理，适用" title="点击查看 Perplexity 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-1" data-tool="perplexity" data-capability="设计" aria-label="Perplexity：设计，辅助用途" title="点击查看 Perplexity 的岗位与适用任务">○</button></td><td><button type="button" class="capability-dot level-1" data-tool="perplexity" data-capability="开发" aria-label="Perplexity：开发，辅助用途" title="点击查看 Perplexity 的岗位与适用任务">○</button></td><td><button type="button" class="capability-dot level-1" data-tool="perplexity" data-capability="审查" aria-label="Perplexity：审查，辅助用途" title="点击查看 Perplexity 的岗位与适用任务">○</button></td><td><button type="button" class="capability-dot level-3" data-tool="perplexity" data-capability="搜索" aria-label="Perplexity：搜索，核心用途" title="点击查看 Perplexity 的岗位与适用任务">●</button></td></tr></tbody></table></div>
+      <div class="capability-scroll" role="region" aria-label="AI 工具能力矩阵，可横向滚动查看" tabindex="0"><table class="capability-table" id="productMatrix"><thead><tr><th scope="col">工具</th><th scope="col">内容</th><th scope="col">推理</th><th scope="col">设计</th><th scope="col">开发</th><th scope="col">审查</th><th scope="col">搜索</th></tr></thead><tbody><tr><th scope="row"><button type="button" class="capability-name" data-tool="chatgpt">ChatGPT</button></th><td><button type="button" class="capability-dot level-3" data-tool="chatgpt" data-capability="内容" aria-label="ChatGPT：内容，核心用途" title="点击查看 ChatGPT 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-3" data-tool="chatgpt" data-capability="推理" aria-label="ChatGPT：推理，核心用途" title="点击查看 ChatGPT 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-2" data-tool="chatgpt" data-capability="设计" aria-label="ChatGPT：设计，适用" title="点击查看 ChatGPT 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-2" data-tool="chatgpt" data-capability="开发" aria-label="ChatGPT：开发，适用" title="点击查看 ChatGPT 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-2" data-tool="chatgpt" data-capability="审查" aria-label="ChatGPT：审查，适用" title="点击查看 ChatGPT 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-3" data-tool="chatgpt" data-capability="搜索" aria-label="ChatGPT：搜索，核心用途" title="点击查看 ChatGPT 的岗位与适用任务">●</button></td></tr><tr><th scope="row"><button type="button" class="capability-name" data-tool="gemini">Gemini</button></th><td><button type="button" class="capability-dot level-3" data-tool="gemini" data-capability="内容" aria-label="Gemini：内容，核心用途" title="点击查看 Gemini 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-3" data-tool="gemini" data-capability="推理" aria-label="Gemini：推理，核心用途" title="点击查看 Gemini 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-3" data-tool="gemini" data-capability="设计" aria-label="Gemini：设计，核心用途" title="点击查看 Gemini 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-2" data-tool="gemini" data-capability="开发" aria-label="Gemini：开发，适用" title="点击查看 Gemini 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-2" data-tool="gemini" data-capability="审查" aria-label="Gemini：审查，适用" title="点击查看 Gemini 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-3" data-tool="gemini" data-capability="搜索" aria-label="Gemini：搜索，核心用途" title="点击查看 Gemini 的岗位与适用任务">●</button></td></tr><tr><th scope="row"><button type="button" class="capability-name" data-tool="deepseek">DeepSeek</button></th><td><button type="button" class="capability-dot level-3" data-tool="deepseek" data-capability="内容" aria-label="DeepSeek：内容，核心用途" title="点击查看 DeepSeek 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-3" data-tool="deepseek" data-capability="推理" aria-label="DeepSeek：推理，核心用途" title="点击查看 DeepSeek 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-1" data-tool="deepseek" data-capability="设计" aria-label="DeepSeek：设计，辅助用途" title="点击查看 DeepSeek 的岗位与适用任务">○</button></td><td><button type="button" class="capability-dot level-2" data-tool="deepseek" data-capability="开发" aria-label="DeepSeek：开发，适用" title="点击查看 DeepSeek 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-2" data-tool="deepseek" data-capability="审查" aria-label="DeepSeek：审查，适用" title="点击查看 DeepSeek 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-1" data-tool="deepseek" data-capability="搜索" aria-label="DeepSeek：搜索，辅助用途" title="点击查看 DeepSeek 的岗位与适用任务">○</button></td></tr><tr><th scope="row"><button type="button" class="capability-name" data-tool="codex">Codex</button></th><td><button type="button" class="capability-dot level-1" data-tool="codex" data-capability="内容" aria-label="Codex：内容，辅助用途" title="点击查看 Codex 的岗位与适用任务">○</button></td><td><button type="button" class="capability-dot level-2" data-tool="codex" data-capability="推理" aria-label="Codex：推理，适用" title="点击查看 Codex 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-1" data-tool="codex" data-capability="设计" aria-label="Codex：设计，辅助用途" title="点击查看 Codex 的岗位与适用任务">○</button></td><td><button type="button" class="capability-dot level-3" data-tool="codex" data-capability="开发" aria-label="Codex：开发，核心用途" title="点击查看 Codex 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-3" data-tool="codex" data-capability="审查" aria-label="Codex：审查，核心用途" title="点击查看 Codex 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-1" data-tool="codex" data-capability="搜索" aria-label="Codex：搜索，辅助用途" title="点击查看 Codex 的岗位与适用任务">○</button></td></tr><tr><th scope="row"><button type="button" class="capability-name" data-tool="qwen-code">Qwen Code</button></th><td><button type="button" class="capability-dot level-1" data-tool="qwen-code" data-capability="内容" aria-label="Qwen Code：内容，辅助用途" title="点击查看 Qwen Code 的岗位与适用任务">○</button></td><td><button type="button" class="capability-dot level-2" data-tool="qwen-code" data-capability="推理" aria-label="Qwen Code：推理，适用" title="点击查看 Qwen Code 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-1" data-tool="qwen-code" data-capability="设计" aria-label="Qwen Code：设计，辅助用途" title="点击查看 Qwen Code 的岗位与适用任务">○</button></td><td><button type="button" class="capability-dot level-3" data-tool="qwen-code" data-capability="开发" aria-label="Qwen Code：开发，核心用途" title="点击查看 Qwen Code 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-3" data-tool="qwen-code" data-capability="审查" aria-label="Qwen Code：审查，核心用途" title="点击查看 Qwen Code 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-1" data-tool="qwen-code" data-capability="搜索" aria-label="Qwen Code：搜索，辅助用途" title="点击查看 Qwen Code 的岗位与适用任务">○</button></td></tr><tr><th scope="row"><button type="button" class="capability-name" data-tool="cursor">Cursor</button></th><td><button type="button" class="capability-dot level-1" data-tool="cursor" data-capability="内容" aria-label="Cursor：内容，辅助用途" title="点击查看 Cursor 的岗位与适用任务">○</button></td><td><button type="button" class="capability-dot level-2" data-tool="cursor" data-capability="推理" aria-label="Cursor：推理，适用" title="点击查看 Cursor 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-1" data-tool="cursor" data-capability="设计" aria-label="Cursor：设计，辅助用途" title="点击查看 Cursor 的岗位与适用任务">○</button></td><td><button type="button" class="capability-dot level-3" data-tool="cursor" data-capability="开发" aria-label="Cursor：开发，核心用途" title="点击查看 Cursor 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-2" data-tool="cursor" data-capability="审查" aria-label="Cursor：审查，适用" title="点击查看 Cursor 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-1" data-tool="cursor" data-capability="搜索" aria-label="Cursor：搜索，辅助用途" title="点击查看 Cursor 的岗位与适用任务">○</button></td></tr><tr><th scope="row"><button type="button" class="capability-name" data-tool="coderabbit">CodeRabbit</button></th><td><button type="button" class="capability-dot level-0" data-tool="coderabbit" data-capability="内容" aria-label="CodeRabbit：内容，非主要用途" title="点击查看 CodeRabbit 的岗位与适用任务">—</button></td><td><button type="button" class="capability-dot level-1" data-tool="coderabbit" data-capability="推理" aria-label="CodeRabbit：推理，辅助用途" title="点击查看 CodeRabbit 的岗位与适用任务">○</button></td><td><button type="button" class="capability-dot level-0" data-tool="coderabbit" data-capability="设计" aria-label="CodeRabbit：设计，非主要用途" title="点击查看 CodeRabbit 的岗位与适用任务">—</button></td><td><button type="button" class="capability-dot level-1" data-tool="coderabbit" data-capability="开发" aria-label="CodeRabbit：开发，辅助用途" title="点击查看 CodeRabbit 的岗位与适用任务">○</button></td><td><button type="button" class="capability-dot level-3" data-tool="coderabbit" data-capability="审查" aria-label="CodeRabbit：审查，核心用途" title="点击查看 CodeRabbit 的岗位与适用任务">●</button></td><td><button type="button" class="capability-dot level-0" data-tool="coderabbit" data-capability="搜索" aria-label="CodeRabbit：搜索，非主要用途" title="点击查看 CodeRabbit 的岗位与适用任务">—</button></td></tr><tr><th scope="row"><button type="button" class="capability-name" data-tool="perplexity">Perplexity</button></th><td><button type="button" class="capability-dot level-2" data-tool="perplexity" data-capability="内容" aria-label="Perplexity：内容，适用" title="点击查看 Perplexity 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-2" data-tool="perplexity" data-capability="推理" aria-label="Perplexity：推理，适用" title="点击查看 Perplexity 的岗位与适用任务">◐</button></td><td><button type="button" class="capability-dot level-1" data-tool="perplexity" data-capability="设计" aria-label="Perplexity：设计，辅助用途" title="点击查看 Perplexity 的岗位与适用任务">○</button></td><td><button type="button" class="capability-dot level-1" data-tool="perplexity" data-capability="开发" aria-label="Perplexity：开发，辅助用途" title="点击查看 Perplexity 的岗位与适用任务">○</button></td><td><button type="button" class="capability-dot level-1" data-tool="perplexity" data-capability="审查" aria-label="Perplexity：审查，辅助用途" title="点击查看 Perplexity 的岗位与适用任务">○</button></td><td><button type="button" class="capability-dot level-3" data-tool="perplexity" data-capability="搜索" aria-label="Perplexity：搜索，核心用途" title="点击查看 Perplexity 的岗位与适用任务">●</button></td></tr></tbody></table></div>
       <div class="capability-legend" aria-label="矩阵图例"><span><i class="level-3">●</i>核心用途</span><span><i class="level-2">◐</i>适用</span><span><i class="level-1">○</i>辅助用途</span><span><i class="level-0">—</i>非主要用途</span></div>
       <div class="capability-detail" id="capabilityDetail" aria-live="polite"><span class="capability-detail-label">推荐岗位</span><strong>ChatGPT · 项目总监</strong><p>策划、分析与内容整合。</p></div>
       <p class="viz-note">基于产品定位与任务适用性的定性分析，非实测性能排名。各产品功能随版本变化，实际选择还应考虑工具环境、任务类型、上下文管理及交付方式。</p>
@@ -2242,122 +2247,41 @@ tbody tr:hover { background: #FAFBFD; }
 <section class="chapter" id="ch05">
   <div class="wrap">
     <header class="chapter-head" data-reveal>
-      <div class="chapter-num">05 / BENCHMARKS</div>
+      <div class="chapter-num">05 / VERIFIED EVALUATION</div>
       <h2>公开评测数据</h2>
-      <p class="chapter-kicker">按评测分组，不跨组混用。每张图单独标注口径。</p>
-      <p class="verification-note"><strong>复核说明：</strong>OpenAI、Google、Qwen、DeepSeek 的相关型号和发布信息均保留对应官方出处；Terminal-Bench 4.1 榜单数据已与 Snorkel 页面核对。LMArena 2026-11-23 快照的票数及部分条目在来源抓取中存在差异，图中该组数据暂标为“待核实”，不作为已确认的当前排名。</p>
+      <p class="chapter-kicker">只保留可以追溯来源、口径明确的数据</p>
     </header>
-
     <div class="prose" data-reveal>
-      <p class="lead">
-        先看一个最容易误读的现象：同一个模型，换一个 Harness，分数可以从 12.8% 跳到 39.0%。
-      </p>
+      <p class="lead">Qwen 团队在 Work360 行业工作任务评测中报告了 Qwen4-Max 与 Qwen3.8-Max 的任务成本和得分变化。Work360 覆盖 26 个一级领域、182 个二级领域和 721 个细分领域。</p>
     </div>
-
-    <!-- Harness 效应 -->
     <div class="viz" data-reveal>
       <div class="viz-frame">
         <div class="viz-head">
-          <p class="viz-title">Harness 效应：同一个模型，不同的脚手架</p>
-          <p class="viz-sub">Gemini 4 Neon · 左右两栏为不同评测口径，不可横向直接比较</p>
+          <p class="viz-title">Work360：平均任务成本下降 58%</p>
+          <p class="viz-sub">厂商内部评测 · 单任务平均成本（人民币）</p>
         </div>
         <div class="bar-panels">
           <div class="bar-panel">
-            <p class="bar-panel-title">SWE-sweep</p>
-            <p class="bar-panel-sub">同一模型、同一评测，仅 Harness 不同</p>
-            <div class="bar-row">
-              <div class="bar-top"><span class="bar-label">mini-SWE</span><span class="bar-val">12.8%</span></div>
-              <div class="bar-track"><div class="bar-fill dim" data-w="25.6"></div></div>
-            </div>
-            <div class="bar-row">
-              <div class="bar-top"><span class="bar-label">Google Antigravity</span><span class="bar-val">39.0%</span></div>
-              <div class="bar-track"><div class="bar-fill" data-w="78"></div></div>
-            </div>
-            <div class="bar-axis"><span>0</span><span>50%</span></div>
+            <p class="bar-panel-title">单任务平均成本</p>
+            <p class="bar-panel-sub">相同 Work360 评测口径；数值为厂商报告</p>
+            <div class="bar-row"><div class="bar-top"><span class="bar-label">Qwen3.8-Max</span><span class="bar-val">¥26.58</span></div><div class="bar-track"><div class="bar-fill dim" data-w="100"></div></div></div>
+            <div class="bar-row"><div class="bar-top"><span class="bar-label">Qwen4-Max</span><span class="bar-val">¥11.16</span></div><div class="bar-track"><div class="bar-fill" data-w="42"></div></div></div>
+            <div class="bar-axis"><span>¥0</span><span>¥26.58</span></div>
           </div>
-
           <div class="bar-panel">
-            <p class="bar-panel-title">Terminal-Bench 4.1</p>
-            <p class="bar-panel-sub">同一模型，官方自报 vs 第三方榜</p>
-            <div class="bar-row">
-              <div class="bar-top"><span class="bar-label">Google 自报</span><span class="bar-val">65.2%</span></div>
-              <div class="bar-track"><div class="bar-fill" data-w="93.1"></div></div>
-            </div>
-            <div class="bar-row">
-              <div class="bar-top"><span class="bar-label">Antigravity CLI（第三方榜）</span><span class="bar-val">61.2%</span></div>
-              <div class="bar-track"><div class="bar-fill alt" data-w="87.4"></div></div>
-            </div>
-            <div class="bar-axis"><span>0</span><span>70%</span></div>
+            <p class="bar-panel-title">Work360 综合得分</p>
+            <p class="bar-panel-sub">厂商报告得分；不是跨模型排行榜</p>
+            <div class="bar-row"><div class="bar-top"><span class="bar-label">Qwen3.8-Max</span><span class="bar-val">47.74</span></div><div class="bar-track"><div class="bar-fill dim" data-w="90.6"></div></div></div>
+            <div class="bar-row"><div class="bar-top"><span class="bar-label">Qwen4-Max</span><span class="bar-val">52.69</span></div><div class="bar-track"><div class="bar-fill" data-w="100"></div></div></div>
+            <div class="bar-axis"><span>0</span><span>58</span></div>
           </div>
         </div>
-        <p class="viz-note">
-          <b>来源性质：</b><span class="tag tag-official">官方评测</span> 12.8% / 39.0% / 65.2% 来自 Google 发布稿；
-          <span class="tag tag-third">第三方</span> 61.2% 来自 Snorkel 维护的 Terminal-Bench 排行榜（2026-11-23）。
-          <b>注意：</b>左栏与右栏是不同评测，两栏的百分比不可互相比较；即使同在右栏，官方自报与第三方榜的口径也相差 4 个百分点。
-        </p>
-      </div>
-    </div>
-
-    <div class="prose" data-reveal>
-      <p>
-        这张图比任何一段文字都更能说明为什么 2026 年的关键词是 Harness。同样的权重，换一套循环、工具与上下文管理，
-        解决率相差三倍以上。
-      </p>
-    </div>
-
-    <!-- WebDev Arena 散点图 -->
-    <div class="viz" data-reveal>
-      <div class="viz-frame">
-        <div class="viz-head">
-          <p class="viz-title">网页生成：分数与成本，谁更划算</p>
-          <p class="viz-sub">LMArena Code Arena | WebDev · 研究资料所载快照：2026-11-23（票数与模型数待核实；悬停查看图中记录）</p>
-        </div>
-        <div class="chart-stage" id="webdevStage">
-          <div class="chart-tooltip" id="webdevTooltip"></div>
-          <svg id="chart-webdev" viewBox="0 0 900 520" style="width:100%;height:auto" role="img" aria-label="WebDev Arena 分数与每任务成本散点图"></svg>
-        </div>
-        <p class="viz-note">
-          <b>来源性质：</b><span class="tag tag-third">第三方</span> LMArena 人类盲测投票；本图历史快照的精确数值待核实，当前页面为动态榜单。
-          横轴为每任务成本中位数（美元，对数轴），纵轴为 Elo 评分。括号内为推理档位。
-          <b>读法：</b>前 10 名之间的分差很小（第 4 到第 9 名只差 17 分），而成本相差数倍——这也是本图用散点而不是柱状图的原因。
-          另外，GPT-6.2 Astra（1,761）在这个榜上比 GPT-6 Astra（1,764）略低，说明「新版本并不在所有榜单上都更强」。
-        </p>
-      </div>
-    </div>
-
-    <!-- Terminal-Bench 4.1 置信区间点图 -->
-    <div class="viz" data-reveal>
-      <div class="viz-frame">
-        <div class="viz-head">
-          <p class="viz-title">终端编程 Agent：Terminal-Bench 4.1</p>
-          <p class="viz-sub">Snorkel 维护的排行榜 · 数据日期 2026-11-23 · 注意每一行的 Agent（Harness）都不一样</p>
-        </div>
-        <div class="chart-stage" id="tbStage">
-          <div class="chart-tooltip" id="tbTooltip"></div>
-          <svg id="chart-terminal" viewBox="0 0 900 620" style="width:100%;height:auto" role="img" aria-label="Terminal-Bench 4.1 解决率点图，含置信区间"></svg>
-        </div>
-        <p class="viz-note">
-          <b>来源性质：</b><span class="tag tag-third">第三方</span> Snorkel Terminal-Bench 排行榜。
-          点为解决率，横线为 ±95% 置信区间；横轴自 55% 起，非零点起始，已在轴上标明。
-          <b>成本栏</b>为该行配置的评测总成本，不是单任务成本。
-        </p>
-      </div>
-    </div>
-
-    <div class="prose" data-reveal>
-      <p>
-        注意第 2 名与第 3 名：两者解决率几乎相同，但总成本相差三倍以上（$4.7k 对 $16.5k）。
-        而第 7 名的 GPT-6.2 Sol + Codex，以 $0.3k 拿到 61.5%——这是这张表里性价比最突出的一个点。
-      </p>
-      <div class="callout">
-        <span class="callout-title">一个必须提醒的坑</span>
-        <p>2026 年 2 月 23 日，OpenAI 宣布停止报告 SWE-bench Verified 分数，理由是数据污染和测试用例缺陷；7 月 8 日，OpenAI 审计发现 SWE-Bench Pro 约 30% 的题目有问题，撤回此前推荐。<span class="tag tag-fact">事实</span></p>
-        <p>这意味着：任何以 SWE-bench 家族为主证据的对比，都需要额外确认题目有效性。</p>
+        <p class="viz-note"><b>评测口径：</b>Work360 覆盖 26 个一级领域、182 个二级领域及 721 个细分领域。厂商报告在 High 推理档位下任务 token 用量约少 35%，Xhigh 档位约少 24%；平均任务成本下降 58%。这些是厂商自己的评测结果，不能直接推导其他任务或个人使用成本。</p>
+        <p class="viz-note"><b>来源：</b><a href="https://qwen.ai/blog?id=qwen4-max" target="_blank" rel="noopener">Qwen 团队 Qwen4-Max 发布说明</a>；<a href="https://www.alibabacloud.com/blog/603786" target="_blank" rel="noopener">Alibaba Cloud：Work360 评测与成本说明</a>。发布说明没有披露可复现的完整任务集、任务权重及逐项成本，因此这里只按厂商报告口径呈现，不宣称独立复测。</p>
       </div>
     </div>
   </div>
 </section>
-
 <!-- ================= 06 组织架构 ================= -->
 <section class="chapter" id="ch06">
   <div class="wrap">
@@ -2500,14 +2424,14 @@ tbody tr:hover { background: #FAFBFD; }
       <p class="chapter-kicker">列出发现与风险级别，不把问题描述成已修复</p>
     </header>
     <div class="prose" data-reveal><p class="lead">以下内容来自 Qwen Code 首次独立只读审查报告。审查阶段没有修改文件；这份记录只呈现发现，不代表问题已经修复。</p></div>
-    <div class="audit-stats" data-reveal aria-label="审查统计">
-      <div><strong>6</strong><span>审查发现</span><i class="audit-bar" style="--bar:100%"></i></div>
-      <div><strong>1</strong><span>高风险</span><i class="audit-bar risk-high" style="--bar:33.333%"></i></div>
-      <div><strong>2</strong><span>中风险</span><i class="audit-bar risk-medium" style="--bar:66.666%"></i></div>
-      <div><strong>3</strong><span>低风险</span><i class="audit-bar risk-low" style="--bar:100%"></i></div>
-      <div><strong>0</strong><span>审查阶段修改文件</span><i class="audit-bar risk-none" style="--bar:0%"></i></div>
+    <div class="audit-stats" data-reveal aria-label="审查风险分布，共 6 项发现">
+      <div><strong>6</strong><span>审查发现 · 100%</span><i class="audit-bar" style="--bar:100%"></i></div>
+      <div><strong>1</strong><span>高风险 · 16.7%</span><i class="audit-bar risk-high" style="--bar:16.7%"></i></div>
+      <div><strong>2</strong><span>中风险 · 33.3%</span><i class="audit-bar risk-medium" style="--bar:33.3%"></i></div>
+      <div><strong>3</strong><span>低风险 · 50%</span><i class="audit-bar risk-low" style="--bar:50%"></i></div>
     </div>
-    <div class="audit-layout" data-reveal>
+    <p class="audit-stats-note">风险分布条统一以全部 6 项发现为分母；图表长度表示相应风险级别占发现总数的比例。</p>
+    <div class="audit-file-count"><strong>0</strong><span>审查阶段修改文件（单独统计）</span></div>    <div class="audit-layout" data-reveal>
       <div class="audit-list" id="auditFindings"><button type="button" class="audit-finding" data-finding="1" data-level="high" aria-pressed="false"><span class="audit-finding-meta"><i>01</i><b>高风险</b></span><strong>商业发行状态表述矛盾</strong><span>KeyGuard 商业发行状态表述存在冲突，容易让用户误解产品当前的发布阶段。</span></button><button type="button" class="audit-finding" data-finding="2" data-level="medium" aria-pressed="false"><span class="audit-finding-meta"><i>02</i><b>中风险</b></span><strong>浏览器返回历史异常</strong><span>浏览器返回操作后的历史记录行为异常，需核对页面状态与导航历史同步。</span></button><button type="button" class="audit-finding" data-finding="3" data-level="medium" aria-pressed="false"><span class="audit-finding-meta"><i>03</i><b>中风险</b></span><strong>粒子实验画布初始化为 0×0</strong><span>画布在布局尺寸尚未就绪时初始化，可能得到 0×0 尺寸，导致粒子效果不可见。</span></button><button type="button" class="audit-finding" data-finding="4" data-level="low" aria-pressed="false"><span class="audit-finding-meta"><i>04</i><b>低风险</b></span><strong>重复 DOM ID</strong><span>页面存在重复 ID，可能使选择器、锚点或辅助技术定位到错误节点。</span></button><button type="button" class="audit-finding" data-finding="5" data-level="low" aria-pressed="false"><span class="audit-finding-meta"><i>05</i><b>低风险</b></span><strong>CSS 选择器拼写错误</strong><span>一处 CSS 选择器拼写错误会令预期规则无法匹配目标元素。</span></button><button type="button" class="audit-finding" data-finding="6" data-level="low" aria-pressed="false"><span class="audit-finding-meta"><i>06</i><b>低风险</b></span><strong>未使用组件与重复配置</strong><span>存在未使用组件及重复配置，可增加维护负担。</span></button></div>
       <aside class="audit-detail" id="auditDetail" aria-live="polite"><div class="audit-detail-kicker">审查发现 01</div><span class="audit-risk-tag high">高风险</span><h3>商业发行状态表述矛盾</h3><p>KeyGuard 商业发行状态表述存在冲突，容易让用户误解产品当前的发布阶段。</p><div class="audit-origin">来源：Qwen Code 首次独立只读审查报告。审查阶段修改文件：0。</div></aside>
     </div>
@@ -2640,16 +2564,16 @@ for (const finding of findings) {
           <li><span class="ref-title">MCP 捐赠给 Agentic AI Foundation</span> — <a href="https://www.anthropic.com/news/donating-the-model-context-protocol-and-establishing-of-the-agentic-ai-foundation" target="_blank" rel="noopener">Anthropic</a></li>
           <li><span class="ref-title">OpenAI 停止报告 SWE-bench Verified</span> — <a href="https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/" target="_blank" rel="noopener">OpenAI</a></li>
           <li><span class="ref-title">Perplexity Computer 发布</span> — <a href="https://www.perplexity.ai/hub/blog/introducing-perplexity-computer" target="_blank" rel="noopener">Perplexity</a></li>
-          <li><span class="ref-title">DeepSeek-V4 预览版 / V4-Pro 正式版</span> — <a href="https://api-docs.deepseek.com/updates" target="_blank" rel="noopener">DeepSeek 更新日志</a></li>
+          <li><span class="ref-title">DeepSeek-V4 系列版本日期</span> — <a href="https://api-docs.deepseek.com/news/news260424/" target="_blank" rel="noopener">4 月 24 日 V4 预览</a>、<a href="https://api-docs.deepseek.com/updates/" target="_blank" rel="noopener">7 月 31 日 Flash 公测及 10 月 17 日更新记录</a>、<a href="https://api-docs.deepseek.com/news/news260813/" target="_blank" rel="noopener">8 月 13 日 V4-Pro 正式版</a>、<a href="https://www.deepseek.com/en/news/deepseek-v4-1-flash/" target="_blank" rel="noopener">9 月 10 日 V4.1-Flash</a></li>
           <li><span class="ref-title">Cursor Composer 2.5</span> — <a href="https://cursor.com/blog/composer-2-5" target="_blank" rel="noopener">Cursor</a></li>
           <li><span class="ref-title">DeepSeek Harness 开发者预览版</span> — <a href="https://www.deepseek.com/harness/en/" target="_blank" rel="noopener">DeepSeek</a></li>
           <li><span class="ref-title">OpenAI DevDay 2026（Codex 云端与 CLI）</span> — <a href="https://openai.com/blog/devday-2026-recap" target="_blank" rel="noopener">OpenAI</a></li>
           <li><span class="ref-title">Gemini 4 Carbon 发布</span> — <a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-carbon/" target="_blank" rel="noopener">Google</a></li>
-          <li><span class="ref-title">Qwen4-Max 发布</span> — <a href="https://qwen.ai/blog?id=qwen4-max" target="_blank" rel="noopener">Qwen</a></li>
+          <li><span class="ref-title">Qwen4-Max 发布与 Work360 评测</span> — <a href="https://qwen.ai/blog?id=qwen4-max" target="_blank" rel="noopener">Qwen 官方</a> · <a href="https://www.alibabacloud.com/blog/603786" target="_blank" rel="noopener">Alibaba Cloud</a></li>
           <li><span class="ref-title">GPT-6.2 Astra / Sol 发布</span> — <a href="https://openai.com/index/introducing-gpt-6-2-astra-sol/" target="_blank" rel="noopener">OpenAI</a></li>
           <li><span class="ref-title">Gemini 4 Neon 发布</span> — <a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-neon/" target="_blank" rel="noopener">Google</a></li>
-          <li><span class="ref-title">LMArena Code Arena | WebDev 排行榜（2026-11-23，快照待核实）</span> — <a href="https://lmarena.ai/" target="_blank" rel="noopener">LMArena</a></li>
-          <li><span class="ref-title">Terminal-Bench 4.1 排行榜（2026-11-23）</span> — <a href="https://snorkel.ai/leaderboard/terminal-bench/" target="_blank" rel="noopener">Snorkel</a></li>
+          
+          
           <li><span class="ref-title">DeepSeek-V4 技术报告 / 模型卡</span> — <a href="https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro" target="_blank" rel="noopener">HuggingFace</a></li>
           <li><span class="ref-title">CodeRabbit 官方文档与 FAQ</span> — <a href="https://www.coderabbit.ai/" target="_blank" rel="noopener">CodeRabbit</a></li>
         </ol>
@@ -2839,11 +2763,14 @@ for (const finding of findings) {
       items: [
         { date:'2026-02-23', title:'OpenAI 停止报告 SWE-bench Verified 分数', desc:'理由是数据污染和测试用例缺陷。', src:'OpenAI', url:'https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/' },
         { date:'2026-02-25', title:'Perplexity Computer 发布', desc:'多模型、多智能体的通用数字员工。', src:'Perplexity', url:'https://www.perplexity.ai/hub/blog/introducing-perplexity-computer' },
-        { date:'2026-04-24', title:'DeepSeek-V4 预览版上线 API', desc:'V4-Pro / V4-Flash 两个规格同时开放。', src:'DeepSeek 更新日志', url:'https://api-docs.deepseek.com/updates' },
+        { date:'2026-04-24', title:'DeepSeek-V4 预览版发布', desc:'V4-Pro 与 V4-Flash 预览规格上线 API。', src:'DeepSeek 官方更新', url:'https://api-docs.deepseek.com/news/news260424/' },
         { date:'2026-05-18', title:'Cursor Composer 2.5 发布', desc:'AI 原生 IDE 的自研编程模型更新。', src:'Cursor', url:'https://cursor.com/blog/composer-2-5' },
-        { date:'2026-08-13', title:'DeepSeek-V4-Pro 正式版发布', desc:'原生支持 Responses API 并适配 Codex。', src:'DeepSeek 更新日志', url:'https://api-docs.deepseek.com/updates' },
+        { date:'2026-07-31', title:'DeepSeek-V4-Flash 开放公测', desc:'官方更新记录 V4-Flash API 公测及 Agent 任务评测条件。', src:'DeepSeek API 更新', url:'https://api-docs.deepseek.com/updates/' },
+        { date:'2026-08-13', title:'DeepSeek-V4-Pro 正式版发布', desc:'正式版上线，并加入可配置的 low / high / max 推理档位。', src:'DeepSeek 官方更新', url:'https://api-docs.deepseek.com/news/news260813/' },
+        { date:'2026-09-10', title:'DeepSeek-V4.1-Flash 发布', desc:'官方更新新一代 Flash，并注明公开基准的测试条件。', src:'DeepSeek 官方更新', url:'https://www.deepseek.com/en/news/deepseek-v4-1-flash/' },
         { date:'2026-09-22', title:'DeepSeek Harness 开发者预览版发布', desc:'开源，「一切皆插件」。', src:'DeepSeek', url:'https://www.deepseek.com/harness/en/' },
         { date:'2026-09-29', title:'OpenAI DevDay 2026', desc:'Codex 云环境、CLI 改版（/agents）、Code Review、Security Cloud。', src:'OpenAI', url:'https://openai.com/blog/devday-2026-recap' },
+        { date:'2026-10-17', title:'DeepSeek-V4.1-Flash-1017 更新', desc:'官方更新记录说明模型升级，调用方式与定价保持不变。', src:'DeepSeek API 更新', url:'https://api-docs.deepseek.com/updates/' },
         { date:'2026-10-28', title:'Gemini 4 Carbon 发布', desc:'11 月 10 日全面开放。', src:'Google', url:'https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-carbon/' },
         { date:'2026-11-16', title:'Qwen4-Max 发布', desc:'2.4T 主干参数，原生视觉，1M 上下文。', src:'Qwen', url:'https://qwen.ai/blog?id=qwen4-max' },
         { date:'2026-11-17', title:'GPT-6.2 Astra / Sol 发布', desc:'前沿模型与日常主力模型同代更新。', src:'OpenAI', url:'https://openai.com/index/introducing-gpt-6-2-astra-sol/' },
@@ -2939,219 +2866,6 @@ for (const finding of findings) {
       var label=button.getAttribute("data-capability");
       detail.innerHTML='<span class="capability-detail-label">推荐岗位'+(label?' · '+esc(label)+'任务':'')+'</span><strong>'+esc(name?name.textContent:tool)+' · '+esc(role[0])+'</strong><p>'+esc(role[1])+'</p>';
     });
-  })();
-
-  /* ============================================================
-     7. WebDev Arena 散点图（带交互 Tooltip）
-     ============================================================ */
-  var WEBDEV = [
-    { m:'Claude Fable 5.2',    e:'xHigh', s:1822, c:11.72, v:'Anthropic', lx:0,   ly:-16, la:'middle' },
-    { m:'Claude Opus 5.5',     e:'Max',   s:1820, c:8.98,  v:'Anthropic', lx:-14, ly:5,   la:'end' },
-    { m:'Claude Sonnet 5.5',   e:'xHigh', s:1773, c:3.03,  v:'Anthropic', lx:0,   ly:22,  la:'middle' },
-    { m:'Gemini 4 Carbon',     e:'High',  s:1769, c:1.61,  v:'Google',    lx:0,   ly:-16, la:'middle' },
-    { m:'Gemini 4 Neon',       e:'xHigh', s:1765, c:2.59,  v:'Google',    lx:0,   ly:22,  la:'middle' },
-    { m:'GPT-6 Astra',         e:'Max',   s:1764, c:9.52,  v:'OpenAI',    lx:0,   ly:-16, la:'middle' },
-    { m:'GPT-6.2 Astra',       e:'Max',   s:1761, c:5.55,  v:'OpenAI',    lx:0,   ly:22,  la:'middle' },
-    { m:'GPT-6.2 Sol',         e:'Max',   s:1755, c:1.50,  v:'OpenAI',    lx:0,   ly:-16, la:'middle' },
-    { m:'Qwen4-Max',           e:'xHigh', s:1752, c:4.17,  v:'Alibaba',   lx:0,   ly:22,  la:'middle' },
-    { m:'GPT-6.1 Sol',         e:'Max',   s:1745, c:1.83,  v:'OpenAI',    lx:-14, ly:22,  la:'end' },
-    { m:'DeepSeek-V4.1-Flash', e:'Max',   s:1659, c:0.11,  v:'DeepSeek',  lx:14,  ly:5,   la:'start' }
-  ];
-  var VENDOR_COLOR = {
-    Anthropic:'#C4703C', Google:'#1E44D9', OpenAI:'#2E2E38',
-    Alibaba:'#7A5AB8', DeepSeek:'#168E7C'
-  };
-
-  (function renderWebDev(){
-    var svg = document.getElementById('chart-webdev');
-    var stage = document.getElementById('webdevStage');
-    var tip = document.getElementById('webdevTooltip');
-    if (!svg) return;
-
-    var W = 900, H = 520;
-    var P = { t: 46, r: 44, b: 76, l: 76 };
-    var iw = W - P.l - P.r, ih = H - P.t - P.b;
-
-    var X_MIN = 0.1, X_MAX = 20;
-    var lx0 = Math.log10(X_MIN), lx1 = Math.log10(X_MAX);
-    var Y_MIN = 1640, Y_MAX = 1840;
-
-    function px(c){ return P.l + (Math.log10(c) - lx0) / (lx1 - lx0) * iw; }
-    function py(s){ return P.t + (1 - (s - Y_MIN) / (Y_MAX - Y_MIN)) * ih; }
-
-    var out = '<g font-family="-apple-system,BlinkMacSystemFont,SF Pro Text,PingFang SC,sans-serif">';
-
-    /* 网格 y */
-    [1640, 1680, 1720, 1760, 1800, 1840].forEach(function(v){
-      var y = py(v);
-      out += '<line x1="' + P.l + '" y1="' + y + '" x2="' + (W - P.r) + '" y2="' + y + '" stroke="#F0F1F6" stroke-width="1"/>';
-      out += '<text x="' + (P.l - 14) + '" y="' + (y + 4) + '" text-anchor="end" font-size="11" fill="#7A7D8C" font-family="monospace">' + v + '</text>';
-    });
-
-    /* 网格 x */
-    [0.1, 0.3, 1, 3, 10, 20].forEach(function(v){
-      var x = px(v);
-      out += '<line x1="' + x + '" y1="' + P.t + '" x2="' + x + '" y2="' + (H - P.b) + '" stroke="#F0F1F6" stroke-width="1"/>';
-      out += '<text x="' + x + '" y="' + (H - P.b + 24) + '" text-anchor="middle" font-size="11" fill="#7A7D8C" font-family="monospace">$' + v + '</text>';
-    });
-
-    /* 轴标签 */
-    out += '<text x="' + (P.l + iw / 2) + '" y="' + (H - 22) + '" text-anchor="middle" font-size="11.5" fill="#7A7D8C" letter-spacing="0.5">每任务成本中位数（美元 · 对数轴）</text>';
-    out += '<text x="16" y="' + (P.t + ih / 2) + '" text-anchor="middle" font-size="11.5" fill="#7A7D8C" letter-spacing="0.5" transform="rotate(-90 16 ' + (P.t + ih / 2) + ')">WebDev Arena Elo</text>';
-
-    /* 数据点 */
-    WEBDEV.forEach(function(d, idx){
-      var x = px(d.c), y = py(d.s);
-      var col = VENDOR_COLOR[d.v] || '#888';
-      out += '<g class="wd-pt" data-idx="' + idx + '" style="cursor:pointer">';
-      out += '<circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="14" fill="transparent"/>';
-      out += '<circle class="dot-vis" cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="6.5" fill="' + col + '" fill-opacity="0.94" stroke="#FFFFFF" stroke-width="1.8"/>';
-      out += '<text x="' + (x + d.lx).toFixed(1) + '" y="' + (y + d.ly).toFixed(1) + '" text-anchor="' + d.la + '" font-size="10.5" fill="#3F414D" letter-spacing="-0.1">' + esc(d.m) + '</text>';
-      out += '</g>';
-    });
-
-    /* 图例 */
-    var legend = [
-      { k:'Anthropic', c:'#C4703C' },
-      { k:'Google', c:'#1E44D9' },
-      { k:'OpenAI', c:'#2E2E38' },
-      { k:'Alibaba', c:'#7A5AB8' },
-      { k:'DeepSeek', c:'#168E7C' }
-    ];
-    legend.forEach(function(g, i){
-      var x = P.l + i * 98;
-      out += '<circle cx="' + x + '" cy="' + (P.t - 22) + '" r="4.5" fill="' + g.c + '"/>';
-      out += '<text x="' + (x + 11) + '" y="' + (P.t - 18) + '" font-size="11" fill="#7A7D8C">' + g.k + '</text>';
-    });
-
-    out += '</g>';
-    svg.innerHTML = out;
-
-    if (stage && tip){
-      svg.querySelectorAll('.wd-pt').forEach(function(pt){
-        pt.addEventListener('mouseenter', function(ev){
-          var d = WEBDEV[Number(pt.getAttribute('data-idx'))];
-          var vis = pt.querySelector('.dot-vis');
-          if (vis) vis.setAttribute('r', '9');
-          tip.innerHTML =
-            '<div class="tt-title">' + esc(d.m) + '（' + esc(d.e) + '）</div>' +
-            '<div class="tt-meta">厂商：' + esc(d.v) + '<br>Elo 评分：' + d.s + ' · 中位成本：$' + d.c.toFixed(2) + '</div>';
-          tip.classList.add('visible');
-        });
-        pt.addEventListener('mousemove', function(ev){
-          var rect = stage.getBoundingClientRect();
-          var left = Math.min(rect.width - 230, Math.max(8, ev.clientX - rect.left + 14));
-          var top = Math.max(8, ev.clientY - rect.top - 58);
-          tip.style.left = left + 'px';
-          tip.style.top = top + 'px';
-        });
-        pt.addEventListener('mouseleave', function(){
-          var vis = pt.querySelector('.dot-vis');
-          if (vis) vis.setAttribute('r', '6.5');
-          tip.classList.remove('visible');
-        });
-      });
-    }
-  })();
-
-  /* ============================================================
-     8. Terminal-Bench 4.1 置信区间点图（带交互 Tooltip）
-     ============================================================ */
-  var TB = [
-    { m:'Copilot Fusion（系统）', h:'GitHub Copilot',  v:71.2, ci:2.9, cost:'$2.0k' },
-    { m:'Claude Opus 5.5',       h:'Claude Code',      v:65.8, ci:3.1, cost:'$4.7k' },
-    { m:'Claude Fable 5.2',      h:'Claude Code',      v:65.8, ci:2.8, cost:'$16.5k' },
-    { m:'Gemini 4 Carbon',       h:'Antigravity CLI',  v:64.5, ci:3.2, cost:'$1.4k' },
-    { m:'Claude Sonnet 5.5',     h:'Claude Code',      v:63.9, ci:3.0, cost:'$7.3k' },
-    { m:'GPT-6.2 Astra',         h:'Codex',            v:62.1, ci:2.3, cost:'$1.4k' },
-    { m:'GPT-6.2 Sol',           h:'Codex',            v:61.5, ci:2.8, cost:'$0.3k' },
-    { m:'Gemini 4 Neon',         h:'Antigravity CLI',  v:61.2, ci:2.8, cost:'$1.9k' },
-    { m:'GPT-6.1 Sol',           h:'Codex',            v:60.9, ci:3.0, cost:'$0.6k' },
-    { m:'GPT-6 Astra',           h:'Codex',            v:60.3, ci:2.8, cost:'$3.3k' },
-    { m:'Kimi K3.1 Pro',         h:'Claude Code',      v:59.7, ci:4.2, cost:'$1.1k' }
-  ];
-
-  (function renderTerminal(){
-    var svg = document.getElementById('chart-terminal');
-    var stage = document.getElementById('tbStage');
-    var tip = document.getElementById('tbTooltip');
-    if (!svg) return;
-
-    var W = 900, H = 620;
-    var P = { t: 62, r: 20, b: 52, l: 0 };
-    var CH_X0 = 330, CH_X1 = 680;
-    var X_MIN = 55, X_MAX = 75;
-    var ROW_H = 44;
-    var ROW_TOP = 92;
-
-    function px(v){ return CH_X0 + (v - X_MIN) / (X_MAX - X_MIN) * (CH_X1 - CH_X0); }
-
-    var out = '<g font-family="-apple-system,BlinkMacSystemFont,SF Pro Text,PingFang SC,sans-serif">';
-
-    /* 表头 */
-    out += '<text x="0" y="' + (P.t - 12) + '" font-size="10.5" fill="#7A7D8C" letter-spacing="1.2" font-family="monospace">模型 / HARNESS</text>';
-    out += '<text x="' + (CH_X0 + (CH_X1 - CH_X0) / 2) + '" y="' + (P.t - 12) + '" text-anchor="middle" font-size="10.5" fill="#7A7D8C" letter-spacing="1.2" font-family="monospace">解决率 %（±95% CI）</text>';
-    out += '<text x="' + (W - P.r) + '" y="' + (P.t - 12) + '" text-anchor="end" font-size="10.5" fill="#7A7D8C" letter-spacing="1.2" font-family="monospace">总成本</text>';
-
-    /* 纵向网格 */
-    [55, 60, 65, 70, 75].forEach(function(v){
-      var x = px(v);
-      out += '<line x1="' + x + '" y1="' + (ROW_TOP - 18) + '" x2="' + x + '" y2="' + (ROW_TOP + TB.length * ROW_H - 10) + '" stroke="#F0F1F6" stroke-width="1"/>';
-      out += '<text x="' + x + '" y="' + (ROW_TOP + TB.length * ROW_H + 16) + '" text-anchor="middle" font-size="10.5" fill="#7A7D8C" font-family="monospace">' + v + '%</text>';
-    });
-
-    /* 轴说明 */
-    out += '<text x="' + CH_X0 + '" y="' + (ROW_TOP + TB.length * ROW_H + 38) + '" font-size="10.5" fill="#A2A5B3" font-family="monospace">↑ 横轴自 55% 起，非零点起始</text>';
-
-    /* 行 */
-    TB.forEach(function(d, i){
-      var y = ROW_TOP + i * ROW_H;
-      var cy = y + ROW_H / 2 - 6;
-      var x = px(d.v);
-      var x1 = px(d.v - d.ci), x2 = px(d.v + d.ci);
-
-      if (i > 0){
-        out += '<line x1="0" y1="' + (y - 6) + '" x2="' + (W - P.r) + '" y2="' + (y - 6) + '" stroke="#F5F6FA" stroke-width="1"/>';
-      }
-
-      out += '<g class="tb-row" data-idx="' + i + '" style="cursor:pointer">';
-      out += '<rect x="0" y="' + (y - 5) + '" width="' + (W - P.r) + '" height="' + (ROW_H - 2) + '" fill="transparent"/>';
-      out += '<text x="0" y="' + (cy - 2) + '" font-size="12.5" fill="#0F1015" font-weight="600">' + esc(d.m) + '</text>';
-      out += '<text x="0" y="' + (cy + 14) + '" font-size="10.5" fill="#7A7D8C" font-family="monospace" letter-spacing="0.2">' + esc(d.h) + '</text>';
-
-      out += '<line x1="' + x1.toFixed(1) + '" y1="' + cy + '" x2="' + x2.toFixed(1) + '" y2="' + cy + '" stroke="#C7D3FA" stroke-width="3.5" stroke-linecap="round"/>';
-      out += '<circle cx="' + x.toFixed(1) + '" cy="' + cy + '" r="5.5" fill="#1E44D9"/>';
-      out += '<circle cx="' + x.toFixed(1) + '" cy="' + cy + '" r="9" fill="transparent" stroke="#1E44D9" stroke-width="1" stroke-opacity="0.22"/>';
-
-      out += '<text x="' + (CH_X1 + 46) + '" y="' + (cy + 4) + '" text-anchor="end" font-size="12" fill="#0F1015" font-weight="650" font-family="monospace">' + d.v.toFixed(1) + '%</text>';
-      out += '<text x="' + (W - P.r) + '" y="' + (cy + 4) + '" text-anchor="end" font-size="12" fill="#3F414D" font-family="monospace">' + esc(d.cost) + '</text>';
-      out += '</g>';
-    });
-
-    out += '</g>';
-    svg.innerHTML = out;
-
-    if (stage && tip){
-      svg.querySelectorAll('.tb-row').forEach(function(row){
-        row.addEventListener('mouseenter', function(){
-          var d = TB[Number(row.getAttribute('data-idx'))];
-          tip.innerHTML =
-            '<div class="tt-title">' + esc(d.m) + '</div>' +
-            '<div class="tt-meta">Harness：' + esc(d.h) + '<br>解决率：' + d.v.toFixed(1) + '%（±' + d.ci.toFixed(1) + '%） · 评测总成本：' + esc(d.cost) + '</div>';
-          tip.classList.add('visible');
-        });
-        row.addEventListener('mousemove', function(ev){
-          var rect = stage.getBoundingClientRect();
-          var left = Math.min(rect.width - 250, Math.max(8, ev.clientX - rect.left + 14));
-          var top = Math.max(8, ev.clientY - rect.top - 58);
-          tip.style.left = left + 'px';
-          tip.style.top = top + 'px';
-        });
-        row.addEventListener('mouseleave', function(){
-          tip.classList.remove('visible');
-        });
-      });
-    }
   })();
 
   /* ============================================================

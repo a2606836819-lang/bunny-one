@@ -50,7 +50,7 @@
   }
   
   /* 输入网格 */
-  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
   .input-group { display: flex; flex-direction: column; }
   .input-group label {
     font-size: 13px; color: var(--text-sub); margin-bottom: 6px; font-weight: 500;

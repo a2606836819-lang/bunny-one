@@ -13,6 +13,18 @@
             从一个关于键盘异常重复输入的想法开始，我尝试用代码理解问题、构建规则，最终将它打磨成一款真正可运行、已上线销售的 Windows 桌面软件。
           </p><div class="kg-product-entry"><p>了解 KeyGuard 完整产品功能、授权方式与购买信息。</p><a href="/keyguard/product/">进入 KeyGuard 产品详情 →</a></div>
 </div>
+<nav class="story-guide" aria-label="开发故事导览">
+<div class="story-guide-intro">
+<span class="story-guide-kicker">STORY MAP <i></i> 02—06</span>
+<p>从一个问题出发，<br>走到一款真正可用的产品。</p>
+</div>
+<div class="story-guide-links">
+<a href="#origin"><span class="story-guide-num">02</span><span class="story-guide-copy"><strong>起点</strong><small>问题与最初想法</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+<a href="#exploration"><span class="story-guide-num">03</span><span class="story-guide-copy"><strong>探索</strong><small>原理与技术验证</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+<a href="#implementation"><span class="story-guide-num">05</span><span class="story-guide-copy"><strong>实现</strong><small>从规则到完整客户端</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+<a href="#outcome"><span class="story-guide-num">06</span><span class="story-guide-copy"><strong>成果</strong><small>产品化与真实上线</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+</div>
+</nav>
 <a class="scroll-cue" href="#origin">
 <span>向下阅读完整开发故事</span>
 <svg fill="none" height="16" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="16">
@@ -223,7 +235,7 @@
 <span class="challenge-tag">CHALLENGE 05</span>
 <h3 class="challenge-title">如何让程序成为一个真正的产品？</h3>
 <p class="challenge-body">
-              当核心过滤逻辑跑通后，工作才完成一半。要让普通用户也能放心使用，还需要补齐图形界面、紧急停止保护、3 天试用机制、离线授权验证、打包分发以及清晰的使用须知与免责声明。
+              当核心过滤逻辑跑通后，工作才完成一半。要让普通用户也能放心使用，还需要补齐图形界面、紧急停止保护、3 天试用机制、本地授权验证、打包分发以及清晰的使用须知与免责声明。
             </p>
 </article>
 </div>
@@ -270,7 +282,7 @@
 </div>
 <div class="feature-box">
 <span class="feature-dot"></span>
-<span class="feature-text">Ed25519 离线授权验证</span>
+<span class="feature-text">Ed25519 本地授权验证</span>
 </div>
 </div>
 <!-- 双视图真实软件截图预留槽 -->
@@ -284,7 +296,7 @@
 <span class="chapter-num">06 / 工程化 · ENGINEERING</span>
 <h2 class="chapter-title">一个真正的软件，不只是能够运行。</h2>
 <div class="chapter-prose">
-<p>在产品化阶段，我重点思考了一个独立桌面软件交付给他人时需要具备的完整闭环——从异常保护机制到离线授权方式，每一步都尽量保持克制、清晰和可维护。</p>
+<p>在产品化阶段，我重点思考了一个独立桌面软件交付给他人时需要具备的完整闭环——从异常保护机制到本地授权方式，每一步都尽量保持克制、清晰和可维护。</p>
 </div>
 </div>
 <div class="eng-grid reveal">
@@ -310,8 +322,8 @@
 </div>
 <div class="eng-node">
 <span class="eng-node-num">05 / LICENSING</span>
-<h3 class="eng-node-title">Ed25519 离线签名授权</h3>
-<p class="eng-node-desc">采用非对称数字签名校验激活码，无需注册账号，也无需持续联网验证，保护用户隐私。</p>
+<h3 class="eng-node-title">Ed25519 本地签名授权</h3>
+<p class="eng-node-desc">采用非对称数字签名在客户端本地校验激活码，无需注册账号，也无需连接授权服务器；正常联网状态下同样可以完成验证。</p>
 </div>
 <div class="eng-node">
 <span class="eng-node-num">06 / PACKAGING</span>
@@ -651,11 +663,46 @@
        4. Hero 首屏 (Hero Section)
        ========================================================================== */
     #kg-story .hero-section {
+      position: relative;
+      isolation: isolate;
       /* 项目详情嵌在个人网站内容区，不再预留独立站导航栏的高度。 */
-      padding: 32px 0 64px;
+      min-height: calc(100dvh - 128px);
+      padding: 38px 0 34px;
+      overflow: hidden;
       border-bottom: 1px solid var(--border-light);
-      background: linear-gradient(180deg, #FFFFFF 0%, var(--bg-page) 100%);
+      background:
+        radial-gradient(circle at 92% 12%, rgba(37, 99, 235, 0.075), transparent 28%),
+        radial-gradient(circle at 8% 88%, rgba(101, 214, 177, 0.06), transparent 26%),
+        linear-gradient(180deg, #FFFFFF 0%, var(--bg-page) 100%);
     }
+
+    #kg-story .hero-section::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(26, 43, 76, 0.028) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(26, 43, 76, 0.028) 1px, transparent 1px);
+      background-size: 36px 36px;
+      mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.7), transparent 72%);
+      -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.7), transparent 72%);
+      pointer-events: none;
+    }
+
+    #kg-story .hero-section::after {
+      content: "01";
+      position: absolute;
+      z-index: -1;
+      top: 4px;
+      right: max(24px, calc((100% - var(--container-max)) / 2));
+      color: rgba(26, 43, 76, 0.038);
+      font: 700 clamp(120px, 15vw, 210px) / 1 var(--font-mono);
+      letter-spacing: -0.09em;
+      pointer-events: none;
+    }
+
+    #kg-story .hero-section > .container { position: relative; z-index: 1; display: flex; min-height: calc(100dvh - 200px); flex-direction: column; }
 
     #kg-story .hero-meta {
       display: flex;
@@ -684,7 +731,7 @@
 
     #kg-story .hero-title-group {
       max-width: 760px;
-      margin-bottom: 48px;
+      margin-bottom: 0;
     }
 
     #kg-story .hero-kicker {
@@ -816,19 +863,110 @@
     }
 
     #kg-story .scroll-cue {
-      display: inline-flex;
+      display: flex;
+      width: 100%;
       align-items: center;
-      gap: 8px;
+      gap: 12px;
       font-size: 14px;
       font-weight: 500;
       color: var(--text-muted);
-      transition: color 0.2s ease, transform 0.2s ease;
+      transition: color 0.2s ease;
     }
+
+    #kg-story .scroll-cue::before {
+      content: "";
+      order: 1;
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--border-light), rgba(226, 232, 240, 0.25));
+    }
+
+    #kg-story .scroll-cue span { order: 0; white-space: nowrap; }
+    #kg-story .scroll-cue svg { order: 2; transition: transform .2s ease; }
 
     #kg-story .scroll-cue:hover {
       color: var(--brand-navy);
-      transform: translateY(2px);
     }
+
+    #kg-story .scroll-cue:hover svg { transform: translateY(2px); }
+
+    #kg-story .story-guide {
+      display: grid;
+      grid-template-columns: 210px minmax(0, 1fr);
+      gap: 28px;
+      margin-top: 34px;
+      padding: 22px 0;
+      border-top: 1px solid var(--border-light);
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    #kg-story .story-guide-kicker {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      color: var(--brand-blue);
+      font: 600 10px/1.4 var(--font-mono);
+      letter-spacing: 0.13em;
+    }
+
+    #kg-story .story-guide-kicker i {
+      width: 22px;
+      height: 1px;
+      background: var(--border-medium);
+    }
+
+    #kg-story .story-guide-intro p {
+      margin-top: 10px;
+      color: var(--brand-navy);
+      font-size: 14px;
+      font-weight: 550;
+      line-height: 1.7;
+    }
+
+    #kg-story .story-guide-links {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      align-items: stretch;
+    }
+
+    #kg-story .story-guide-links a {
+      display: grid;
+      min-width: 0;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 10px;
+      padding: 5px 13px;
+      border-left: 1px solid var(--border-light);
+      transition: background-color .2s ease, transform .2s ease;
+    }
+
+    #kg-story .story-guide-links a:first-child { border-left: 0; }
+    #kg-story .story-guide-links a:hover { transform: translateY(-2px); background: rgba(255, 255, 255, .72); }
+
+    #kg-story .story-guide-num {
+      align-self: start;
+      padding-top: 1px;
+      color: #94a3b8;
+      font: 500 10px/1.5 var(--font-mono);
+    }
+
+    #kg-story .story-guide-copy { display: block; min-width: 0; }
+    #kg-story .story-guide-copy strong { display: block; color: var(--brand-navy); font-size: 13px; font-weight: 650; }
+    #kg-story .story-guide-copy small { display: block; margin-top: 3px; overflow: hidden; color: var(--text-muted); font-size: 10.5px; text-overflow: ellipsis; white-space: nowrap; }
+
+    #kg-story .story-guide-links svg {
+      width: 14px;
+      height: 14px;
+      fill: none;
+      stroke: #94a3b8;
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: stroke .2s ease, transform .2s ease;
+    }
+
+    #kg-story .story-guide-links a:hover svg { transform: translateX(2px); stroke: var(--brand-blue); }
+    #kg-story .scroll-cue { margin-top: auto; padding-top: 24px; }
 
     /* ==========================================================================
        5. 通用章节布局 (Story Chapters)
@@ -1538,6 +1676,10 @@
        15. 响应式适配 (Responsive Design)
        ========================================================================== */
     @media (max-width: 860px) {
+      #kg-story .story-guide { grid-template-columns: 1fr; gap: 18px; }
+      #kg-story .story-guide-intro { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+      #kg-story .story-guide-intro p { margin-top: 0; text-align: right; }
+
       #kg-story .eng-grid {
         grid-template-columns: repeat(2, 1fr);
       }
@@ -1556,6 +1698,17 @@
     }
 
     @media (max-width: 680px) {
+      #kg-story .hero-section { min-height: auto; padding: 30px 0 28px; }
+      #kg-story .hero-section > .container { min-height: 0; }
+      #kg-story .hero-section::after { display: none; }
+      #kg-story .story-guide { margin-top: 28px; padding: 18px 0; }
+      #kg-story .story-guide-intro { display: block; }
+      #kg-story .story-guide-intro p { margin-top: 8px; text-align: left; }
+      #kg-story .story-guide-links { display: flex; gap: 8px; margin-right: -24px; padding-right: 24px; overflow-x: auto; scrollbar-width: none; overscroll-behavior-inline: contain; }
+      #kg-story .story-guide-links::-webkit-scrollbar { display: none; width: 0; height: 0; }
+      #kg-story .story-guide-links a { flex: 0 0 168px; padding: 12px; border: 1px solid var(--border-light); border-radius: 12px; background: rgba(255, 255, 255, .78); }
+      #kg-story .story-guide-links a:first-child { border: 1px solid var(--border-light); }
+
       #kg-story .nav-links, #kg-story .nav-home-btn {
         display: none;
       }
@@ -1598,9 +1751,20 @@
 #kg-story .product-detail-cta .detail-entry-button:hover { background:#eff6ff; transform:translateY(-2px); }
 @media(max-width:680px){#kg-story .product-detail-cta{width:calc(100% - 32px);margin-bottom:48px;align-items:stretch;flex-direction:column}#kg-story .product-detail-cta .detail-entry-button{width:100%;white-space:normal}}
 
-#kg-story .kg-product-entry{margin:30px auto 42px;max-width:760px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px;padding:22px 26px;border-radius:18px;background:#1a2b4c;color:#fff;box-shadow:0 14px 32px rgba(15,23,42,.18)}#kg-story .kg-product-entry p{margin:0;color:rgba(255,255,255,.86);font-size:15px}#kg-story .kg-product-entry a{display:inline-flex;align-items:center;min-height:54px;padding:0 24px;border-radius:12px;background:#fff;color:#1a2b4c;font-size:16px;font-weight:750;text-decoration:none;transition:transform .2s,background .2s}#kg-story .kg-product-entry a:hover{background:#eff6ff;transform:translateY(-2px)}#kg-story .screenshot-slot{padding:0;overflow:hidden;background:#f7f8fa}@media(max-width:680px){#kg-story .kg-product-entry{margin:22px 16px 34px;padding:20px;align-items:stretch;flex-direction:column}#kg-story .kg-product-entry a{justify-content:center;width:100%;text-align:center}}</style><script>
+#kg-story .kg-product-entry{margin:28px 0 0;max-width:760px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px;padding:22px 26px;border-radius:18px;background:#1a2b4c;color:#fff;box-shadow:0 14px 32px rgba(15,23,42,.18)}#kg-story .kg-product-entry p{margin:0;color:rgba(255,255,255,.86);font-size:15px}#kg-story .kg-product-entry a{display:inline-flex;align-items:center;min-height:54px;padding:0 24px;border-radius:12px;background:#fff;color:#1a2b4c;font-size:16px;font-weight:750;text-decoration:none;transition:transform .2s,background .2s}#kg-story .kg-product-entry a:hover{background:#eff6ff;transform:translateY(-2px)}#kg-story .screenshot-slot{padding:0;overflow:hidden;background:#f7f8fa}@media(max-width:680px){#kg-story .kg-product-entry{margin:22px 0 0;padding:20px;align-items:stretch;flex-direction:column}#kg-story .kg-product-entry a{justify-content:center;width:100%;text-align:center}}</style><script>
   const storyRoot = document.querySelector('#kg-story');
   if (storyRoot) {
+    const projectPanel = document.getElementById('timeline-project-keyguard');
+    storyRoot.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', event => {
+        if (!projectPanel) return;
+        const target = document.getElementById(link.hash.slice(1));
+        if (!target) return;
+        event.preventDefault();
+        target.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+        history.replaceState({ keyguardView: 'story' }, '', '/#section-projects');
+      });
+    });
     const revealItems = [...storyRoot.querySelectorAll('.reveal')];
     if ('IntersectionObserver' in window) {
       const revealObserver = new IntersectionObserver((entries) => {

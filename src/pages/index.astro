@@ -138,19 +138,20 @@ import KeyGuardProduct from '../components/KeyGuardProduct.astro';
     <!-- LEFT SIDEBAR (Desktop Fixed) -->
     <aside id="desktop-left-layout" class="sidebar-shell hidden md:flex h-screen sticky top-0 shrink-0 z-30 select-none">
         <div class="sidebar-ambient-glow" id="sidebar-ambient-glow"></div>
+        <a href="javascript:void(0)" onclick="switchTab('home')" class="sidebar-brand flex items-center gap-3 group">
+            <div class="w-8 h-8 rounded-lg bg-lab-navy flex items-center justify-center text-white transition-transform group-hover:scale-105">
+                <svg id="northstar-brand-star" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z"/>
+                </svg>
+            </div>
+            <div class="flex flex-col">
+                <span class="font-bold text-base tracking-wide text-lab-text leading-tight">北辰实验室</span>
+                <span class="text-[9px] font-mono tracking-widest text-lab-subtle uppercase">NORTHSTAR LAB</span>
+            </div>
+        </a>
+        <div class="sidebar-workspace">
         <div class="sidebar-main" id="main-sidebar">
-        <div class="space-y-10 relative z-[1]">
-            <a href="javascript:void(0)" onclick="switchTab('home')" class="flex items-center gap-3 group">
-                <div class="w-8 h-8 rounded-lg bg-lab-navy flex items-center justify-center text-white transition-transform group-hover:scale-105">
-                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z"/>
-                    </svg>
-                </div>
-                <div class="flex flex-col">
-                    <span class="font-bold text-base tracking-wide text-lab-text leading-tight">北辰实验室</span>
-                    <span class="text-[9px] font-mono tracking-widest text-lab-subtle uppercase">NORTHSTAR LAB</span>
-                </div>
-            </a>
+        <div class="relative z-[1]">
 
             <!-- Navigation Links -->
             <nav class="sidebar-nav relative flex flex-col gap-1.5" id="sidebar-nav">
@@ -214,6 +215,7 @@ import KeyGuardProduct from '../components/KeyGuardProduct.astro';
 
             </div>
         </aside>
+        </div>
     </aside>
 
     <!-- MAIN CONTENT CONTAINER -->
@@ -221,31 +223,39 @@ import KeyGuardProduct from '../components/KeyGuardProduct.astro';
 
 
         <!-- SECTION 1: 首页 -->
-        <section id="section-home" class="spa-section home-page animate-fadeIn">
-        <button id="version-history-trigger" type="button" onclick="openVersionHistory()" aria-haspopup="dialog" aria-controls="version-history-modal" class="version-trigger absolute top-6 right-6 md:top-10 md:right-12 inline-flex items-center gap-2 rounded-full border border-lab-border bg-white/80 px-3.5 py-2 text-[11px] font-mono tracking-wide text-lab-muted shadow-sm backdrop-blur-sm">
+        <section id="section-home" class="spa-section home-page animate-fadeIn home-motion-pending">
+        <button id="version-history-trigger" type="button" onclick="openVersionHistory()" aria-haspopup="dialog" aria-controls="version-history-modal" class="version-trigger shimmer-pill absolute top-6 right-6 md:top-10 md:right-12 inline-flex items-center gap-2 rounded-full border border-lab-border bg-white/80 px-3.5 py-2 text-[11px] font-mono tracking-wide text-lab-muted shadow-sm backdrop-blur-sm">
             <span class="version-indicator" aria-hidden="true"></span>
-            <span>v1.0.8</span>
+            <span>v1.0.9</span>
             <span class="version-trigger-label">更新记录 <i class="fa-solid fa-arrow-up-right-from-square ml-1 text-[9px]"></i></span>
         </button>
             <div class="home-hero">
-                <img class="home-hero-image" src="/images/background-001.webp" alt="" aria-hidden="true" fetchpriority="high">
-                <div class="home-hero-shade" aria-hidden="true"></div>
-                <div class="home-hero-content">
-                    <div class="home-eyebrow">NORTHSTAR LAB</div>
-                    <h1>把想法，<br>变成真正可用的东西。</h1>
-                    <div class="home-introduction"><p class="home-intro-name"><span>你好，我是</span><strong>孙国钦</strong></p><p class="home-intro-rotator" aria-live="off"><span class="home-intro-dot" aria-hidden="true"></span><span id="home-rotating-text" class="home-rotating-text tone-1">一个喜欢把想法做成产品的人</span></p></div>
-                    <button type="button" onclick="switchTab('projects')" class="home-primary-cta"><span>探索我的项目</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
+                <div class="home-hero-backdrop" aria-hidden="true">
+                    <img class="home-hero-image" src="/images/background-001.webp" alt="" fetchpriority="high">
+                    <div class="home-hero-shade"></div>
+                    <div class="home-horizon-glow"></div>
                 </div>
-                <div class="home-scroll-cue" aria-hidden="true"><span>SCROLL</span><i></i></div>
+                <canvas class="home-constellation-canvas" aria-hidden="true"></canvas>
+                <div class="home-hero-content">
+                    <div class="home-eyebrow home-motion-item" style="--motion-delay:0ms">NORTHSTAR LAB</div>
+                    <h1 class="home-motion-item" style="--motion-delay:90ms">把想法，<br>变成真正可用的东西。</h1>
+                    <div class="home-introduction">
+                        <p class="home-intro-name home-motion-item" style="--motion-delay:180ms"><span>你好，我是</span><strong>孙国钦</strong></p>
+                        <p class="home-intro-rotator home-motion-item" style="--motion-delay:270ms" aria-live="off"><span class="home-intro-dot" aria-hidden="true"></span><span id="home-rotating-text" class="home-rotating-text tone-1">一个喜欢把想法做成产品的人</span></p>
+                    </div>
+                    <div class="home-cta-motion home-motion-item" style="--motion-delay:360ms">
+                        <button type="button" onclick="switchTab('projects')" class="home-primary-cta" aria-label="探索我的项目"><canvas class="home-cta-smoke" aria-hidden="true"></canvas><span class="home-cta-label">探索我的项目</span><svg class="home-cta-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
+                    </div>
+                </div>
             </div>
 
             <div class="home-content-wrap">
                 <section class="home-featured-section" aria-labelledby="home-featured-title">
-                    <div class="home-section-heading">
+                    <div class="home-section-heading home-reveal" style="--reveal-delay:0ms">
                         <div><div class="home-section-eyebrow">精选项目 <span>/</span> FEATURED PROJECTS</div><h2 id="home-featured-title">从想法到产品，<br class="sm:hidden">记录每一次创造的旅程。</h2></div>
                         <button type="button" onclick="openLearningLogArticle('/logs/second-curve.html', '智性突围：寻找我的“第二曲线”')" class="home-text-link home-log-link">读一篇关于「第二曲线」的思考 <span>→</span></button>
                     </div>
-                    <article class="home-feature-card">
+                    <article class="home-feature-card home-reveal" style="--reveal-delay:90ms">
                         <div class="home-feature-image"><img src="/images/keyguard-real-screenshot.png" alt="KeyGuard 实际运行中的桌面软件界面" loading="lazy"></div>
                         <div class="home-feature-copy">
                             <div class="home-feature-number"><strong>01</strong><span>/ 03</span></div>
@@ -285,24 +295,23 @@ import KeyGuardProduct from '../components/KeyGuardProduct.astro';
         <section id="section-projects" class="spa-section hidden animate-fadeIn">
 
             <section class="project-marquee" aria-label="项目快速切换">
+                <div class="project-marquee-context" aria-hidden="true">
+                    <span class="project-marquee-eyebrow">PROJECT <span>/</span> INDEX</span>
+                    <h2>项目索引</h2>
+                </div>
                 <div class="project-marquee-window">
                     <div class="project-marquee-track">
                         <div class="project-marquee-group">
-                            <button type="button" class="project-marquee-tag is-active" data-project-id="keyguard" aria-pressed="true" onclick="selectProjectTimeline('keyguard')"><span class="project-marquee-dot"></span>KeyGuard</button>
-                            <button type="button" class="project-marquee-tag" data-project-id="northstar" aria-pressed="false" onclick="selectProjectTimeline('northstar')"><span class="project-marquee-dot"></span>北辰实验室</button>
-                            <button type="button" class="project-marquee-tag" data-project-id="calculator" aria-pressed="false" onclick="selectProjectTimeline('calculator')"><span class="project-marquee-dot"></span>参数计算器</button>
-                        </div>
-                        <div class="project-marquee-group" aria-hidden="true">
-                            <span class="project-marquee-tag"><span class="project-marquee-dot"></span>KeyGuard</span>
-                            <span class="project-marquee-tag"><span class="project-marquee-dot"></span>北辰实验室</span>
-                            <span class="project-marquee-tag"><span class="project-marquee-dot"></span>参数计算器</span>
-                        </div>
-                        <div class="project-marquee-group" aria-hidden="true">
-                            <span class="project-marquee-tag"><span class="project-marquee-dot"></span>KeyGuard</span>
-                            <span class="project-marquee-tag"><span class="project-marquee-dot"></span>北辰实验室</span>
-                            <span class="project-marquee-tag"><span class="project-marquee-dot"></span>参数计算器</span>
+                            <button type="button" class="project-marquee-tag is-active" data-project-id="keyguard" aria-pressed="true" onclick="selectProjectTimeline('keyguard')"><span class="project-marquee-dot"></span><span class="project-marquee-number">01</span>KeyGuard</button>
+                            <button type="button" class="project-marquee-tag" data-project-id="northstar" aria-pressed="false" onclick="selectProjectTimeline('northstar')"><span class="project-marquee-dot"></span><span class="project-marquee-number">02</span>北辰实验室</button>
+                            <button type="button" class="project-marquee-tag" data-project-id="calculator" aria-pressed="false" onclick="selectProjectTimeline('calculator')"><span class="project-marquee-dot"></span><span class="project-marquee-number">03</span>参数计算器</button>
                         </div>
                     </div>
+                </div>
+                <div class="project-marquee-meta" aria-live="polite">
+                    <span>当前项目</span>
+                    <strong id="project-marquee-current">KeyGuard</strong>
+                    <small id="project-marquee-index">01 / 03</small>
                 </div>
             </section>
             <nav class="mobile-project-directory" aria-label="项目目录">
@@ -310,12 +319,7 @@ import KeyGuardProduct from '../components/KeyGuardProduct.astro';
                 <button type="button" class="mobile-project-link" data-project-id="northstar" aria-pressed="false" onclick="selectProjectTimeline('northstar')"><span class="mobile-project-date">个人独立项目</span><span>北辰实验室</span></button>
                 <button type="button" class="mobile-project-link" data-project-id="calculator" aria-pressed="false" onclick="selectProjectTimeline('calculator')"><span class="mobile-project-date">个人独立项目</span><span>参数计算器</span></button>
             </nav>
-            <div class="project-status-summary" aria-label="项目状态统计">
-                <span class="project-status-heading">项目阶段</span>
-                <span class="project-status-count is-completed"><i></i>已完成 <strong>3</strong></span>
-                <span class="project-status-count is-progress"><i></i>进行中 <strong>0</strong></span>
-                <span class="project-status-count is-exploration"><i></i>探索与构想 <strong>0</strong></span>
-            </div>            <div class="project-timeline-layout">
+            <div class="project-timeline-layout">
 
 
                 <div class="project-timeline-content" aria-live="polite">
@@ -388,23 +392,45 @@ import KeyGuardProduct from '../components/KeyGuardProduct.astro';
 
                     <article id="timeline-project-calculator" class="timeline-project bg-white rounded-2xl border border-lab-border p-6 md:p-9 shadow-subtle" hidden>
                         <header class="border-b border-lab-border pb-7 md:pb-9">
-                            <div class="flex flex-wrap items-center justify-between gap-3"><span class="text-[10px] font-mono tracking-[.2em] text-lab-subtle uppercase">PERSONAL TOOL · WEB &amp; MINI PROGRAM</span><span class="project-state-badge is-completed">已完成</span></div>
+                            <div class="flex flex-wrap items-center justify-between gap-3"><span class="text-[10px] font-mono tracking-[.2em] text-lab-subtle uppercase">PERSONAL TOOL · WEB &amp; MINI PROGRAM</span><span class="project-state-badge is-completed">已上线</span></div>
                             <h2 class="mt-4 text-3xl md:text-5xl font-semibold tracking-tight text-lab-text">参数计算器</h2>
                             <div class="mt-2 text-sm md:text-base font-mono tracking-[.14em] text-lab-subtle">PARAMETRIC CALCULATOR</div>
                             <p class="mt-7 text-xl md:text-2xl font-medium leading-snug text-lab-text">从一个手机工具的想法，到网页和微信小程序都能使用的产品。</p>
-                            <p class="mt-4 max-w-3xl text-sm md:text-base text-lab-muted leading-relaxed">一个面向日常使用的轻量参数计算工具。项目从网页原型起步，逐步完成计算交互、移动端适配和微信小程序上线。</p>
-                                                        <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <p class="mt-4 max-w-3xl text-sm md:text-base text-lab-muted leading-relaxed">一个面向日常使用的轻量参数计算工具。项目从网页原型起步，逐步完成计算交互、移动端适配和微信小程序审核，网页版与小程序版现已上线。</p>
+                            <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <a href="/projects/parametric-calculator.html" target="_blank" rel="noopener noreferrer" class="rounded-2xl border border-lab-border bg-lab-bg p-5 transition-colors hover:border-lab-navy/30 hover:bg-white">
                                     <span class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase">WEB VERSION</span><h3 class="mt-2 text-base font-semibold text-lab-text">网页版 Web</h3><p class="mt-2 text-sm text-lab-muted leading-relaxed">支持手机、平板与电脑浏览器，计算历史保存在本地。</p><span class="mt-4 inline-flex items-center gap-2 text-sm font-medium text-lab-navy">立即在线体验 ↗</span>
                                 </a>
-                                <div class="rounded-2xl border border-lab-border bg-lab-bg p-5">
-                                    <span class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase">WECHAT MINI PROGRAM</span><h3 class="mt-2 text-base font-semibold text-lab-text">小程序版 WeChat</h3><p class="mt-2 text-sm text-lab-muted leading-relaxed">微信小程序已上线，体验链接暂待补充。</p><span class="mt-4 inline-flex text-sm font-medium text-lab-subtle">链接待补充</span>
-                                </div>
+                                <a href="#calculator-wechat" class="rounded-2xl border border-lab-border bg-lab-bg p-5 transition-colors hover:border-lab-navy/30 hover:bg-white">
+                                    <span class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase">WECHAT MINI PROGRAM</span><h3 class="mt-2 text-base font-semibold text-lab-text">小程序版 WeChat</h3><p class="mt-2 text-sm text-lab-muted leading-relaxed">无需安装独立应用，打开微信即可使用。</p><span class="mt-4 inline-flex items-center gap-2 text-sm font-medium text-lab-navy">微信扫一扫，立即体验 ↓</span>
+                                </a>
                             </div>
                         </header>
+                        <section id="calculator-wechat" aria-labelledby="calculator-wechat-title" class="scroll-mt-24 py-7 border-b border-lab-border">
+                            <div class="rounded-2xl border border-lab-border bg-lab-bg p-5 sm:p-7 md:p-8">
+                                <div class="grid items-center gap-7 lg:grid-cols-[minmax(0,1fr)_auto]">
+                                    <div>
+                                        <div class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase">WECHAT MINI PROGRAM</div>
+                                        <h3 id="calculator-wechat-title" class="mt-2 text-2xl font-semibold text-lab-text">参数计算器 · 微信小程序</h3>
+                                        <p class="mt-4 max-w-xl text-base leading-relaxed text-lab-muted">轻量、便捷的参数计算工具，无需安装独立应用，打开微信即可使用。</p>
+                                        <div class="mt-5 space-y-2 text-sm leading-relaxed text-lab-muted">
+                                            <p><strong class="font-medium text-lab-text">电脑端：</strong>使用微信扫一扫识别右侧小程序码。</p>
+                                            <p><strong class="font-medium text-lab-text">手机端：</strong>可长按小程序码保存到相册，再打开微信扫一扫，从相册选择图片识别。</p>
+                                        </div>
+                                        <a href="/images/parametric-calculator-wechat.jpg" download="参数计算器小程序码.jpg" class="mt-6 inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-lab-navy bg-lab-navy px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-lab-navy/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lab-navy">
+                                            <i class="fa-solid fa-arrow-down-to-line" aria-hidden="true"></i>保存小程序码
+                                        </a>
+                                    </div>
+                                    <figure class="mx-auto w-full max-w-[320px] rounded-3xl border border-lab-border bg-white p-4 shadow-subtle sm:p-5">
+                                        <img src="/images/parametric-calculator-wechat.jpg" alt="参数计算器微信小程序正式小程序码" width="430" height="430" loading="eager" decoding="async" class="mx-auto block h-auto w-full max-w-[280px]">
+                                        <figcaption class="mt-3 text-center text-sm font-medium tracking-wide text-lab-navy">微信扫一扫，立即体验</figcaption>
+                                    </figure>
+                                </div>
+                            </div>
+                        </section>
                         <section class="grid grid-cols-1 sm:grid-cols-2 gap-5 py-7 border-b border-lab-border">
                             <div class="rounded-xl bg-lab-bg p-5"><div class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase">PROJECT TYPE</div><p class="mt-2 text-sm font-medium text-lab-text">个人独立项目 / Web 工具 / 微信小程序</p></div>
-                            <div class="rounded-xl bg-lab-bg p-5"><div class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase">PROJECT STATUS</div><p class="mt-2 text-sm font-medium text-lab-text">网页版可在线体验，小程序体验链接待补充</p></div>
+                            <div class="rounded-xl bg-lab-bg p-5"><div class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase">PROJECT STATUS</div><p class="mt-2 text-sm font-medium text-lab-text">网页版与微信小程序均已上线</p></div>
                             <div class="sm:col-span-2 rounded-xl bg-lab-bg p-5"><div class="text-[10px] font-mono tracking-widest text-lab-subtle uppercase">TECH STACK</div><p class="mt-2 text-sm text-lab-text">HTML · CSS · JavaScript · 微信小程序原生 API · 本地存储</p></div>
                         </section>
                         <section class="py-7 border-b border-lab-border">
@@ -632,7 +658,7 @@ import KeyGuardProduct from '../components/KeyGuardProduct.astro';
                 <button type="button" onclick="closeVersionHistory()" aria-label="关闭更新记录" class="version-close w-10 h-10 shrink-0 rounded-full border border-lab-border text-lab-muted hover:text-lab-text"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <ol class="version-list mt-6">
-                <li class="version-entry is-current"><div class="version-entry-head"><span class="version-number">v1.0.8</span><span class="version-date">2026.11.25 · 当前版本</span></div><h3>新增 AI 协同研发专题日志</h3><ul><li>将《一个人的研发部门》整合至学习日志，保留原始封面、轨道动画、主要配色与交互。</li><li>增加能力定位矩阵、KeyGuard 独立只读审查发现、个人总结及制作名单。</li><li>对模型与公开评测来源进行复核；无法确认的 LMArena 快照数据明确标注待核实。</li><li>补充本次任务的等待时间与信息漂移复盘，标明尚未自动化的部分。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.7</span><span class="version-date">2026.11.24</span></div><h3>KeyGuard 产品信息与授权说明补全</h3><ul><li>补充 ZIP 计划分发形式、版本、开发者和兼容性说明，不展示未确认的安装包参数或下载地址。</li><li>补充 3 天试用、永久个人授权、多设备不限、不绑定设备及微信购买咨询说明。</li><li>完善退款 FAQ、隐私政策、用户协议和完整《KeyGuard 使用说明与免责声明》。</li><li>清理没有实际服务支撑的激活码找回提示；未接入支付、订单和在线发码服务不作已上线展示。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.6</span><span class="version-date">2026.11.24</span></div><h3>KeyGuard 项目展示与页面完善</h3><ul><li>首页恢复“探索我的项目”入口，KeyGuard 作为重点项目。</li><li>项目库保留 KeyGuard、北辰实验室与参数计算器。</li><li>KeyGuard 页面补充真实程序截图、客服二维码和使用说明原文。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.5</span><span class="version-date">2026.11.13</span></div><h3>项目分类与个人经历梳理</h3><ul><li>项目按已完成、进行中和探索构想标注，并展示各阶段数量。</li><li>学习日志增加人生思考、技术复盘、项目记录分类标签和筛选。</li><li>首页增加“寻找我的第二曲线”日志入口；关于我新增经历脉络与能力工具区域。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.4</span><span class="version-date">2026.11.10</span></div><h3>新增两篇个人学习日志</h3><ul><li>加入关于个人成长与寻找“第二曲线”的认知日志。</li><li>加入从工业设计视角探讨 Web 界面触觉感的文章，并保留全文阅读入口。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.3</span><span class="version-date">2026.11.10</span></div><h3>参数计算器项目展示</h3><ul><li>参数计算器调整至北辰实验室之后，完整项目详情加入可直接体验的网页版。</li><li>小程序版保留展示卡片，等待补充体验链接；删除首页截图中的重复入口。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.2</span><span class="version-date">2026.11.09</span></div><h3>项目部署架构复盘</h3><ul><li>在北辰实验室项目详情中新增基础设施选型与部署架构演进章节。</li><li>补充从早期海外托管到国产静态托管及 CI/CD 发布链路的复盘。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.1</span><span class="version-date">2026.11.09</span></div><h3>首页个人介绍轮换</h3><ul><li>将首页介绍改为“你好，我是孙国钦”，并轮换展示四种自我描述。</li><li>参考玻璃胶囊样式，放大描述文字并加入柔和的模糊淡入淡出动效。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.0</span><span class="version-date">2026.11.09</span></div><h3>首页视觉重设计</h3><ul><li>按首页设计图重做沉浸式山海 Hero、精选项目展示、技术探索与关于我横幅。</li><li>复用本地背景与山景素材，保留现有栏目导航和首页入口交互。</li></ul></li>
+                <li class="version-entry is-current"><div class="version-entry-head"><span class="version-number">v1.0.9</span><span class="version-date">2026.11.26 · 当前版本</span></div><h3>参数计算器小程序入口完善</h3><ul><li>项目介绍页新增正式微信小程序码、扫码说明和小程序码保存入口。</li><li>参数计算器状态统一更新为“已上线”，移除体验链接待补充文案。</li><li>保留网页版计算器及全部功能，继续提供网页版与微信小程序两种使用方式。</li><li>修复网页版计算器窄屏输入网格的横向溢出，计算逻辑与历史记录保持不变。</li><li>本轮未正式部署。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.8</span><span class="version-date">2026.11.25</span></div><h3>新增 AI 协同研发专题日志</h3><ul><li>将《一个人的研发部门》整合至学习日志，保留原始封面、轨道动画、主要配色与交互。</li><li>增加能力定位矩阵、KeyGuard 独立只读审查发现、个人总结及制作名单。</li><li>对模型与公开评测来源进行复核；无法确认的 LMArena 快照数据明确标注待核实。</li><li>补充本次任务的等待时间与信息漂移复盘，标明尚未自动化的部分。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.7</span><span class="version-date">2026.11.24</span></div><h3>KeyGuard 产品信息与授权说明补全</h3><ul><li>补充 ZIP 计划分发形式、版本、开发者和兼容性说明，不展示未确认的安装包参数或下载地址。</li><li>补充 3 天试用、永久个人授权、多设备不限、不绑定设备及微信购买咨询说明。</li><li>完善退款 FAQ、隐私政策、用户协议和完整《KeyGuard 使用说明与免责声明》。</li><li>清理没有实际服务支撑的激活码找回提示；未接入支付、订单和在线发码服务不作已上线展示。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.6</span><span class="version-date">2026.11.24</span></div><h3>KeyGuard 项目展示与页面完善</h3><ul><li>首页恢复“探索我的项目”入口，KeyGuard 作为重点项目。</li><li>项目库保留 KeyGuard、北辰实验室与参数计算器。</li><li>KeyGuard 页面补充真实程序截图、客服二维码和使用说明原文。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.5</span><span class="version-date">2026.11.13</span></div><h3>项目分类与个人经历梳理</h3><ul><li>项目按已完成、进行中和探索构想标注，并展示各阶段数量。</li><li>学习日志增加人生思考、技术复盘、项目记录分类标签和筛选。</li><li>首页增加“寻找我的第二曲线”日志入口；关于我新增经历脉络与能力工具区域。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.4</span><span class="version-date">2026.11.10</span></div><h3>新增两篇个人学习日志</h3><ul><li>加入关于个人成长与寻找“第二曲线”的认知日志。</li><li>加入从工业设计视角探讨 Web 界面触觉感的文章，并保留全文阅读入口。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.3</span><span class="version-date">2026.11.10</span></div><h3>参数计算器项目展示</h3><ul><li>参数计算器调整至北辰实验室之后，完整项目详情加入可直接体验的网页版。</li><li>小程序版保留展示卡片，等待补充体验链接；删除首页截图中的重复入口。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.2</span><span class="version-date">2026.11.09</span></div><h3>项目部署架构复盘</h3><ul><li>在北辰实验室项目详情中新增基础设施选型与部署架构演进章节。</li><li>补充从早期海外托管到国产静态托管及 CI/CD 发布链路的复盘。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.1</span><span class="version-date">2026.11.09</span></div><h3>首页个人介绍轮换</h3><ul><li>将首页介绍改为“你好，我是孙国钦”，并轮换展示四种自我描述。</li><li>参考玻璃胶囊样式，放大描述文字并加入柔和的模糊淡入淡出动效。</li></ul></li><li class="version-entry"><div class="version-entry-head"><span class="version-number">v1.0.0</span><span class="version-date">2026.11.09</span></div><h3>首页视觉重设计</h3><ul><li>按首页设计图重做沉浸式山海 Hero、精选项目展示、技术探索与关于我横幅。</li><li>复用本地背景与山景素材，保留现有栏目导航和首页入口交互。</li></ul></li>
                 <li class="version-entry"><div class="version-entry-head"><span class="version-number">v0.9.1</span><span class="version-date">2026.11.09</span></div><h3>移动端项目目录</h3><ul><li>手机端新增四个项目的紧凑切换入口，选中后直接展示对应详情。</li><li>手机和桌面项目目录共享同一选中状态。</li></ul></li>
                 <li class="version-entry"><div class="version-entry-head"><span class="version-number">v0.9.0</span><span class="version-date">2026.11.05</span></div><h3>项目页精简</h3><ul><li>移除项目页的标题说明区和移动端当前项目选择条，让项目详情直接进入视野。</li></ul></li>
                 <li class="version-entry"><div class="version-entry-head"><span class="version-number">v0.8.0</span><span class="version-date">2026.11.05</span></div><h3>项目详情与目录细节</h3><ul><li>将独立制作的北辰实验室项目介绍整合为完整项目详情。</li><li>收拢主目录时让品牌图标居中，并固定导航纵向坐标。</li><li>未选中的二级项目隐藏日期，突出当前选择。</li></ul></li>
@@ -649,6 +675,372 @@ import KeyGuardProduct from '../components/KeyGuardProduct.astro';
     </div>
     <!-- JS Scripts -->
     <script is:inline>
+(function initNorthstarHomeMotion() {
+    const home = document.getElementById('section-home');
+    const hero = home?.querySelector('.home-hero');
+    const backdrop = home?.querySelector('.home-hero-backdrop');
+    const heroContent = home?.querySelector('.home-hero-content');
+    const cta = home?.querySelector('.home-primary-cta');
+    const star = document.getElementById('northstar-brand-star');
+    if (!home || !hero || !backdrop || !heroContent) return;
+
+    const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const finePointerQuery = window.matchMedia('(hover: hover) and (pointer: fine) and (min-width: 768px)');
+    let reducedMotion = reducedMotionQuery.matches;
+    let parallaxEnabled = finePointerQuery.matches && !reducedMotion;
+    let nx = 0;
+    let ny = 0;
+    let targetNx = 0;
+    let targetNy = 0;
+    let scrollProgress = 0;
+    let pageProgress = 0;
+    let heroFrame = 0;
+    let starAngle = 0;
+    let starTarget = 0;
+    let spinOffset = 0;
+    let starFrame = 0;
+    let starLastTime = 0;
+    let parallaxListening = false;
+    const clamp = value => Math.min(1, Math.max(0, value));
+
+    function requestHeroFrame() {
+        if (!heroFrame) heroFrame = requestAnimationFrame(renderHero);
+    }
+
+    function renderHero() {
+        heroFrame = 0;
+        if (reducedMotion) {
+            backdrop.style.transform = 'none';
+            heroContent.style.transform = 'none';
+            heroContent.style.opacity = '1';
+            return;
+        }
+        nx += (targetNx - nx) * 0.08;
+        ny += (targetNy - ny) * 0.08;
+        // 背景保持足够放大，并限制位移，避免视差或滚动时露出容器边缘。
+        const backgroundY = -ny * 8 + scrollProgress * 12;
+        backdrop.style.transform = `translate3d(${-nx * 12}px,${backgroundY}px,0) scale(1.08)`;
+        // 内容层同时承担鼠标微视差与滚动退场，子项仍独立运行 Blur-Fade。
+        heroContent.style.transform = `translate3d(${nx * 4}px,${ny * 3 + scrollProgress * 12}px,0) scale(${1 - scrollProgress * 0.025})`;
+        heroContent.style.opacity = String(1 - scrollProgress * 0.78);
+        if (Math.abs(targetNx - nx) > 0.0005 || Math.abs(targetNy - ny) > 0.0005) requestHeroFrame();
+    }
+
+    function requestStarFrame() {
+        if (!starFrame) starFrame = requestAnimationFrame(renderStar);
+    }
+
+    function renderStar(time) {
+        starFrame = 0;
+        if (!star || reducedMotion) return;
+        const delta = starLastTime ? Math.min(32, time - starLastTime) : 16.67;
+        starLastTime = time;
+        const damping = 1 - Math.pow(0.86, delta / 16.67);
+        starAngle += (starTarget - starAngle) * damping;
+        star.style.transform = `rotate(${starAngle}deg)`;
+        if (Math.abs(starTarget - starAngle) > 0.05) requestStarFrame();
+    }
+
+    function spinBrandStar() {
+        if (!star || reducedMotion) return;
+        spinOffset += 180;
+        starTarget = pageProgress * 90 + spinOffset;
+        requestStarFrame();
+    }
+
+    function updateScrollMotion() {
+        const scrollRange = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        pageProgress = clamp(window.scrollY / scrollRange);
+        starTarget = pageProgress * 90 + spinOffset;
+        requestStarFrame();
+        scrollProgress = home.classList.contains('hidden') ? 0 : clamp(window.scrollY / Math.max(1, hero.offsetHeight * 0.85));
+        if (!parallaxEnabled || home.classList.contains('hidden')) {
+            targetNx = 0;
+            targetNy = 0;
+        }
+        requestHeroFrame();
+    }
+
+    function resetMagneticButton() {
+        if (!cta) return;
+        cta.classList.remove('is-magnetic');
+        cta.style.setProperty('--magnetic-x', '0px');
+        cta.style.setProperty('--magnetic-y', '0px');
+    }
+
+    function playHomeEntrance() {
+        if (reducedMotion || home.classList.contains('hidden')) {
+            home.classList.remove('home-motion-pending');
+            return;
+        }
+        home.classList.add('home-motion-pending');
+        void home.offsetWidth;
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => home.classList.remove('home-motion-pending'));
+        });
+    }
+
+    function handleHeroMouseMove(event) {
+        const rect = hero.getBoundingClientRect();
+        targetNx = (event.clientX - rect.left) / rect.width - 0.5;
+        targetNy = (event.clientY - rect.top) / rect.height - 0.5;
+        requestHeroFrame();
+    }
+    function handleHeroMouseLeave() {
+        targetNx = 0;
+        targetNy = 0;
+        requestHeroFrame();
+    }
+    function syncParallaxListeners() {
+        parallaxEnabled = finePointerQuery.matches && !reducedMotion;
+        if (parallaxEnabled && !parallaxListening) {
+            hero.addEventListener('mousemove', handleHeroMouseMove, { passive: true });
+            hero.addEventListener('mouseleave', handleHeroMouseLeave);
+            parallaxListening = true;
+        } else if (!parallaxEnabled && parallaxListening) {
+            hero.removeEventListener('mousemove', handleHeroMouseMove);
+            hero.removeEventListener('mouseleave', handleHeroMouseLeave);
+            parallaxListening = false;
+        }
+        if (!parallaxEnabled) {
+            targetNx = 0;
+            targetNy = 0;
+            requestHeroFrame();
+        }
+    }
+    syncParallaxListeners();
+
+    if (cta && finePointerQuery.matches && !reducedMotion) {
+        cta.addEventListener('pointermove', event => {
+            if (event.pointerType === 'touch') return;
+            const rect = cta.getBoundingClientRect();
+            const x = ((event.clientX - rect.left) / rect.width - 0.5) * 8;
+            const y = ((event.clientY - rect.top) / rect.height - 0.5) * 8;
+            cta.classList.add('is-magnetic');
+            cta.style.setProperty('--magnetic-x', `${x.toFixed(2)}px`);
+            cta.style.setProperty('--magnetic-y', `${y.toFixed(2)}px`);
+        }, { passive: true });
+        cta.addEventListener('pointerleave', resetMagneticButton);
+    }
+
+    const revealItems = [...home.querySelectorAll('.home-reveal')];
+    if ('IntersectionObserver' in window && !reducedMotion) {
+        const revealObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('is-revealed');
+                revealObserver.unobserve(entry.target);
+            });
+        }, { threshold: 0.12 });
+        revealItems.forEach(item => revealObserver.observe(item));
+    } else {
+        revealItems.forEach(item => item.classList.add('is-revealed'));
+    }
+
+    document.querySelectorAll('.sidebar-brand,.nav-item,.mobile-nav-btn,.sub-item,.project-marquee-tag[data-project-id],.mobile-project-link,.home-detail-link').forEach(item => {
+        item.addEventListener('click', spinBrandStar);
+    });
+
+    finePointerQuery.addEventListener('change', () => {
+        syncParallaxListeners();
+        resetMagneticButton();
+        updateScrollMotion();
+    });
+    reducedMotionQuery.addEventListener('change', () => {
+        reducedMotion = reducedMotionQuery.matches;
+        syncParallaxListeners();
+        if (star) {
+            if (reducedMotion) star.style.transform = 'none';
+            else {
+                starTarget = pageProgress * 90 + spinOffset;
+                requestStarFrame();
+            }
+        }
+        resetMagneticButton();
+        revealItems.forEach(item => item.classList.add('is-revealed'));
+        updateScrollMotion();
+    });
+
+    window.resetNorthstarHomeMotion = () => {
+        nx = 0;
+        ny = 0;
+        targetNx = 0;
+        targetNy = 0;
+        scrollProgress = 0;
+        backdrop.style.transform = reducedMotion ? 'none' : 'translate3d(0,0,0) scale(1.08)';
+        heroContent.style.transform = 'none';
+        heroContent.style.opacity = '1';
+    };
+    window.playNorthstarHomeEntrance = playHomeEntrance;
+    window.addEventListener('scroll', updateScrollMotion, { passive: true });
+    window.addEventListener('resize', updateScrollMotion, { passive: true });
+    window.addEventListener('blur', resetMagneticButton);
+    updateScrollMotion();
+    playHomeEntrance();
+})();
+
+(function initHomeConstellation() {
+    const home = document.getElementById('section-home');
+    const hero = home?.querySelector('.home-hero');
+    const canvas = hero?.querySelector('.home-constellation-canvas');
+    const ctx = canvas?.getContext('2d');
+    if (!home || !hero || !canvas || !ctx) return;
+
+    const finePointerQuery = window.matchMedia('(hover: hover) and (pointer: fine) and (min-width: 768px)');
+    const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let reducedMotion = reducedMotionQuery.matches;
+    let finePointer = finePointerQuery.matches;
+    let heroVisible = true;
+    let frame = 0;
+    let width = 0;
+    let height = 0;
+    let dpr = 1;
+    let mouseX = -9999;
+    let mouseY = -9999;
+    let stars = [];
+
+    function drawConstellation(animate) {
+        frame = 0;
+        if (home.classList.contains('hidden') || document.hidden || !heroVisible) return;
+        ctx.clearRect(0, 0, width, height);
+        stars.forEach(star => {
+            if (animate) {
+                star.x += star.vx;
+                star.y += star.vy;
+                if (star.x < 0) star.x = width;
+                if (star.x > width) star.x = 0;
+                if (star.y < 0) star.y = height * 0.78;
+                if (star.y > height * 0.78) star.y = 0;
+            }
+
+            const dx = mouseX - star.x;
+            const dy = mouseY - star.y;
+            const distance = Math.hypot(dx, dy);
+            if (finePointer && distance < 150 && distance > 1) {
+                if (animate) {
+                    star.x += dx * 0.008;
+                    star.y += dy * 0.008;
+                }
+                ctx.beginPath();
+                ctx.moveTo(star.x, star.y);
+                ctx.lineTo(mouseX, mouseY);
+                ctx.strokeStyle = `rgba(37,99,160,${(1 - distance / 150) * 0.34})`;
+                ctx.lineWidth = 0.8;
+                ctx.stroke();
+            }
+
+            ctx.beginPath();
+            ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(37,60,91,${star.alpha})`;
+            ctx.shadowColor = 'rgba(56,112,178,0.45)';
+            ctx.shadowBlur = 4;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+        });
+        if (animate) frame = requestAnimationFrame(() => drawConstellation(true));
+    }
+
+    function requestDraw() {
+        if (!frame && !reducedMotion && !document.hidden && heroVisible && !home.classList.contains('hidden')) {
+            frame = requestAnimationFrame(() => drawConstellation(true));
+        }
+    }
+
+    function resizeCanvas() {
+        const rect = hero.getBoundingClientRect();
+        if (!rect.width || !rect.height) return;
+        const oldWidth = width || rect.width;
+        const oldHeight = height || rect.height;
+        width = rect.width;
+        height = rect.height;
+        dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+        canvas.width = Math.round(width * dpr);
+        canvas.height = Math.round(height * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        if (!stars.length) {
+            stars = Array.from({ length: 28 }, () => ({
+                x: Math.random() * width,
+                y: Math.random() * height * 0.78,
+                vx: (Math.random() - 0.5) * 0.22,
+                vy: (Math.random() - 0.5) * 0.18,
+                radius: Math.random() * 1.1 + 1.1,
+                alpha: Math.random() * 0.35 + 0.3
+            }));
+        } else {
+            const scaleX = width / oldWidth;
+            const scaleY = height / oldHeight;
+            stars.forEach(star => { star.x *= scaleX; star.y *= scaleY; });
+        }
+        if (reducedMotion) drawConstellation(false);
+        else requestDraw();
+    }
+
+    function handlePointerMove(event) {
+        if (!finePointer || (event.pointerType !== 'mouse' && event.pointerType !== 'pen')) return;
+        const rect = hero.getBoundingClientRect();
+        mouseX = event.clientX - rect.left;
+        mouseY = event.clientY - rect.top;
+        requestDraw();
+    }
+
+    function clearPointer() {
+        mouseX = -9999;
+        mouseY = -9999;
+        requestDraw();
+    }
+
+    function syncPointerListeners() {
+        finePointer = finePointerQuery.matches;
+        if (finePointer) {
+            hero.addEventListener('pointermove', handlePointerMove, { passive: true });
+            hero.addEventListener('pointerleave', clearPointer);
+        } else {
+            hero.removeEventListener('pointermove', handlePointerMove);
+            hero.removeEventListener('pointerleave', clearPointer);
+            clearPointer();
+        }
+    }
+
+    const visibilityObserver = 'IntersectionObserver' in window
+        ? new IntersectionObserver(([entry]) => {
+            heroVisible = entry.isIntersecting;
+            if (!heroVisible && frame) { cancelAnimationFrame(frame); frame = 0; }
+            if (heroVisible) {
+                if (reducedMotion) drawConstellation(false);
+                else requestDraw();
+            }
+        }, { threshold: 0.01 })
+        : null;
+    visibilityObserver?.observe(hero);
+
+    const homeObserver = 'MutationObserver' in window
+        ? new MutationObserver(() => {
+            if (home.classList.contains('hidden') && frame) { cancelAnimationFrame(frame); frame = 0; }
+            else if (!home.classList.contains('hidden')) {
+                if (reducedMotion) drawConstellation(false);
+                else requestDraw();
+            }
+        })
+        : null;
+    homeObserver?.observe(home, { attributes: true, attributeFilter: ['class'] });
+
+    finePointerQuery.addEventListener('change', syncPointerListeners);
+    reducedMotionQuery.addEventListener('change', event => {
+        reducedMotion = event.matches;
+        if (reducedMotion && frame) { cancelAnimationFrame(frame); frame = 0; }
+        if (!reducedMotion) requestDraw();
+        else drawConstellation(false);
+    });
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden && frame) { cancelAnimationFrame(frame); frame = 0; }
+        else if (reducedMotion) drawConstellation(false);
+        else requestDraw();
+    });
+    window.addEventListener('resize', resizeCanvas, { passive: true });
+    syncPointerListeners();
+    resizeCanvas();
+})();
+
 (function initHomeTextRotator() {
     const rotatingText = document.getElementById('home-rotating-text');
     const homeSection = document.getElementById('section-home');
@@ -684,6 +1076,111 @@ import KeyGuardProduct from '../components/KeyGuardProduct.astro';
     });
 })();
 
+(function initExploreButtonSmoke() {
+    const button = document.querySelector('#section-home .home-primary-cta');
+    const canvas = button?.querySelector('.home-cta-smoke');
+    if (!button || !canvas || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const gl = canvas.getContext('webgl', { antialias: true, alpha: false });
+    if (!gl) return; // 不支持 WebGL 时保留 CSS 深海青底色和正常按钮功能。
+
+    const vertexSource = `
+        attribute vec2 a_pos;
+        varying vec2 v_uv;
+        void main() { v_uv = a_pos * 0.5 + 0.5; gl_Position = vec4(a_pos, 0.0, 1.0); }
+    `;
+    const fragmentSource = `
+        precision highp float;
+        varying vec2 v_uv;
+        uniform float u_time;
+        uniform vec2 u_res;
+        uniform float u_boost;
+        float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1,311.7))) * 43758.5453123); }
+        vec2 hash22(vec2 p) { p=vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3))); return fract(sin(p)*43758.5453123); }
+        float noise(vec2 p) {
+            vec2 i=floor(p), f=fract(p), u=f*f*(3.0-2.0*f);
+            return mix(mix(hash(i),hash(i+vec2(1.0,0.0)),u.x),mix(hash(i+vec2(0.0,1.0)),hash(i+vec2(1.0,1.0)),u.x),u.y);
+        }
+        float fbm(vec2 p) {
+            float v=0.0, a=0.5; mat2 rot=mat2(0.80,0.60,-0.60,0.80);
+            for(int i=0;i<4;i++){v+=a*noise(p);p=rot*p*2.02+vec2(17.1,31.7);a*=0.5;}
+            return v;
+        }
+        float sparks(vec2 uv,float t) {
+            float acc=0.0;
+            for(int i=0;i<14;i++){
+                float fi=float(i); vec2 seed=hash22(vec2(fi*3.17,fi*7.91));
+                vec2 p=vec2(fract(seed.x+sin(t*0.45+fi)*0.07)*(u_res.x/u_res.y),fract(seed.y+t*(0.12+seed.y*0.16)));
+                vec2 q=vec2(uv.x*(u_res.x/u_res.y),uv.y), d=q-p; d.x-=d.y*0.28; d.y*=0.35;
+                acc+=smoothstep(0.020,0.0,length(d))*(0.35+0.65*sin(t*2.2+fi));
+            }
+            return clamp(acc,0.0,1.0);
+        }
+        void main() {
+            vec2 uv=v_uv, p=vec2(uv.x*(u_res.x/u_res.y),uv.y)*1.9; float t=u_time*0.35;
+            vec2 q=vec2(fbm(p+vec2(0.0,-t*0.7)),fbm(p+vec2(5.2,1.3-t*0.55)));
+            vec2 r=vec2(fbm(p+2.3*q+vec2(1.7,9.2)+vec2(t*0.35,-t*0.6)),fbm(p+2.3*q+vec2(8.3,2.8)+vec2(-t*0.28,-t*0.5)));
+            float f=fbm(p+1.85*r);
+            float w1=pow(clamp(1.0-abs(f-0.50)*3.4,0.0,1.0),2.3);
+            float w2=pow(clamp(1.0-abs(fbm(p*1.35-1.4*q+t*0.4)-0.48)*3.8,0.0,1.0),2.6);
+            float haze=smoothstep(0.22,0.85,f)*0.42;
+            float mask=mix(0.28,1.15,pow(smoothstep(1.02,0.0,uv.y),1.15));
+            float energy=(w1*0.78+w2*0.55+haze)*mask;
+            vec3 col=vec3(0.02,0.11,0.15)+vec3(0.20,0.70,0.77)*energy*(0.46+u_boost*0.31);
+            col+=vec3(0.58,0.87,0.93)*sparks(uv,u_time)*(0.57+u_boost*0.34);
+            gl_FragColor=vec4(col,1.0);
+        }
+    `;
+    function compile(type, source) {
+        const shader = gl.createShader(type);
+        gl.shaderSource(shader, source);
+        gl.compileShader(shader);
+        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) { gl.deleteShader(shader); return null; }
+        return shader;
+    }
+    const vertex = compile(gl.VERTEX_SHADER, vertexSource);
+    const fragment = compile(gl.FRAGMENT_SHADER, fragmentSource);
+    if (!vertex || !fragment) return;
+    const program = gl.createProgram();
+    gl.attachShader(program, vertex); gl.attachShader(program, fragment); gl.linkProgram(program);
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) return;
+    const buffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
+    gl.useProgram(program);
+    const position = gl.getAttribLocation(program, 'a_pos');
+    gl.enableVertexAttribArray(position); gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
+    const timeUniform = gl.getUniformLocation(program, 'u_time');
+    const resolutionUniform = gl.getUniformLocation(program, 'u_res');
+    const boostUniform = gl.getUniformLocation(program, 'u_boost');
+    let hovered = false, boost = 0, elapsed = 0, last = 0, frame = 0, visible = true;
+    button.addEventListener('pointerenter', () => { hovered = true; });
+    button.addEventListener('pointerleave', () => { hovered = false; });
+    const observer = 'IntersectionObserver' in window ? new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; if (visible) requestFrame(); }) : null;
+    observer?.observe(button);
+    function requestFrame() { if (!frame && visible && !document.hidden) frame = requestAnimationFrame(draw); }
+    function draw(now) {
+        frame = 0;
+        if (!visible || document.hidden) return;
+        const delta = last ? Math.min(0.05, (now - last) / 1000) : 0.016;
+        last = now; elapsed += delta * 1.2; boost += ((hovered ? 1 : 0) - boost) * 0.1;
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const width = Math.max(1, Math.floor(canvas.clientWidth * dpr));
+        const height = Math.max(1, Math.floor(canvas.clientHeight * dpr));
+        if (canvas.width !== width || canvas.height !== height) { canvas.width = width; canvas.height = height; }
+        gl.viewport(0, 0, width, height); gl.useProgram(program);
+        gl.uniform1f(timeUniform, elapsed); gl.uniform2f(resolutionUniform, width, height); gl.uniform1f(boostUniform, boost);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+        requestFrame();
+    }
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) { last = 0; requestFrame(); } });
+    window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', event => {
+        if (event.matches && frame) { cancelAnimationFrame(frame); frame = 0; }
+        else if (!event.matches) requestFrame();
+    });
+    requestFrame();
+})();
+
 function showKeyGuardStory(updateUrl=false){const story=document.getElementById('kg-project-view'),product=document.getElementById('kg-product-view');if(story)story.classList.remove('hidden');if(product)product.classList.add('hidden');if(updateUrl)history.pushState({keyguardView:'story'},'','/#section-projects');window.scrollTo({top:0,behavior:'smooth'});}
 function showKeyGuardProduct(){const story=document.getElementById('kg-project-view'),product=document.getElementById('kg-product-view');if(story)story.classList.add('hidden');if(product)product.classList.remove('hidden');history.pushState({keyguardView:'product'},'','/#keyguard-product');window.scrollTo({top:0,behavior:'smooth'});}
 function openKeyGuardProject(){if(document.getElementById('section-projects')?.classList.contains('hidden'))switchTab('projects');selectProjectTimeline('keyguard');showKeyGuardStory(false);if(location.hash!=='#section-projects')history.pushState({keyguardView:'story'},'','/#section-projects');}
@@ -702,6 +1199,23 @@ function selectProjectTimeline(projectId) {
         item.classList.toggle('is-active', active);
         item.setAttribute('aria-pressed', String(active));
     });
+    const activePanel = document.getElementById(`timeline-project-${projectId}`);
+    const marquee = document.querySelector('.project-marquee');
+    marquee?.classList.toggle('is-scrolled', (activePanel?.scrollTop || 0) > 8);
+    const projectTags = [...document.querySelectorAll('.project-marquee-tag[data-project-id]')];
+    const activeTag = projectTags.find(item => item.dataset.projectId === projectId);
+    const currentProject = document.getElementById('project-marquee-current');
+    const currentProjectIndex = document.getElementById('project-marquee-index');
+    if (currentProject) currentProject.textContent = activeTag?.textContent.replace(/^\d+\s*/, '').trim() || '';
+    if (currentProjectIndex) {
+        const activeIndex = projectTags.findIndex(item => item.dataset.projectId === projectId);
+        currentProjectIndex.textContent = `${String(activeIndex + 1).padStart(2, '0')} / ${String(projectTags.length).padStart(2, '0')}`;
+    }
+    const marqueeWindow = document.querySelector('.project-marquee-window');
+    if (activeTag && marqueeWindow) {
+        const left = activeTag.offsetLeft - (marqueeWindow.clientWidth - activeTag.offsetWidth) / 2;
+        marqueeWindow.scrollTo({ left: Math.max(0, left), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    }
 }
 function selectProjectFromDrawer(projectId, item) {
     document.querySelectorAll('.sub-item').forEach(link => link.classList.toggle('active', link === item));
@@ -713,10 +1227,17 @@ function selectProjectFromDrawer(projectId, item) {
     });
 }
 
+document.querySelectorAll('.timeline-project').forEach(panel => {
+    panel.addEventListener('scroll', () => {
+        if (panel.hidden) return;
+        document.querySelector('.project-marquee')?.classList.toggle('is-scrolled', panel.scrollTop > 8);
+    }, { passive: true });
+});
+
 function toggleProjectDirectory() {
     const layout = document.getElementById('desktop-left-layout');
     if (!layout) return;
-    const button = document.querySelector('aside.sidebar-main [data-tab="projects"]');
+    const button = document.querySelector('#main-sidebar [data-tab="projects"]');
     if (layout.classList.contains('is-open')) {
         layout.classList.remove('is-open', 'is-minimized');
         if (button) button.setAttribute('aria-expanded', 'false');
@@ -725,7 +1246,7 @@ function toggleProjectDirectory() {
     if (document.getElementById('section-projects')?.classList.contains('hidden')) switchTab('projects');
     layout.classList.add('is-open');
     layout.classList.remove('is-minimized');
-    requestAnimationFrame(() => { const active = document.querySelector('aside.sidebar-main .nav-item.active'); if (active) moveNavIndicator(active, false); });
+    requestAnimationFrame(() => { const active = document.querySelector('#main-sidebar .nav-item.active'); if (active) moveNavIndicator(active, false); });
     if (button) button.setAttribute('aria-expanded', 'true');
     const activeProject = document.querySelector('.sub-item.active');
     if (activeProject) selectProjectFromDrawer(activeProject.dataset.projectId, activeProject);
@@ -734,14 +1255,14 @@ function toggleProjectDirectory() {
 function closeProjectDirectory() {
     const layout = document.getElementById('desktop-left-layout');
     if (layout) layout.classList.remove('is-open', 'is-minimized');
-    const button = document.querySelector('aside.sidebar-main [data-tab="projects"]');
+    const button = document.querySelector('#main-sidebar [data-tab="projects"]');
     if (button) button.setAttribute('aria-expanded', 'false');
 }
 
 function expandProjectDirectory() {
     const layout = document.getElementById('desktop-left-layout');
     if (layout) layout.classList.remove('is-minimized');
-    requestAnimationFrame(() => { const active = document.querySelector('aside.sidebar-main .nav-item.active'); if (active) moveNavIndicator(active, false); });
+    requestAnimationFrame(() => { const active = document.querySelector('#main-sidebar .nav-item.active'); if (active) moveNavIndicator(active, false); });
 }
 
 
@@ -772,6 +1293,8 @@ window.openLearningLogArticle = function (src, title) {
         try {
             const doc = frame.contentDocument;
             if (!doc || doc.getElementById('northstar-reader-overrides')) return;
+            // 该专题自带完整版式；跳过旧日志的通用排版覆盖，保留原始 Hero 与章节样式。
+            if (new URL(frame.src, window.location.href).pathname.endsWith('/logs/ai-collaborative-rd.html')) return;
             const style = doc.createElement('style');
             style.id = 'northstar-reader-overrides';
             style.textContent = `
@@ -855,7 +1378,7 @@ if (mainContent) {
         const layout = document.getElementById('desktop-left-layout');
         if (!layout?.classList.contains('is-open') || layout.classList.contains('is-minimized')) return;
         clearTimeout(projectDrawerTimer);
-        projectDrawerTimer = setTimeout(() => { layout.classList.add('is-minimized'); requestAnimationFrame(() => { const active = document.querySelector('aside.sidebar-main .nav-item.active'); if (active) moveNavIndicator(active, false); }); }, 3000);
+        projectDrawerTimer = setTimeout(() => { layout.classList.add('is-minimized'); requestAnimationFrame(() => { const active = document.querySelector('#main-sidebar .nav-item.active'); if (active) moveNavIndicator(active, false); }); }, 3000);
     });
     mainContent.addEventListener('pointerleave', () => clearTimeout(projectDrawerTimer));
 }
@@ -883,6 +1406,7 @@ function switchTab(tabId) {
         mainContainer.classList.toggle('projects-active', tabId === 'projects');
         mainContainer.classList.toggle('home-active', tabId === 'home');
     }
+    document.body.classList.toggle('projects-active', tabId === 'projects');
     if (tabId !== 'projects') closeProjectDirectory();
 
     // 1. 隐藏所有页面
@@ -897,6 +1421,10 @@ function switchTab(tabId) {
 
         // 3. 先显示目标页面
         targetSection.classList.remove('hidden');
+        if (tabId === 'home') {
+            window.resetNorthstarHomeMotion?.();
+            window.playNorthstarHomeEntrance?.();
+        }
 
         // 4. 清除之前的动画类
         targetSection.classList.remove('page-enter');
@@ -923,7 +1451,7 @@ function switchTab(tabId) {
     // 9. 页面滚动回顶部
     window.scrollTo({
         top: 0,
-        behavior: 'smooth'
+        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
     });
 }
 
@@ -957,8 +1485,7 @@ function switchTab(tabId) {
 
         window.onload = function() {
             document.body.classList.add('motion-ready');
-            document.body.classList.add('motion-ready');
-            if(location.hash==='#keyguard-product'){switchTab('projects');selectProjectTimeline('keyguard');showKeyGuardProduct();}else if(location.hash==='#section-projects'){switchTab('projects');selectProjectTimeline('keyguard');showKeyGuardStory(false);}else{switchTab('home');}
+            if(location.hash==='#keyguard-product'){switchTab('projects');selectProjectTimeline('keyguard');showKeyGuardProduct();}else if(location.hash==='#section-projects'){switchTab('projects');selectProjectTimeline('keyguard');showKeyGuardStory(false);}
 
             const canvas = document.getElementById('particle-canvas');
             if (canvas) {
